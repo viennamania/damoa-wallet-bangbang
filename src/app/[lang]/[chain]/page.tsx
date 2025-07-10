@@ -1530,14 +1530,14 @@ function IndexPage(
                 ">
                 {/* KCT logo */}
                 <Image
-                  src="/logo-kct.jpeg"
+                  src="/logo-mpoint.png"
                   alt="KCT"
                   width={35}
                   height={35}
                   className="rounded-full w-8 h-8 xl:w-10 xl:h-10"
                 />
                 <span className="text-sm md:text-xl font-bold text-gray-600">
-                  KCT
+                  M포인트
                 </span>
                 <div className="w-full text-sm font-bold text-zinc-800 text-right">
                   {
@@ -1547,16 +1547,16 @@ function IndexPage(
                   }
                 </div>
                 <p className="w-12 text-sm text-gray-800 font-bold">
-                  KCT
+                  MPOINT
                 </p>
                 <button
                   onClick={() => {
                     params.chain === "tron" ?
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/send-tron-token/?token=KCT"
+                      "/" + params.lang + "/" + params.chain + "/send-tron-token/?token=MPOINT"
                     ) :
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=KCT"
+                      "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=MPOINT"
                       + "&agent=" + agent + "&tokenId=" + agentNumber
                     );
                   }}

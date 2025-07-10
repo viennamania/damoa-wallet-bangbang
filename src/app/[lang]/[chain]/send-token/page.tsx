@@ -2372,7 +2372,7 @@ export default function SendUsdt({ params }: any) {
                       ">
                         {/*Buy_Description*/}
                         {token === "USDT" ? "스왑할 USDT 수량을 입력하세요."
-                        : "스왑할 KCT 수량을 입력하세요."
+                        : "스왑할 MPOINT 수량을 입력하세요."
                         }
                       </div>
                     </div>
