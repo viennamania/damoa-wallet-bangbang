@@ -1944,7 +1944,7 @@ function AgentPage(
                                 </div>
                                 <button
                                     onClick={() => {
-                                        window.open("http://pf.kakao.com/_rxaxmGn/chat", "_blank");
+                                        
                                     }}
                                     className="hover:bg-gray-200 p-2 rounded-lg"
                                 >
@@ -1984,7 +1984,7 @@ function AgentPage(
                                 </div>
                                 <button
                                     onClick={() => {
-                                        window.open("https://vagabond-secure-fbb.notion.site/FAQ-1c71b4ba94ae80a8b689cc2f796f4034?pvs=4", "_blank");
+                                        
                                     }}
                                     className="hover:bg-gray-200 p-2 rounded-lg"
                                 >
