@@ -26,6 +26,7 @@ import {
     polygon,
     arbitrum,
     ethereum,
+    bsc,
 } from "thirdweb/chains";
 
 import {
@@ -150,7 +151,7 @@ function AgentPage(
 
     const contract = getContract({
         client,
-        chain: polygon,
+        chain: bsc,
         address: contractAddress,
     });
     
@@ -515,7 +516,7 @@ function AgentPage(
 
 
                 const erc721ContractAddress = await deployERC721Contract({
-                    chain: polygon,
+                    chain: bsc,
                     client: client,
                     account: account as any,
             
@@ -623,7 +624,7 @@ function AgentPage(
                 /*
                 const contract = getContract({
                      client,
-                     chain: polygon,
+                     chain: bsc,
                      address: erc721ContractAddress,
                 });
 
@@ -829,7 +830,7 @@ function AgentPage(
             /*
             const contract = getContract({
                 client,
-                chain: polygon,
+                chain: bsc,
                 address: erc721ContractAddress,
 
               });
@@ -1065,7 +1066,7 @@ function AgentPage(
 
             const contract = getContract({
                 client,
-                chain: polygon,
+                chain: bsc,
                 address: contractAddress,
             });
 
@@ -1199,7 +1200,7 @@ function AgentPage(
                             client={client}
                             wallets={wallets}
                             accountAbstraction={{
-                                chain: polygon,
+                                chain: bsc,
                                 sponsorGas: true
                             }}
                             

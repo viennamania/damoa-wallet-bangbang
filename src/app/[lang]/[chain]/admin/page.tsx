@@ -103,13 +103,13 @@ function HomeContent() {
 
   const contract = getContract({
     client,
-    chain: polygon,
+    chain: bsc,
     address: contractAddress,
   });
 
   const contractKCT = getContract({
     client,
-    chain: polygon,
+    chain: bsc,
     address: contractAddressKCT,
   });
 
@@ -814,7 +814,7 @@ function HomeContent() {
                     client={client}
                     wallets={wallets}
                     accountAbstraction={{
-                        chain: polygon,
+                        chain: bsc,
                         sponsorGas: true
                     }}
                     

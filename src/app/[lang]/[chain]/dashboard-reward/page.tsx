@@ -23,6 +23,8 @@ import { balanceOf, transfer } from "thirdweb/extensions/erc20";
 import {
     polygon,
     arbitrum,
+    ethereum,
+    bsc,
 } from "thirdweb/chains";
 
 import {
@@ -104,6 +106,8 @@ const wallets = [
 
 const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
 const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // USDT on Arbitrum
+const contractAddressEthereum = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT on Ethereum
+const contractAddressBsc = "0x55d398326f99059fF775485246999027B3197955"; // USDT on BSC
 
 
 
@@ -112,7 +116,7 @@ const erc1155ContractAddress = "0xd782447a0762966714a150dBC0E5a16fE488d566"; // 
 /*
 const contractErc1155 = getContract({
     client,
-    chain: polygon,
+    chain: bsc,
     address: erc1155ContractAddress,
 });
 
@@ -138,7 +142,7 @@ const nftInfoTbot10000 = await getNFT({
 
 const contractErc1155 = getContract({
     client,
-    chain: polygon,
+    chain: bsc,
     address: erc1155ContractAddress,
 });
 
@@ -364,7 +368,7 @@ export default function AIPage({ params }: any) {
         // the contract's address
         ///address: contractAddress,
 
-        address: params.chain === "arbitrum" ? contractAddressArbitrum : contractAddress,
+        address: params.chain === "bsc" ? contractAddressBsc : params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
 
 
         // OPTIONAL: the contract's abi
@@ -1406,7 +1410,7 @@ export default function AIPage({ params }: any) {
                                 client={client}
                                 wallets={wallets}
                                 accountAbstraction={{
-                                    chain: polygon,
+                                    chain: bsc,
                                      
                                     sponsorGas: true
                                 }}

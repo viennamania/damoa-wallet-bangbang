@@ -31,6 +31,8 @@ import {
 import {
     polygon,
     arbitrum,
+    ethereum,
+    bsc,
 } from "thirdweb/chains";
 
 import {
@@ -74,6 +76,9 @@ import Image from 'next/image';
 
 const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
 const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // USDT on Arbitrum
+const contractAddressEthereum = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT on Ethereum
+const contractAddressBsc = "0x55d398326f99059fF775485246999027B3197955"; // USDT on BSC
+
 
 const contractAddressTron = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"; // USDT on Tron
 
@@ -195,7 +200,7 @@ export default function AgentPage({ params }: any) {
     // the contract's address
     ///address: contractAddress,
 
-    address: params.chain === "arbitrum" ? contractAddressArbitrum : contractAddress,
+    address: params.chain === "bsc" ? contractAddressBsc : params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
 
 
     // OPTIONAL: the contract's abi
@@ -385,7 +390,7 @@ export default function AgentPage({ params }: any) {
 
     const contract = getContract({
       client,
-      chain: polygon,
+      chain: bsc,
       address: agentContractAddress,
     });
 

@@ -11,6 +11,8 @@ import { client } from "../../../client";
 import {
     polygon,
     arbitrum,
+    ethereum,
+    bsc,
 } from "thirdweb/chains";
 
 import {

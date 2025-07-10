@@ -17,7 +17,12 @@ import {
 
 
 //import { polygonAmoy } from "thirdweb/chains";
-import { polygon } from "thirdweb/chains";
+import {
+  polygon,
+  arbitrum,
+  ethereum,
+  bsc,
+} from "thirdweb/chains";
 
 import {
     privateKeyToAccount,
@@ -78,7 +83,7 @@ export async function POST(request: NextRequest) {
 
     const contract = getContract({
         client,
-        chain: polygon,
+        chain: bsc,
         address: erc721ContractAddress,
     });
 

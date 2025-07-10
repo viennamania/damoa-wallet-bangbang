@@ -22,6 +22,9 @@ import {
 
 import {
   polygon,
+  arbitrum,
+  ethereum,
+  bsc,
 } from "thirdweb/chains";
 
 
@@ -96,7 +99,7 @@ const contract = getContract({
   // the client you have created via `createThirdwebClient()`
   client,
   // the chain the contract is deployed on
-  chain: polygon,
+  chain: bsc,
   // the contract's address
   address: contractAddress,
   // OPTIONAL: the contract's abi
@@ -551,7 +554,7 @@ function ChatPageContent(
                           wallets={wallets}
                           
                           accountAbstraction={{        
-                          chain: polygon,
+                          chain: bsc,
                           //chain: arbitrum,
                           factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
                           sponsorGas: true

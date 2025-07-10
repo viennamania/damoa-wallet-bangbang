@@ -9,7 +9,10 @@ import { toast } from 'react-hot-toast';
 import { client } from "../client";
 
 import {
-    polygon,
+  polygon,
+  arbitrum,
+  ethereum,
+  bsc,
 } from "thirdweb/chains";
 
 import {
@@ -266,7 +269,7 @@ export default function SettingsPage() {
                             wallets={wallets}
                             
                             accountAbstraction={{        
-                            chain: polygon,
+                            chain: bsc,
                             //chain: arbitrum,
                             factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
                             sponsorGas: true

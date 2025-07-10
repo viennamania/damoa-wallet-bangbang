@@ -769,7 +769,7 @@ useEffect(() => {
                     client={client}
                     wallets={wallets}
                     accountAbstraction={{
-                      chain: polygon,
+                      chain: bsc,
                        
                       sponsorGas: true
                     }}

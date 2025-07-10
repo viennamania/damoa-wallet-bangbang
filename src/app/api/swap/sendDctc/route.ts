@@ -29,7 +29,12 @@ import {
 
 
 //import { polygonAmoy } from "thirdweb/chains";
-import { polygon } from "thirdweb/chains";
+import {
+  polygon,
+  arbitrum,
+  ethereum,
+  bsc,
+} from "thirdweb/chains";
 
 import {
     privateKeyToAccount,
@@ -133,7 +138,7 @@ export async function POST(request: NextRequest) {
     const contractUSDT = getContract(
       {
         client: client,
-        chain: polygon,
+        chain: bsc,
         address: tokenContractAddressKCT,
       }
     );
@@ -148,7 +153,7 @@ export async function POST(request: NextRequest) {
     });
 
     const wallet = smartWallet({
-      chain: polygon,
+      chain: bsc,
       sponsorGas: true,
       ///factoryAddress: DEFAULT_ACCOUNT_FACTORY_V0_7, // 0.7 factory address
 
