@@ -40,11 +40,11 @@ export async function insertOne(data: any) {
     // if toAddress is user wallet address, then insert into userTransfers collection
 
 
-    const collectionUsers = client.db('vienna').collection('users');
+    const collectionUsers = client.db('damoa').collection('users');
 
-    const collectionUserTransfers = client.db('vienna').collection('userTransfers');
+    const collectionUserTransfers = client.db('damoa').collection('userTransfers');
 
-    const collection = client.db('vienna').collection('transfers');
+    const collection = client.db('damoa').collection('transfers');
 
 
     
@@ -129,7 +129,7 @@ export async function insertOne(data: any) {
 
 
 
-            const collectionTelegramMessages = client.db('vienna').collection('telegramMessages');
+            const collectionTelegramMessages = client.db('damoa').collection('telegramMessages');
 
             await collectionTelegramMessages.insertOne(
             {
@@ -166,7 +166,7 @@ export async function getTransferByWalletAddress(data: any) {
 
     const client = await clientPromise;
 
-    const collectionUsers = client.db('vienna').collection('users');
+    const collectionUsers = client.db('damoa').collection('users');
 
     
     const user = await collectionUsers.findOne(
@@ -183,7 +183,7 @@ export async function getTransferByWalletAddress(data: any) {
     // timestamp desc
     
 
-    const collectionUserTransfers = client.db('vienna').collection('userTransfers');
+    const collectionUserTransfers = client.db('damoa').collection('userTransfers');
 
     const userTransfers = await collectionUserTransfers
     .find({ "user.walletAddress": data.walletAddress })

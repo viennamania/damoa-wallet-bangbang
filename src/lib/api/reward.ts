@@ -27,7 +27,7 @@ import clientPromise from '../mongodb';
 
 // daily check for insertReferralRewards
 /*
-  const collectionDay = client.db('vienna').collection('referral_rewards_day');
+  const collectionDay = client.db('damoa').collection('referral_rewards_day');
 
   // check duplicat date day and masterWalletAddress
 
@@ -59,7 +59,7 @@ export async function checkReferralRewardsDay(data: any) {
 
   const client = await clientPromise;
 
-  const collectionDay = client.db('vienna').collection('referral_rewards_day');
+  const collectionDay = client.db('damoa').collection('referral_rewards_day');
 
   const checkDate = await collectionDay.findOne<any>(
     {
@@ -105,12 +105,12 @@ export async function insertReferralRewards(data: any) {
 
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('referral_rewards');
+  const collection = client.db('damoa').collection('referral_rewards');
 
 
   // collection for check duplicat date day
 
-  const collectionDay = client.db('vienna').collection('referral_rewards_day');
+  const collectionDay = client.db('damoa').collection('referral_rewards_day');
 
   // check duplicat date day and masterWalletAddress
 
@@ -245,7 +245,7 @@ export async function getRewards(
   //console.log("getRewards", limit, page, walletAddress, contractAddress);
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('referral_rewards');
+  const collection = client.db('damoa').collection('referral_rewards');
 
   // get all rewards for walletAddress, contractAddress, tokenId
   const rewards = await collection.find(
@@ -277,7 +277,7 @@ export async function getAgentRewards(
 
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('referral_rewards');
+  const collection = client.db('damoa').collection('referral_rewards');
 
   // get all rewards for walletAddress, contractAddress, tokenId
   const rewards = await collection.find(
@@ -316,7 +316,7 @@ export async function getCenterRewards(
   //console.log("getCenterRewards", limit, page, walletAddress, contractAddress, tokenId);
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('referral_rewards');
+  const collection = client.db('damoa').collection('referral_rewards');
 
   // get all rewards for walletAddress, contractAddress, tokenId
   const rewards = await collection.find(

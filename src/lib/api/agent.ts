@@ -62,7 +62,7 @@ export async function insertOne(data: any) {
 
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
 
   try {
@@ -178,7 +178,7 @@ export async function getAllAgents({
 }) {
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
 
   if (!marketingCenter) {
@@ -271,7 +271,7 @@ export async function getAllApplicationsForCenter({
 }) {
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.find(
     {
@@ -325,7 +325,7 @@ export async function getSummaryApplicationsForCenter({
 }) {
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.aggregate([
     {
@@ -377,7 +377,7 @@ export async function getAllApplicationsForMarketingCenter({
 }) {
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.find(
     {
@@ -431,7 +431,7 @@ export async function getSummaryApplicationsForMarketingCenter({
 }) {
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.aggregate([
     {
@@ -489,7 +489,7 @@ export async function getAgentCenterSummary(
 ) {
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.aggregate([
     {
@@ -537,7 +537,7 @@ export async function getAgentCenterSummary(
 export async function getAllAgentsForAILabs({ page = 1, limit = 100 }) {
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   try {
 
@@ -647,7 +647,7 @@ export async function getAllAgentsForAILabs({ page = 1, limit = 100 }) {
 export async function getAllAgentsForLive({ page = 1, limit = 100 }) {
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   try {
 
@@ -764,7 +764,7 @@ export async function getMyReferAgents(
 
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
 
   // convert agentBotNumber to Int32
@@ -832,7 +832,7 @@ export async function getOneByApplicationId(applicationId: number) {
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.findOne({ id: applicationId });
 
@@ -883,7 +883,7 @@ export async function getOneByWalletAddress(walletAddress: string) {
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.findOne({ walletAddress: walletAddress });
 
@@ -933,7 +933,7 @@ export async function getOneByOkxUid(okxUid: string) {
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.findOne({ okxUid: okxUid });
 
@@ -969,7 +969,7 @@ export async function updateAssetValuation(
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.updateOne(
     { id: applicationId },
@@ -1014,7 +1014,7 @@ export async function updateAccountConfig(
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.updateOne(
     { id: applicationId },
@@ -1059,7 +1059,7 @@ export async function updateAssetBalance(
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.updateOne(
     { id: applicationId },
@@ -1104,7 +1104,7 @@ export async function updateTradingAccountBalance(
 
   const client = await clientPromise;
 
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
 
   // get application
@@ -1134,7 +1134,7 @@ export async function updateTradingAccountBalance(
 
   // insert tradingAccountBalance to collection tradingAccountBalanceHistory
 
-  const collectionTradingAccountBalanceHistory = client.db('vienna').collection('tradingAccountBalanceHistory');
+  const collectionTradingAccountBalanceHistory = client.db('damoa').collection('tradingAccountBalanceHistory');
 
 
   const agentReferal = application.agentBot + '_' + application.agentBotNumber;
@@ -1175,7 +1175,7 @@ export async function setSumOfTradingAccountBalanceHistory(
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('tradingAccountBalanceSumHistory');
+  const collection = client.db('damoa').collection('tradingAccountBalanceSumHistory');
 
   const result = await collection.insertOne(
     {
@@ -1211,7 +1211,7 @@ export async function setSumOfTradingAccountBalanceHistoryByMarketingCenter(
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('tradingAccountBalanceSumHistoryForMarketingCenter');
+  const collection = client.db('damoa').collection('tradingAccountBalanceSumHistoryForMarketingCenter');
 
   const result = await collection.insertOne(
     {
@@ -1259,7 +1259,7 @@ export async function updatePositionList(
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.updateOne(
     { id: applicationId },
@@ -1315,7 +1315,7 @@ export async function updateAgentBotNft(
 
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.updateOne(
     { id: applicationId },
@@ -1356,7 +1356,7 @@ export async function updateHtxUid(
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.updateOne(
     { id: applicationId },
@@ -1399,7 +1399,7 @@ export async function updateOkxUid(
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.updateOne(
     { id: applicationId },
@@ -1441,7 +1441,7 @@ export async function updateApplicationStartTrading(
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.updateOne(
     { id: applicationId },
@@ -1497,7 +1497,7 @@ export async function updateApplicationMasterBotInfo(
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.updateOne(
     { id: applicationId },
@@ -1579,7 +1579,7 @@ export async function getStatisticsDaily(
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('tradingAccountBalanceHistory');
+    const collection = client.db('damoa').collection('tradingAccountBalanceHistory');
 
     // join with agents collection (agents.id = tradingAccountBalanceHistory.applicationId)
     // match agents.center = center
@@ -1718,10 +1718,10 @@ export async function updateAccountAffiliateInvitee(
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   // insert affiliateInvitee to collection affiliateInviteeHistory
-  const collectionAffiliateInviteeHistory = client.db('vienna').collection('affiliateInviteeHistory');
+  const collectionAffiliateInviteeHistory = client.db('damoa').collection('affiliateInviteeHistory');
   await collectionAffiliateInviteeHistory.insertOne(
     {
       applicationId: applicationId,
@@ -1778,7 +1778,7 @@ export async function setSettlementClaim(
   const client = await clientPromise;
 
 
-  const collectionSettlementClaimHistory = client.db('vienna').collection('settlementClaimHistory');
+  const collectionSettlementClaimHistory = client.db('damoa').collection('settlementClaimHistory');
   const result = await collectionSettlementClaimHistory.insertOne(
     {
       applicationId: applicationId,
@@ -1791,7 +1791,7 @@ export async function setSettlementClaim(
   // climedTradingVolume = climedTradingVolume + settlementTradingVolume
   // if claimedTradingVolume is empty, climedTradingVolume = settlementTradingVolume
 
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const settlementTradingVolume = settlementClaim.settlementTradingVolume;
 
@@ -1885,7 +1885,7 @@ export async function getSettlemeHistoryByWalletAddress(
 
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('settlementClaimHistory');
+  const collection = client.db('damoa').collection('settlementClaimHistory');
 
   if (roleType === "master") {
     const result = await collection.aggregate([
@@ -2010,7 +2010,7 @@ export async function getStatisticsDailyTradingVolume() {
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('settlementClaimHistory');
+    const collection = client.db('damoa').collection('settlementClaimHistory');
 
     const result = await collection.aggregate([
 
@@ -2166,7 +2166,7 @@ export async function getStatisticsDailyTradingAccountBalance() {
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('tradingAccountBalanceSumHistory');
+    const collection = client.db('damoa').collection('tradingAccountBalanceSumHistory');
 
     const result = await collection.aggregate([
 
@@ -2229,7 +2229,7 @@ export async function getStatisticsDailyTradingVolumeByMasterWalletAddress(
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('settlementClaimHistory');
+    const collection = client.db('damoa').collection('settlementClaimHistory');
 
     // match settlementClaim.masterWalletAddress == masterWalletAddress
 
@@ -2312,7 +2312,7 @@ export async function getStatisticsDailyTradingAccountBalanceByApplicationId(
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('tradingAccountBalanceHistory');
+    const collection = client.db('damoa').collection('tradingAccountBalanceHistory');
 
     const result = await collection.aggregate([
 
@@ -2370,7 +2370,7 @@ export async function getStatisticsDailyTradingVolumeByAgentWalletAddress(
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('settlementClaimHistory');
+    const collection = client.db('damoa').collection('settlementClaimHistory');
 
     const result = await collection.aggregate([
 
@@ -2472,7 +2472,7 @@ export async function getStatisticsDailyTradingAccountBalanceByAgentWalletAddres
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('tradingAccountBalanceSumHistory');
+    const collection = client.db('damoa').collection('tradingAccountBalanceSumHistory');
 
     const result = await collection.aggregate([
 
@@ -2537,7 +2537,7 @@ export async function getStatisticsDailyTradingVolumeByMarketingCenter(
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('settlementClaimHistory');
+    const collection = client.db('damoa').collection('settlementClaimHistory');
 
     const result = await collection.aggregate([
 
@@ -2669,7 +2669,7 @@ export async function getStatisticsDailyTradingAccountBalanceByMarketingCenter(
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('tradingAccountBalanceSumHistoryForMarketingCenter');
+    const collection = client.db('damoa').collection('tradingAccountBalanceSumHistoryForMarketingCenter');
 
     const result = await collection.aggregate([
       {
@@ -2733,7 +2733,7 @@ export async function getStatisticsHourlyTradingVolumeByMarketingCenter(
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('settlementClaimHistory');
+    const collection = client.db('damoa').collection('settlementClaimHistory');
 
     const result = await collection.aggregate([
       {
@@ -2803,7 +2803,7 @@ export async function getStatisticsHourlyTradingAccountBalanceByMarketingCenter(
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('tradingAccountBalanceSumHistoryForMarketingCenter');
+    const collection = client.db('damoa').collection('tradingAccountBalanceSumHistoryForMarketingCenter');
 
     const result = await collection.aggregate([
       {
@@ -2863,7 +2863,7 @@ export async function getStatisticsHourlyTradingVolume() {
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('settlementClaimHistory');
+    const collection = client.db('damoa').collection('settlementClaimHistory');
 
     const result = await collection.aggregate([
 
@@ -2922,7 +2922,7 @@ export async function getStatisticsHourlyTradingAccountBalance() {
 
     const client = await clientPromise;
 
-    const collection = client.db('vienna').collection('tradingAccountBalanceSumHistory');
+    const collection = client.db('damoa').collection('tradingAccountBalanceSumHistory');
 
     const result = await collection.aggregate([
       {
@@ -2972,7 +2972,7 @@ export async function getAllApplicationsPublicData ({
 }) {
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
 
   try {
@@ -3055,7 +3055,7 @@ export async function setClaimedTradingVolumeToZero (
   }
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('agents');
+  const collection = client.db('damoa').collection('agents');
 
   const result = await collection.updateOne(
     { id: applicationId },
