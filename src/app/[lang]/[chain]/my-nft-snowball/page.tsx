@@ -1456,7 +1456,7 @@ function AgentPage(
                                 rounded-lg">
 
                                 {/*
-                                ‘Snow Bot 300’은 해당 봇을 구매한 사용자들에게 특별한 혜택을 제공하는 스페셜 멤버십 NFT입니다. 구매와 동시에 ‘Snowball 프로젝트’의 멤버가 되며, 이 Bot을 기반으로 다양한 보상과 혜택을 누릴 수 있습니다.
+                                ‘Snow Bot 300’은 해당 봇을 구매한 사용자들에게 특별한 혜택을 제공하는 스페셜 멤버십 NFT입니다. 구매와 동시에 ‘Wallet 프로젝트’의 멤버가 되며, 이 Bot을 기반으로 다양한 보상과 혜택을 누릴 수 있습니다.
                                 */}
 
                                 <div className="w-full flex flex-row gap-2 items-center justify-start">
@@ -1464,20 +1464,20 @@ function AgentPage(
                                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                                     <span className="text-sm text-zinc-800 font-semibold">
                                         {`
-                                            SNOW BOT ${snowbot}은 해당 봇을 구매한 사용자들에게 특별한 혜택을 제공하는 스페셜 멤버십 NFT입니다. 구매와 동시에 ‘Snowball 프로젝트’의 멤버가 되며, 이 Bot을 기반으로 다양한 보상과 혜택을 누릴 수 있습니다.
+                                            SNOW BOT ${snowbot}은 해당 봇을 구매한 사용자들에게 특별한 혜택을 제공하는 스페셜 멤버십 NFT입니다. 구매와 동시에 ‘Wallet 프로젝트’의 멤버가 되며, 이 Bot을 기반으로 다양한 보상과 혜택을 누릴 수 있습니다.
                                         `}
                                     </span>
                                 </div>
 
                                 {/*
-                                ‘Snow Bot 300’을 구매하면 해당 Bot의 정책에 따른 멤버십 리워드를 획득할 수 있습니다. 획득한 리워드는 외부 지갑으로 자유롭게 출금하거나 ‘Snowball 프로젝트’와 함께하는 다양한 제휴사에서 사용할 수 있습니다. 지금 바로 Snow Bot으로 Snowball을 굴려보세요!
+                                ‘Snow Bot 300’을 구매하면 해당 Bot의 정책에 따른 멤버십 리워드를 획득할 수 있습니다. 획득한 리워드는 외부 지갑으로 자유롭게 출금하거나 ‘Wallet 프로젝트’와 함께하는 다양한 제휴사에서 사용할 수 있습니다. 지금 바로 Snow Bot으로 Wallet을 굴려보세요!
                                 */}
                                 <div className="w-full flex flex-row gap-2 items-center justify-start">
                                     {/* dot */}
                                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                                     <span className="text-sm text-zinc-800 font-semibold">
                                         {`
-                                            SNOW BOT ${snowbot}을 구매하면 해당 Bot의 정책에 따른 멤버십 리워드를 획득할 수 있습니다. 획득한 리워드는 외부 지갑으로 자유롭게 출금하거나 ‘Snowball 프로젝트’와 함께하는 다양한 제휴사에서 사용할 수 있습니다. 지금 바로 Snow Bot으로 Snowball을 굴려보세요!
+                                            SNOW BOT ${snowbot}을 구매하면 해당 Bot의 정책에 따른 멤버십 리워드를 획득할 수 있습니다. 획득한 리워드는 외부 지갑으로 자유롭게 출금하거나 ‘Wallet 프로젝트’와 함께하는 다양한 제휴사에서 사용할 수 있습니다. 지금 바로 Snow Bot으로 Wallet을 굴려보세요!
                                         `}
                                     </span>
                                 </div>

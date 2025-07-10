@@ -48,6 +48,7 @@ import {
   polygon,
   arbitrum,
   ethereum,
+  bsc,
 } from "thirdweb/chains";
 
 
@@ -221,7 +222,7 @@ function IndexPage(
     // the chain the contract is deployed on
     
     
-    chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+    chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
   
   
   
@@ -242,7 +243,7 @@ function IndexPage(
     // the client you have created via `createThirdwebClient()`
     client,
     // the chain the contract is deployed on
-    chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+    chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
     // the contract's address
     address: contractAddressKCT,
   });
@@ -253,7 +254,7 @@ function IndexPage(
   /*
   const contractErc1155 = getContract({
     client,
-    chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+    chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
     address: erc1155ContractAddress,
   });
   */
@@ -918,7 +919,7 @@ function IndexPage(
           /*
           const contract = getContract({
             client,
-            chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
             address: params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
           });
           */
@@ -1275,9 +1276,6 @@ function IndexPage(
 
         </div>
 
-
-        {/* 눈덩이처럼 불어나는 나의 자산 */}
-        {/* SNOWBOLL WALLET */}
         {!address && (
           <div className="mt-5 w-full flex flex-col justify-center items-center gap-2 mb-5">
               
@@ -1289,7 +1287,7 @@ function IndexPage(
                 w-full flex flex-col justify-center items-center gap-2 mb-5">
                 <Image
                   src="/logo.png"
-                  alt="Snowball"
+                  alt="Wallet"
                   width={200}
                   height={200}
                   className="rounded-lg w-32 h-32 xl:w-40 xl:h-40"
@@ -2115,13 +2113,13 @@ function Header(
         <div className="flex flex-row gap-2 items-center">
           <Image
             src="/logo.png"
-            alt="Snowball"
+            alt="Wallet"
             width={35}
             height={35}
             className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
           />
           <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-            똑똑한코인
+            M포인트
           </span>
         </div>
 
@@ -2207,7 +2205,7 @@ function Header(
 
       
       <h1 className="text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-yellow-500">
-        똑똑한코인 Wallet
+        M포인트 Wallet
         <span className="text-zinc-300 inline-block mx-1"> + </span>
         <span className="inline-block -skew-x-6 text-green-500 font-bold"> USDT </span>
       </h1>

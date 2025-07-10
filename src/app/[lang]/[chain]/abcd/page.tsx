@@ -1047,7 +1047,7 @@ export default function AIPage({ params }: any) {
             if (item.center === 'ppump') {
                 market = 'PPUMP';
             } else if (item.center === 'owin') {
-                market = '똑똑한코인';
+                market = 'M포인트';
             } else if (item.center === 'exms') {
                 market = 'EXMS';
             }
@@ -1056,13 +1056,13 @@ export default function AIPage({ params }: any) {
             let marketingCenter = "";
 
             // if slice(0, 5) = "ppump" => "PPUMP"
-            // if slice(0, 4) = "owin" => "똑똑한코인"
+            // if slice(0, 4) = "owin" => "M포인트"
             // if slice(0, 4) = "exms" => "EXMS"
 
             if (item.center?.slice(0, 5) === "ppump") {
                 marketingCenter = "PPUMP";
             } else if (item.center?.slice(0, 4) === "owin") {
-                marketingCenter = "똑똑한코인";
+                marketingCenter = "M포인트";
             } else if (item.center?.slice(0, 4) === "exms") {
                 marketingCenter = "EXMS";
             }
@@ -1791,7 +1791,7 @@ export default function AIPage({ params }: any) {
                                             handleMarketingCenter("owin");
                                         }}
                                     />
-                                    <label htmlFor="owin">똑똑한코인</label>
+                                    <label htmlFor="owin">M포인트</label>
                                 </div>
                                 <div className='flex flex-row items-center gap-2'>
                                     <input

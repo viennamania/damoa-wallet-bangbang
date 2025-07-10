@@ -30,6 +30,7 @@ import {
     polygon,
     arbitrum,
     ethereum,
+    bsc,
 } from "thirdweb/chains";
 
 import {
@@ -250,7 +251,7 @@ export default function SendUsdt({ params }: any) {
       // the chain the contract is deployed on
       
       
-      chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+      chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
     
     
     
@@ -268,7 +269,7 @@ export default function SendUsdt({ params }: any) {
       // the client you have created via `createThirdwebClient()`
       client,
       // the chain the contract is deployed on
-      chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+      chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
       // the contract's address
       address: contractAddressKCT,
       // OPTIONAL: the contract's abi
@@ -421,7 +422,7 @@ export default function SendUsdt({ params }: any) {
 
         const contractUSDT = getContract({
           client,
-          chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+          chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
           address: contractAddress,
         });
 
@@ -437,7 +438,7 @@ export default function SendUsdt({ params }: any) {
 
         const contractKCT = getContract({
           client,
-          chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+          chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
           address: contractAddressKCT,
         });
 
@@ -499,7 +500,7 @@ export default function SendUsdt({ params }: any) {
         
         const contract = getContract({
           client,
-          chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+          chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
           address: contractAddressKCT,
         });
         const result = await balanceOf({
@@ -511,7 +512,7 @@ export default function SendUsdt({ params }: any) {
       } else if (token === "KCT") {
         const contract = getContract({
           client,
-          chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+          chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
           address: contractAddress,
         });
         const result = await balanceOf({
@@ -793,7 +794,7 @@ export default function SendUsdt({ params }: any) {
         if (String(token).toLowerCase() === "usdt") {
           const contractUSDT = getContract({
             client,
-            chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
             address: contractAddress,
           });
 
@@ -808,7 +809,7 @@ export default function SendUsdt({ params }: any) {
         } else if (String(token).toLowerCase() === "kct") {
           const contractKCT = getContract({
             client,
-            chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
             address: contractAddressKCT,
           });
 
@@ -877,7 +878,7 @@ export default function SendUsdt({ params }: any) {
 
             const contractUSDT = getContract({
               client,
-              chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+              chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
               address: contractAddress,
             });
 
@@ -891,7 +892,7 @@ export default function SendUsdt({ params }: any) {
 
             const contractKCT = getContract({
               client,
-              chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+              chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
               address: contractAddressKCT,
             });
 
@@ -1011,13 +1012,13 @@ export default function SendUsdt({ params }: any) {
 
       const contractUsdt = getContract({
         client,
-        chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+        chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
         address: contractAddress,
       });
 
       const contractKCT = getContract({
         client,
-        chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+        chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
         address: contractAddressKCT,
       });
 
@@ -1095,7 +1096,7 @@ export default function SendUsdt({ params }: any) {
       if (token === "USDT") {
         const contractUsdt = getContract({
           client,
-          chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+          chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
           address: contractAddress,
         });
 
@@ -1137,7 +1138,7 @@ export default function SendUsdt({ params }: any) {
           if (token === "USDT") {
             const contractKCT = getContract({
               client,
-              chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+              chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
               address: contractAddressKCT,
             });
             const KCTBalance = await balanceOf({
@@ -1148,7 +1149,7 @@ export default function SendUsdt({ params }: any) {
           } else if (token === "KCT") {
             const contractUsdt = getContract({
               client,
-              chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+              chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
               address: contractAddress,
             });
             const usdtBalance = await balanceOf({
@@ -1174,7 +1175,7 @@ export default function SendUsdt({ params }: any) {
       } else if (token === "KCT") {
         const contractKCT = getContract({
           client,
-          chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+          chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
           address: contractAddressKCT,
         });
 
@@ -1213,7 +1214,7 @@ export default function SendUsdt({ params }: any) {
           // refresh swap pool balance
           const contractUsdt = getContract({
             client,
-            chain: params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
             address: contractAddress,
           });
           const usdtBalance = await balanceOf({
@@ -2656,7 +2657,7 @@ function Header(
                   className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                   />
                   <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                  똑똑한코인
+                  M포인트
                   </span>
               </div>
           </button>

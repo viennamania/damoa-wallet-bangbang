@@ -26,6 +26,8 @@ import {
 import {
   polygon,
   arbitrum,
+  ethereum,
+  bsc,
  } from "thirdweb/chains";
 
 import {

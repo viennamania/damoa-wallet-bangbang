@@ -31,6 +31,8 @@ import {
 import {
   polygon,
   arbitrum,
+  ethereum,
+  bsc,
  } from "thirdweb/chains";
 
 import {
@@ -86,7 +88,7 @@ export const config = {
 // USDT Token (USDT)
 const tokenContractAddressUSDT = '0xc2132D05D31c914a87C6611C10748AEb04B58e8F';
 
-const contractAddressArbitrum = "0x2f2a2543B76A4166549F7aab2e75Bef0aefC5B0f"; // USDT on Arbitrum
+const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // USDT on Arbitrum
 
 
 
@@ -371,7 +373,7 @@ export async function POST(request: NextRequest) {
       try {
   
   
-        const msgBody = `[똑똑한코인] TID[${tradeId}] You received ${amount} USDT from ${nickname}`;
+        const msgBody = `[M포인트] TID[${tradeId}] You received ${amount} USDT from ${nickname}`;
     
         message = await client.messages.create({
           ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",

@@ -797,7 +797,7 @@ function AgentPage(
             // genrate image from api
             // /api/ai/generateImage
 
-            const responseGenerateImage = await fetch("/api/ai/generateImageAgentSnowball", {
+            const responseGenerateImage = await fetch("/api/ai/generateImageAgentWallet", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

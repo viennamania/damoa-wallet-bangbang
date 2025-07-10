@@ -57,11 +57,11 @@ export async function POST(request: NextRequest) {
         let body = '';
 
         if (lang === 'en') {
-          body = `[똑똑한코인] Your OTP code is ${otpCode}`;
+          body = `[M포인트] Your OTP code is ${otpCode}`;
         } else if (lang === 'kr') {
-          body = `[똑똑한코인] 당신의 OTP 코드는 ${otpCode} 입니다`;
+          body = `[M포인트] 당신의 OTP 코드는 ${otpCode} 입니다`;
         } else {
-          body = `[똑똑한코인] Your OTP code is ${otpCode}`;
+          body = `[M포인트] Your OTP code is ${otpCode}`;
         }
 
         message = await client.messages.create({
