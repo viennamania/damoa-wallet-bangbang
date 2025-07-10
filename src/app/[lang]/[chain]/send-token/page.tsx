@@ -821,6 +821,21 @@ export default function SendUsdt({ params }: any) {
               to: recipient.walletAddress,
               amount: amount,
           });
+        } else if (String(token).toLowerCase() === "mpoint") {
+          const contractKCT = getContract({
+            client,
+            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+            address: contractAddressKCT,
+          });
+
+          transaction = transfer({
+              //contract,
+
+              contract: contractKCT,
+
+              to: recipient.walletAddress,
+              amount: amount,
+          });
         }
 
         if (!transaction) {
@@ -889,6 +904,20 @@ export default function SendUsdt({ params }: any) {
 
             setBalance( Number(result) / 10 ** 6 );
           } else if (String(token).toLowerCase() === "kct") {
+
+            const contractKCT = getContract({
+              client,
+              chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+              address: contractAddressKCT,
+            });
+
+            const result = await balanceOf({
+              contract: contractKCT,
+              address: address,
+            });
+
+            setBalance( Number(result) / 10 ** 18 );
+          } else if (String(token).toLowerCase() === "mpoint") {
 
             const contractKCT = getContract({
               client,

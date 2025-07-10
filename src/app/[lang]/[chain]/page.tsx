@@ -1531,7 +1531,7 @@ function IndexPage(
                 {/* KCT logo */}
                 <Image
                   src="/logo-mpoint.png"
-                  alt="KCT"
+                  alt="MPOINT"
                   width={35}
                   height={35}
                   className="rounded-full w-8 h-8 xl:w-10 xl:h-10"
