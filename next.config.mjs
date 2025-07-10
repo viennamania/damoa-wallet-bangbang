@@ -42,7 +42,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/kr/polygon',
+        destination: '/kr/arbitrum',
         permanent: true,
       },
     ]

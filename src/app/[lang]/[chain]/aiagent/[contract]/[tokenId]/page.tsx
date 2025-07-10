@@ -534,7 +534,7 @@ export default function AgentPage({ params }: any) {
                 }}
                 connectModal={{
                   size: "wide", 
-                  titleIcon: "https://damoa-wallet.vercel.app/icon-kcbc.jpeg",                           
+                  titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
                   showThirdwebBranding: false,
 
                 }}

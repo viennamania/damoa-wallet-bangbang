@@ -808,7 +808,7 @@ function IndexPage(
               connectModal={{
                 size: "wide", 
                 //size: "compact",
-                titleIcon: "https://damoa-wallet.vercel.app/icon-kcbc.jpeg",                           
+                titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
                 showThirdwebBranding: false,
               }}
 

@@ -1705,7 +1705,7 @@ export default function SettingsPage({ params }: any) {
                                     }}
                                     connectModal={{
                                         size: "wide", 
-                                        titleIcon: "https://damoa-wallet.vercel.app/icon-kcbc.jpeg",                           
+                                        titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
                                         showThirdwebBranding: false,
                                     }}
                                     locale={"ko_KR"}
@@ -2188,7 +2188,7 @@ function Header(
             >            
                 <div className="flex flex-row gap-2 items-center">
                     <Image
-                    src="/icon-kcbc.jpeg"
+                    src="/logo.png"
                     alt="Circle Logo"
                     width={35}
                     height={35}

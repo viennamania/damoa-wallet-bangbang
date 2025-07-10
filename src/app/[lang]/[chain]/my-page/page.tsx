@@ -1558,7 +1558,7 @@ function AgentPage(
                             connectModal={{
                                 size: "wide", 
                                 //size: "compact",
-                                titleIcon: "https://damoa-wallet.vercel.app/icon-kcbc.jpeg",                           
+                                titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
                                 showThirdwebBranding: false,
                             }}
                 
@@ -2346,7 +2346,7 @@ function AgentPage(
                 <button
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/affiliation-kcbc"
+                      "/" + params.lang + "/" + params.chain + "/affiliation"
                         + "?start=" + start
                     );
                   }}
@@ -2447,7 +2447,7 @@ function Header(
             >            
                 <div className="flex flex-row gap-2 items-center">
                     <Image
-                    src="/icon-kcbc.jpeg"
+                    src="/logo.png"
                     alt="Circle Logo"
                     width={35}
                     height={35}

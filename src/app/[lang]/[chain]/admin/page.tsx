@@ -837,7 +837,7 @@ function HomeContent() {
                     connectModal={{
                         size: "wide", 
                         //size: "compact",
-                        titleIcon: "https://damoa-wallet.vercel.app/icon-kcbc.jpeg",                           
+                        titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
                         showThirdwebBranding: false,
                     }}
         
@@ -1272,7 +1272,7 @@ function HomeContent() {
                                         <Button
                                           onClick={() => {
                                             navigator.clipboard.writeText(
-                                              "https://damoa-wallet.vercel.app/kr/polygon/?start=" + user?.start
+                                              "https://wallet.cryptopay.beauty/kr/polygon/?start=" + user?.start
                                             );
                                             alert(`${user?.start} 복사되었습니다.`);
                                           }}
@@ -1360,10 +1360,10 @@ function HomeContent() {
                                       <Button
                                         onClick={() => {
                                           //(window as any).Telegram.WebApp.openLink(
-                                            "https://damoa-wallet.vercel.app/kr/polygon/admin/" + user?.walletAddress
+                                            "https://wallet.cryptopay.beauty/kr/polygon/admin/" + user?.walletAddress
                                           //);
                                           window.open(
-                                            "https://damoa-wallet.vercel.app/kr/polygon/admin/" + user?.walletAddress
+                                            "https://wallet.cryptopay.beauty/kr/polygon/admin/" + user?.walletAddress
                                           );
                                         }}
                                         className="
@@ -1509,7 +1509,7 @@ function HomeContent() {
                                       <Button
                                         onClick={() => {
                                           navigator.clipboard.writeText(
-                                            "https://damoa-wallet.vercel.app/" + "?start=" + nft.contract.address + "_" + nft.tokenId
+                                            "https://wallet.cryptopay.beauty/" + "?start=" + nft.contract.address + "_" + nft.tokenId
                                           );
                                           alert(`레퍼럴 링크 복사되었습니다.`);
                                         }}

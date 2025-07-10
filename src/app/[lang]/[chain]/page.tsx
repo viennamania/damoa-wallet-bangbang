@@ -1288,7 +1288,7 @@ function IndexPage(
                 mt-16
                 w-full flex flex-col justify-center items-center gap-2 mb-5">
                 <Image
-                  src="/icon-kcbc.jpeg"
+                  src="/logo.png"
                   alt="Snowball"
                   width={200}
                   height={200}
@@ -1353,7 +1353,7 @@ function IndexPage(
               connectModal={{
                 size: "wide", 
                 //size: "compact",
-                titleIcon: "https://damoa-wallet.vercel.app/icon-kcbc.jpeg",                           
+                titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
                 showThirdwebBranding: false,
               }}
 
@@ -2014,7 +2014,7 @@ function IndexPage(
                 <button
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/affiliation-kcbc"
+                      "/" + params.lang + "/" + params.chain + "/affiliation"
                       + "?start=" + start
                     );
                   }}
@@ -2114,7 +2114,7 @@ function Header(
         {/* logo */}
         <div className="flex flex-row gap-2 items-center">
           <Image
-            src="/icon-kcbc.jpeg"
+            src="/logo.png"
             alt="Snowball"
             width={35}
             height={35}

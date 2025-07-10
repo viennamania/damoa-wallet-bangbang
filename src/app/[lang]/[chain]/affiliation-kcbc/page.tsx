@@ -1249,7 +1249,7 @@ function AgentPage(
                             connectModal={{
                                 size: "wide", 
                                 //size: "compact",
-                                titleIcon: "https://damoa-wallet.vercel.app/icon-kcbc.jpeg",                           
+                                titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
                                 showThirdwebBranding: false,
                             }}
                 
@@ -1720,7 +1720,7 @@ function AgentPage(
                                                 <button
                                                     onClick={() => {
                                                         router.push('/' + params.lang + '/' + params.chain +
-                                                            '/affiliation-kcbc/' + nft.contract.address + '/' + nft.tokenId);
+                                                            '/affiliation/' + nft.contract.address + '/' + nft.tokenId);
                                                     }}
                                                     className="p-2 bg-[#3167b4] text-zinc-100 rounded
                                                     hover:bg-blue-600 text-sm"
@@ -1743,7 +1743,7 @@ function AgentPage(
                                                             //'t.me/ppump_orry_bot?start=' + nft.contract.address + '_' + nft.tokenId
 
                                                             //'t.me/' + userCenter + '?start=' + nft.contract.address + '_' + nft.tokenId
-                                                            'https://damoa-wallet.vercel.app/' + '?start=' + nft.contract.address + '_' + nft.tokenId
+                                                            'https://wallet.cryptopay.beauty/' + '?start=' + nft.contract.address + '_' + nft.tokenId
 
                                                             // get my domain
 
@@ -2016,7 +2016,7 @@ function AgentPage(
                     /*
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/affiliation-kcbc"
+                      "/" + params.lang + "/" + params.chain + "/affiliation"
                     );
                   }}
                     */
