@@ -1581,6 +1581,114 @@ function IndexPage(
 
 
 
+
+
+
+
+
+
+        {address && (
+
+
+          <div className="mt-5 w-full flex flex-col gap-0 items-center justify-between">
+
+              <div className="w-full flex flex-row gap-2 items-center justify-start
+                  rounded-t-lg
+                  bg-[#3167b4]
+                  p-2
+              ">
+                  <div className="text-sm md:text-lg text-white">
+                      포인트 구매
+                  </div>
+              </div>
+
+
+ 
+                  <div className="w-full flex flex-col gap-5 items-center justify-between
+                      rounded-b-lg
+                      bg-white p-0
+                  ">
+
+                      {/* 1 USDT = 1340 MKRW */}
+                      <div className="w-full flex flex-row gap-2 items-center justify-between p-5
+                      ">
+                        <div className="w-1/4 flex flex-row gap-2 items-center justify-start">
+                            <Image
+                                src="/logo-mpoint.png"
+                                alt="MKRW"
+                                width={50}
+                                height={50}
+                                className="rounded-lg w-10 h-10 xl:w-12 xl:h-12"
+                            />
+                        </div>
+
+                        <div className="w-3/4 flex flex-col gap-1 items-center justify-center">
+
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <div className="w-1/2 text-sm text-zinc-800">
+                              현재 환율
+                            </div>
+                            <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                              1 USDT = 1340 MKRW
+                            </div>
+                          </div>
+
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            <div className="w-1/2 text-sm text-zinc-800">
+                              최소 구매 금액
+                            </div>
+                            <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                              10 USDT
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+
+
+                      <button
+                          onClick={() => {
+                              // redirect to nft detail page
+                              /*
+                              router.push(
+                                  "/" + params.lang + "/" + params.chain + "/buy-mpoint"
+                              );
+                              */
+                             {/* 준비중입니다. */}
+                              alert("준비중입니다.");
+                          }}
+                          className="w-full
+                            rounded-b-lg
+                            bg-gray-100
+                            p-2
+                            text-sm md:text-lg font-semibold text-zinc-800
+                            hover:bg-gray-200
+                            "
+                      >
+                        포인트 구매하기
+                      </button>
+
+
+                  </div>
+
+          </div>
+
+
+        )}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         {/* nft collection */}
         {/* owned nfts */}
         {address && false && (
