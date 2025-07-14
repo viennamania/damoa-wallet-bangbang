@@ -158,7 +158,7 @@ const contractAddressEthereum = "0xdac17f958d2ee523a2206206994597c13d831ec7"; //
 const contractAddressBsc = "0x55d398326f99059fF775485246999027B3197955"; // USDT on BSC
 
 
-const contractAddressMKRW = "0xEb0a5ea0001Aa9f419BbaF8ceDad265A60f0B10f"; // MKT on BSC
+const contractAddressMKRW = "0xEb0a5ea0001Aa9f419BbaF8ceDad265A60f0B10f"; // MKRW on BSC
 
 
 const erc1155ContractAddress = "0x796f8867E6D474C1d63e4D7ea5f52B48E4bA83D6";
@@ -956,12 +956,6 @@ function IndexPage(
       return () => clearInterval(interval);
 
   } , [address, contractMKRW]);
-
-  //console.log("address", address);
-  //console.log("contractMKRW", contractMKRW);
-
-
-
 
 
 

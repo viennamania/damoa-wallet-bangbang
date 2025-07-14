@@ -95,7 +95,7 @@ const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; //
 const contractAddressEthereum = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT on Ethereum
 const contractAddressBsc = "0x55d398326f99059fF775485246999027B3197955"; // USDT on BSC
 
-const contractAddressKCT = "0xEb0a5ea0001Aa9f419BbaF8ceDad265A60f0B10f"; // KCT on Polygon
+const contractAddressMKRW = "0xEb0a5ea0001Aa9f419BbaF8ceDad265A60f0B10f"; // MKRW on BSC
 
 
 
@@ -298,13 +298,13 @@ export default function SendUsdt({ params }: any) {
 
 
 
-  const contractKCT = getContract({
+  const contractMKRW = getContract({
     // the client you have created via `createThirdwebClient()`
     client,
     // the chain the contract is deployed on
-    chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+    chain: bsc,
     // the contract's address
-    address: contractAddressKCT,
+    address: contractAddressMKRW,
   });
 
 
@@ -466,16 +466,10 @@ export default function SendUsdt({ params }: any) {
             setBalance(0);
           }
 
-        } else if (String(token).toLowerCase() === "kct") {
-
-          const contractKCT = getContract({
-            client,
-            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: contractAddressKCT,
-          });
+        } else if (String(token).toLowerCase() === "mkrw") {
 
           const result = await balanceOf({
-            contract : contractKCT,
+            contract : contractMKRW,
             address: address,
           });
 
@@ -501,7 +495,7 @@ export default function SendUsdt({ params }: any) {
     return () => clearInterval(interval);
 
 
-  } , [address, params.chain, token, contract]);
+  } , [address, params.chain, token, contract, contractMKRW]);
 
 
 
@@ -838,37 +832,17 @@ export default function SendUsdt({ params }: any) {
               amount: amount,
           });
 
-        } else if (String(token).toLowerCase() === "kct") {
-          const contractKCT = getContract({
-            client,
-            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: contractAddressKCT,
-          });
+        } else if (String(token).toLowerCase() === "mkrw") {
 
           transaction = transfer({
               //contract,
 
-              contract: contractKCT,
+              contract: contractMKRW,
 
               to: recipient.walletAddress,
               amount: amount,
           });
-        } else if (String(token).toLowerCase() === "mpoint") {
-          const contractKCT = getContract({
-            client,
-            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: contractAddressKCT,
-          });
-
-          transaction = transfer({
-              //contract,
-
-              contract: contractKCT,
-
-              to: recipient.walletAddress,
-              amount: amount,
-          });
-        }
+        } 
 
         if (!transaction) {
           toast.error("잘못된 토큰입니다.");
@@ -933,30 +907,11 @@ export default function SendUsdt({ params }: any) {
               setBalance( Number(result) / 10 ** 6 );
             }
 
-          } else if (String(token).toLowerCase() === "kct") {
+          } else if (String(token).toLowerCase() === "mkrw") {
 
-            const contractKCT = getContract({
-              client,
-              chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-              address: contractAddressKCT,
-            });
 
             const result = await balanceOf({
-              contract: contractKCT,
-              address: address,
-            });
-
-            setBalance( Number(result) / 10 ** 18 );
-          } else if (String(token).toLowerCase() === "mpoint") {
-
-            const contractKCT = getContract({
-              client,
-              chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-              address: contractAddressKCT,
-            });
-
-            const result = await balanceOf({
-              contract: contractKCT,
+              contract: contractMKRW,
               address: address,
             });
 
@@ -1061,7 +1016,7 @@ export default function SendUsdt({ params }: any) {
 
   // 0xef236138f40fadCac5Af0E01bB51612ad116C91f
   // usdt balance
-  // KCT balance
+  // MKRW balance
   const swapPoolAddress = "0xef236138f40fadCac5Af0E01bB51612ad116C91f";
 
   const [swapPoolUsdtBalance, setSwapPoolUsdtBalance] = useState(0);
@@ -1069,31 +1024,20 @@ export default function SendUsdt({ params }: any) {
   useEffect(() => {
     const getSwapPoolBalance = async () => {
 
-      const contractUsdt = getContract({
-        client,
-        chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-        address: contractAddress,
-      });
-
-      const contractKCT = getContract({
-        client,
-        chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-        address: contractAddressKCT,
-      });
 
       const usdtBalance = await balanceOf({
-        contract: contractUsdt as any,
+        contract: contract,
         address: swapPoolAddress,
       });
 
       setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 6);
 
-      const KCTBalance = await balanceOf({
-        contract: contractKCT as any,
+      const MKRWBalance = await balanceOf({
+        contract: contractMKRW,
         address: swapPoolAddress,
       });
 
-      setSwapPoolKCTBalance(Number(KCTBalance) / 10 ** 18);
+      setSwapPoolKCTBalance(Number(MKRWBalance) / 10 ** 18);
 
     };
 
@@ -1195,27 +1139,18 @@ export default function SendUsdt({ params }: any) {
           // refresh swap pool balance
 
           if (token === "USDT") {
-            const contractKCT = getContract({
-              client,
-              chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-              address: contractAddressKCT,
-            });
-            const KCTBalance = await balanceOf({
-              contract: contractKCT as any,
+            const USDTBalance = await balanceOf({
+              contract: contract,
               address: swapPoolAddress,
             });
-            setSwapPoolKCTBalance(Number(KCTBalance) / 10 ** 18);
-          } else if (token === "KCT") {
-            const contractUsdt = getContract({
-              client,
-              chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-              address: contractAddress,
-            });
+            setSwapPoolKCTBalance(Number(USDTBalance) / 10 ** 18);
+          } else if (token === "MKRW") {
+
             const usdtBalance = await balanceOf({
-              contract: contractUsdt as any,
+              contract: contractMKRW,
               address: swapPoolAddress,
             });
-            setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 6);
+            setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 18);
           }
 
 
@@ -1231,15 +1166,10 @@ export default function SendUsdt({ params }: any) {
           toast.error("스왑 실패");
         }
 
-      } else if (token === "KCT") {
-        const contractKCT = getContract({
-          client,
-          chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-          address: contractAddressKCT,
-        });
+      } else if (token === "MKRW") {
 
         const transaction = transfer({
-          contract: contractKCT as any,
+          contract: contractMKRW,
           to: swapPoolAddress,
           amount: swapAmount,
         });
