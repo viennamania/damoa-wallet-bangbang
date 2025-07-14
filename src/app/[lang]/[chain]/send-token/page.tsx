@@ -243,41 +243,39 @@ export default function SendUsdt({ params }: any) {
   const tokenImage = "/token-" + String(token).toLowerCase() + "-icon.png";
   
 
-  let contract = null;
+  const contract = getContract({
+    // the client you have created via `createThirdwebClient()`
+    client,
+    // the chain the contract is deployed on
+    
+    
+    chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
   
-  if (String(token).toLowerCase() === "usdt") {
-    contract = getContract({
-      // the client you have created via `createThirdwebClient()`
-      client,
-      // the chain the contract is deployed on
-      
-      
-      chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-    
-    
-    
-      // the contract's address
-      ///address: contractAddress,
+  
+  
+    // the contract's address
+    ///address: contractAddress,
 
-      address: params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
+  
+
+    address: params.chain === "bsc" ? contractAddressBsc : params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
 
 
-      // OPTIONAL: the contract's abi
-      //abi: [...],
-    });
-  } else if (String(token).toLowerCase() === "KCT") {
-    contract = getContract({
-      // the client you have created via `createThirdwebClient()`
-      client,
-      // the chain the contract is deployed on
-      chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-      // the contract's address
-      address: contractAddressKCT,
-      // OPTIONAL: the contract's abi
-      //abi: [...],
-    });
-  }
+    // OPTIONAL: the contract's abi
+    //abi: [...],
+  });
 
+
+
+
+  const contractKCT = getContract({
+    // the client you have created via `createThirdwebClient()`
+    client,
+    // the chain the contract is deployed on
+    chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+    // the contract's address
+    address: contractAddressKCT,
+  });
 
 
 
@@ -418,76 +416,67 @@ export default function SendUsdt({ params }: any) {
     // get the balance
     const getBalance = async () => {
 
+      if (!address || !params.chain || !token) return;
   
-      if (String(token).toLowerCase() === "usdt") {
+      try {
+        if (String(token).toLowerCase() === "usdt") {
 
-        const contractUSDT = getContract({
-          client,
-          chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-          address: contractAddress,
-        });
+          const result = await balanceOf({
+            contract : contract,
+            address: address,
+          });
 
-        const result = await balanceOf({
-          contract : contractUSDT,
-          address: address || "",
-        });
+          if (result !== undefined && result !== null) {
+            if (params.chain === "bsc") {
+              setBalance( Number(result) / 10 ** 18 );
+            } else {
+              setBalance( Number(result) / 10 ** 6 );
+            }
+          } else {
+            setBalance(0);
+          }
 
+        } else if (String(token).toLowerCase() === "kct") {
 
-        setBalance( Number(result) / 10 ** 6 );
+          const contractKCT = getContract({
+            client,
+            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+            address: contractAddressKCT,
+          });
 
-      } else if (String(token).toLowerCase() === "kct") {
+          const result = await balanceOf({
+            contract : contractKCT,
+            address: address,
+          });
 
-        const contractKCT = getContract({
-          client,
-          chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-          address: contractAddressKCT,
-        });
-
-        const result = await balanceOf({
-          contract : contractKCT,
-          address: address || "",
-        });
-
-        setBalance( Number(result) / 10 ** 18 );
+          if (result !== undefined && result !== null) {
+            setBalance( Number(result) / 10 ** 18 );
+          } else {
+            setBalance(0);
+          }
+        }
+      } catch (error) {
+        console.error("Error getting balance:", error);
+        setBalance(0);
       }
-
-
-      /*
-      await fetch('/api/user/getBalanceByWalletAddress', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          chain: params.chain,
-          walletAddress: address,
-        }),
-      })
-
-      .then(response => response.json())
-
-      .then(data => {
-          setNativeBalance(data.result?.displayValue);
-      });
-      */
 
     };
 
     if (address && params.chain && token) getBalance();
 
     const interval = setInterval(() => {
-      if (address && contract) getBalance();
+      if (address) getBalance();
     } , 1000);
 
     return () => clearInterval(interval);
 
 
-  } , [address, params.chain, token]);
+  } , [address, params.chain, token, contract]);
 
 
 
 
-
+  /*
   // swap token balance
   const [swapTokenBalance, setSwapTokenBalance] = useState(0);
   useEffect(() => {
@@ -495,33 +484,49 @@ export default function SendUsdt({ params }: any) {
     // get the balance
     const getSwapTokenBalance = async () => {
 
-      ///console.log('getBalance address', address);
+      try {
+        ///console.log('getBalance address', address);
 
-      if (token === "USDT") {
-        
-        const contract = getContract({
-          client,
-          chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-          address: contractAddressKCT,
-        });
-        const result = await balanceOf({
-          contract : contract as any,
-          address: address || "",
-        });
-        if (!result) return;
-        setSwapTokenBalance( Number(result) / 10 ** 18 );
-      } else if (token === "KCT") {
-        const contract = getContract({
-          client,
-          chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-          address: contractAddress,
-        });
-        const result = await balanceOf({
-          contract : contract as any,
-          address: address || "",
-        });
-        if (!result) return;
-        setSwapTokenBalance( Number(result) / 10 ** 6 );
+        if (token === "USDT") {
+          
+          const contract = getContract({
+            client,
+            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+            address: contractAddressKCT,
+          });
+          
+          const result = await balanceOf({
+            contract : contract as any,
+            address: address || "",
+          });
+          
+          if (result !== undefined && result !== null) {
+            setSwapTokenBalance( Number(result) / 10 ** 18 );
+          } else {
+            setSwapTokenBalance(0);
+          }
+          
+        } else if (token === "KCT") {
+          const contract = getContract({
+            client,
+            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+            address: contractAddress,
+          });
+          
+          const result = await balanceOf({
+            contract : contract as any,
+            address: address || "",
+          });
+          
+          if (result !== undefined && result !== null) {
+            setSwapTokenBalance( Number(result) / 10 ** 6 );
+          } else {
+            setSwapTokenBalance(0);
+          }
+        }
+      } catch (error) {
+        console.error("Error getting swap token balance:", error);
+        setSwapTokenBalance(0);
       }
 
     };
@@ -535,7 +540,7 @@ export default function SendUsdt({ params }: any) {
     return () => clearInterval(interval);
 
   } , [address, contract, params.chain, token]);
-
+  */
 
 
 
@@ -1340,33 +1345,46 @@ export default function SendUsdt({ params }: any) {
   return (
 
     <main className="min-h-[100vh] flex flex-col items-center justify-start container max-w-screen-lg mx-auto
-    ">
+      bg-[#E7EDF1] text-gray-800 font-sans antialiased relative overflow-x-hidden
+      "
+    >
 
 
-      {/* go back button */}
-      <div className="p-4 w-full flex justify-start items-center gap-2">
-          <button
-              onClick={() => router.back()}
-              className="flex items-center justify-center bg-gray-200 rounded-full p-2">
-              <Image
-                  src="/icon-back.png"
-                  alt="Back"
-                  width={20}
-                  height={20}
-                  className="rounded-full"
-              />
-          </button>
-          {/* title */}
-          <div className='flex flex-row items-center gap-2'>
+      {/* go back button is left side of the screen */}
+      {/* and title is absolutely horizontal center position */}
 
-              <span className="text-lg font-semibold">
-                {token}
+      <div className="p-2 w-full flex flex-row items-center justify-between bg-white border-b border-gray-300
+      fixed top-0 left-0 z-50">
+        <button
+            onClick={() => router.back()}
+            className="flex flex-row items-center justify-center bg-gray-200 rounded-lg
+            p-2 gap-2 hover:bg-gray-300 transition-colors duration-200"
+        >
+            <Image
+                src="/icon-back.png"
+                alt="Back"
+                width={20}
+                height={20}
+                className="rounded-full"
+            />
+            <div className="text-sm font-semibold text-gray-800">
+              <span className="inline">
+                뒤로가기
               </span>
-          </div>
+            </div>
+        </button>
+
+        <h1 className="text-lg font-semibold text-gray-800">
+          {token} 지갑
+        </h1>
+
       </div>
 
 
-      <div className="p-4 w-full min-h-[100vh] bg-[#E7EDF1]">
+      <div className="
+        mt-20
+        flex flex-col items-center justify-start gap-4
+        p-4 w-full min-h-[100vh] bg-[#E7EDF1]">
 
 
         {!address && (
@@ -1428,7 +1446,7 @@ export default function SendUsdt({ params }: any) {
 
                   {/* 입금 button / 출금 button / 스왑 button*/}
                   {/* radio buttons */}
-                  <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
+                  <div className="w-full flex flex-row gap-2 items-center justify-between">
                     <button
                       onClick={() => {
                         setSelectDeposit(true);
@@ -1718,10 +1736,7 @@ export default function SendUsdt({ params }: any) {
 
 
                 <div className='
-                  w-full  flex flex-col gap-5 border
-                  bg-zinc-800 text-white
-                  p-4 rounded-lg
-
+                  w-full  flex flex-col gap-5 border border-gray-300 rounded-lg p-4 bg-white
                   '>
 
 
@@ -1729,8 +1744,7 @@ export default function SendUsdt({ params }: any) {
                     {/* dot icon */}
                     <div className="w-2 h-2 bg-red-500 rounded-full"></div>
                     <div className="text-sm
-                      text-white
-
+                      text-gray-800
                     ">
                       {Enter_the_amount_and_recipient_address}
                     </div>
@@ -1744,7 +1758,11 @@ export default function SendUsdt({ params }: any) {
                         disabled={sending}
                         type="number"
                         //placeholder="Enter amount"
-                        className=" w-full p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
+                        className=" w-full p-2 border
+                        border-gray-300 rounded text-zinc-800 text-2xl font-semibold"
+
+
+                        placeholder="Enter amount"
                         
                         value={amount}
 
@@ -1893,7 +1911,8 @@ export default function SendUsdt({ params }: any) {
                           disabled={sending}
                           type="text"
                           placeholder={User_wallet_address}
-                          className=" w-full p-2 border border-gray-300 rounded text-white bg-black text-sm xl:text-sm font-semibold"
+                          className=" w-full p-2 border border-gray-300 rounded
+                          text-zinc-800 text-sm font-semibold"
 
                           value={recipient.walletAddress}
 

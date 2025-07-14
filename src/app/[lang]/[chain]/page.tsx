@@ -1517,8 +1517,7 @@ function IndexPage(
                 <button
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=MPOINT"
-                      + "&agent=" + agent + "&tokenId=" + agentNumber
+                      "/" + params.lang + "/" + params.chain + "/send-token/?token=MPOINT"
                     );
                   }}
                   className="w-10 h-10"
@@ -1563,9 +1562,7 @@ function IndexPage(
                 <button
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=USDT"
-                      + "&agent=" + agent + "&tokenId=" + agentNumber
-                      
+                      "/" + params.lang + "/" + params.chain + "/send-token/?token=USDT"
                     );
 
                   }}
