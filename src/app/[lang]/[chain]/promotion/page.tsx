@@ -3468,7 +3468,7 @@ function Header(
             {/* logo */}
             <button
                 onClick={() => {
-                    //router.push('/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId);
+                    //router.push('/ko/polygon/?agent=' + agent + '&tokenId=' + tokenId);
                 }}
             >            
                 <div className="flex flex-row gap-2 items-center">
@@ -3490,7 +3490,7 @@ function Header(
             <button
               onClick={() => {
                 router.push(
-                    "/kr/polygon/promotion?agent=" + agent + "&tokenId=" + tokenId
+                    "/ko/polygon/promotion?agent=" + agent + "&tokenId=" + tokenId
                   );
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -3499,7 +3499,7 @@ function Header(
             </button>
             <button
               onClick={() => {
-                router.push('/kr/polygon/my-page?agent=' + agent + '&tokenId=' + tokenId);
+                router.push('/ko/polygon/my-page?agent=' + agent + '&tokenId=' + tokenId);
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
             >

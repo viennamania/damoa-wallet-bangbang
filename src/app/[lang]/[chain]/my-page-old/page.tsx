@@ -2374,7 +2374,7 @@ export default function SettingsPage({ params }: any) {
                                               <button
                                                   onClick={() => {
                                                       navigator.clipboard.writeText(
-                                                          'https://owinwallet.com/kr/polygon/promotion/?agent=' +
+                                                          'https://owinwallet.com/ko/polygon/promotion/?agent=' +
                                                           nft.contract.address + '&tokenId=' + nft.tokenId
                                                       );
                                                       toast.success('레퍼럴 URL 복사 완료');
@@ -2501,7 +2501,7 @@ export default function SettingsPage({ params }: any) {
                                               <button
                                                   onClick={() => {
                                                       navigator.clipboard.writeText(
-                                                          'https://owinwallet.com/kr/polygon/tbot/?agent=' +
+                                                          'https://owinwallet.com/ko/polygon/tbot/?agent=' +
                                                           erc721ContractAddress + '&tokenId=' + nft.tokenId
                                                       );
                                                       toast.success('레퍼럴 URL 복사 완료');
@@ -2579,7 +2579,7 @@ function Header(
             {/* logo */}
             <button
                 onClick={() => {
-                    //router.push('/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId);
+                    //router.push('/ko/polygon/?agent=' + agent + '&tokenId=' + tokenId);
                 }}
             >            
                 <div className="flex flex-row gap-2 items-center">
@@ -2600,7 +2600,7 @@ function Header(
                 <button
                 onClick={() => {
                     router.push(
-                        "/kr/polygon/promotion?agent=" + agent + "&tokenId=" + tokenId
+                        "/ko/polygon/promotion?agent=" + agent + "&tokenId=" + tokenId
                     );
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -2609,7 +2609,7 @@ function Header(
                 </button>
                 <button
                 onClick={() => {
-                    router.push('/kr/polygon/my-page?agent=' + agent + '&tokenId=' + tokenId);
+                    router.push('/ko/polygon/my-page?agent=' + agent + '&tokenId=' + tokenId);
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
                 >

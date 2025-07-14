@@ -2362,7 +2362,7 @@ export default function AIPage({ params }: any) {
                                                                             <button
                                                                                 onClick={() => {
                                                                                     navigator.clipboard.writeText(
-                                                                                        'https://owinwallet.com/kr/polygon/tbot/?agent=' +
+                                                                                        'https://owinwallet.com/ko/polygon/tbot/?agent=' +
                                                                                         nft.contract.address + '&tokenId=' + nft.tokenId
                                                                                     );
                                                                                     toast.success('레퍼럴 URL 복사 완료');
@@ -2472,7 +2472,7 @@ function Header(
             {/* logo */}
             <button
                 onClick={() => {
-                    router.push('/kr/polygon/agent-center');
+                    router.push('/ko/polygon/agent-center');
                 }}
             >            
                 <div className="flex flex-row gap-2 items-center">
@@ -2494,7 +2494,7 @@ function Header(
                 <button
                 onClick={() => {
                     router.push(
-                        "/kr/polygon/agent-center?agent=" + agent + "&tokenId=" + tokenId
+                        "/ko/polygon/agent-center?agent=" + agent + "&tokenId=" + tokenId
                     );
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -2503,7 +2503,7 @@ function Header(
                 </button>
                 <button
                 onClick={() => {
-                    router.push('/kr/polygon/agent-list?agent=' + agent + "&tokenId=" + tokenId);
+                    router.push('/ko/polygon/agent-list?agent=' + agent + "&tokenId=" + tokenId);
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
                 >

@@ -4031,7 +4031,7 @@ function Header(
             <button
                 onClick={() => {
                     router.push(
-                        '/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
+                        '/ko/polygon/?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
                     );
                 }}
             >            

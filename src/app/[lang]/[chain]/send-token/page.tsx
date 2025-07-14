@@ -2699,7 +2699,7 @@ function Header(
               <button
                 onClick={() => {
                     router.push(
-                        '/kr/polygon/my-nft?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
+                        '/ko/polygon/my-nft?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
                     );
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"

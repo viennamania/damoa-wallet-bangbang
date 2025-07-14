@@ -1965,7 +1965,7 @@ function Header(
             <button
                 onClick={() => {
                     router.push(
-                        '/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
+                        '/ko/polygon/?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
                     );
                 }}
             >            
@@ -1987,7 +1987,7 @@ function Header(
                 <button
                 onClick={() => {
                     router.push(
-                        "/kr/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId + "&center=" + center
+                        "/ko/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId + "&center=" + center
                     );
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -1997,7 +1997,7 @@ function Header(
                 <button
                 onClick={() => {
                     router.push(
-                        '/kr/polygon/profile-settings?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
+                        '/ko/polygon/profile-settings?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
                     );
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"

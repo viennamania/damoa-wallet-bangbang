@@ -1273,7 +1273,7 @@ function HomeContent() {
                                         <Button
                                           onClick={() => {
                                             navigator.clipboard.writeText(
-                                              "https://wallet.cryptopay.beauty/kr/polygon/?start=" + user?.start
+                                              "https://wallet.cryptopay.beauty/ko/polygon/?start=" + user?.start
                                             );
                                             alert(`${user?.start} 복사되었습니다.`);
                                           }}
@@ -1361,10 +1361,10 @@ function HomeContent() {
                                       <Button
                                         onClick={() => {
                                           //(window as any).Telegram.WebApp.openLink(
-                                            "https://wallet.cryptopay.beauty/kr/polygon/admin/" + user?.walletAddress
+                                            "https://wallet.cryptopay.beauty/ko/polygon/admin/" + user?.walletAddress
                                           //);
                                           window.open(
-                                            "https://wallet.cryptopay.beauty/kr/polygon/admin/" + user?.walletAddress
+                                            "https://wallet.cryptopay.beauty/ko/polygon/admin/" + user?.walletAddress
                                           );
                                         }}
                                         className="

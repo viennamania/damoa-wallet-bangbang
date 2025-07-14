@@ -3347,7 +3347,7 @@ const TradeDetail = (
             {/* logo */}
             <button
                 onClick={() => {
-                    router.push('/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId);
+                    router.push('/ko/polygon/?agent=' + agent + '&tokenId=' + tokenId);
                 }}
             >            
                 <div className="flex flex-row gap-2 items-center">
@@ -3392,7 +3392,7 @@ const TradeDetail = (
             <button
               onClick={() => {
                 router.push(
-                    "/kr/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId
+                    "/ko/polygon/tbot?agent=" + agent + "&tokenId=" + tokenId
                   );
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -3401,7 +3401,7 @@ const TradeDetail = (
             </button>
             <button
               onClick={() => {
-                router.push('/kr/polygon/profile-settings?agent=' + agent + '&tokenId=' + tokenId);
+                router.push('/ko/polygon/profile-settings?agent=' + agent + '&tokenId=' + tokenId);
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
             >

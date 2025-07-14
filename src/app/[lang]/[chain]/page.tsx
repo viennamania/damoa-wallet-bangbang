@@ -1129,7 +1129,7 @@ function IndexPage(
         />
         */}
 
-        {!address && (
+        {params.lang && (
           <div className="w-full flex flex-row gap-2 justify-end items-center">
 
 
@@ -1140,7 +1140,7 @@ function IndexPage(
 
 
               className="p-2 text-sm bg-transparent text-zinc-800 rounded"
-
+              value={params.lang}
               onChange={(e) => {
                 const lang = e.target.value;
                 router.push(
@@ -1148,28 +1148,16 @@ function IndexPage(
                 );
               }}
             >
-              <option
-                value="en"
-                selected={params.lang === "en"}
-              >
+              <option value="en">
                 English(US)
               </option>
-              <option
-                value="kr"
-                selected={params.lang === "kr"}
-              >
+              <option value="kr">
                 한국어(KR)
               </option>
-              <option
-                value="zh"
-                selected={params.lang === "zh"}
-              >
+              <option value="zh">
                 中文(ZH)
               </option>
-              <option
-                value="ja"
-                selected={params.lang === "ja"}
-              >
+              <option value="ja">
                 日本語(JP)
               </option>
             </select>
@@ -2175,7 +2163,7 @@ function Header(
 
           <button
             onClick={() => {
-              router.push('/kr/polygon/my-nft/?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center);
+              router.push('/ko/polygon/my-nft/?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center);
             }}
             className="text-gray-600 hover:underline text-xs xl:text-lg"
           >

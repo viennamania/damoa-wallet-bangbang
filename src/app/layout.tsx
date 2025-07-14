@@ -98,14 +98,15 @@ export default function RootLayout({
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>M포인트</title>
-        <meta name="description" content="눈덩이처럼 불어나는 나의 자산" />
+        <meta name="description" content="M포인트는 M포인트를 모으고, 교환하고, 거래하는 플랫폼입니다." />
         <link rel="icon" href="/favicon.ico" />
 
 
 
-
+        {/*
         <link rel="apple-touch-icon" href="/logo-kcbc-114x114.png" />
         <link rel="shortcut icon" href="/logo-kcbc-72x72.png" />
+        */}
 
 
       </head>

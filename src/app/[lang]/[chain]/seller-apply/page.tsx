@@ -1284,7 +1284,7 @@ function Header() {
             <button
               onClick={() => {
                 router.push(
-                    "/kr/polygon/tbot"
+                    "/ko/polygon/tbot"
                 );
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
@@ -1293,7 +1293,7 @@ function Header() {
             </button>
             <button
               onClick={() => {
-                router.push('/kr/polygon/profile-settings');
+                router.push('/ko/polygon/profile-settings');
               }}
               className="text-gray-600 hover:underline text-xs xl:text-lg"
             >

@@ -1,5 +1,5 @@
 const dictionaries: any = {
-    kr: () => import("./dictionaries/kr.json").then((module) => module.default),
+    ko: () => import("./dictionaries/ko.json").then((module) => module.default),
     en: () => import("./dictionaries/en.json").then((module) => module.default),
     ar: () => import("./dictionaries/ar.json").then((module) => module.default),
     de: () => import("./dictionaries/de.json").then((module) => module.default),

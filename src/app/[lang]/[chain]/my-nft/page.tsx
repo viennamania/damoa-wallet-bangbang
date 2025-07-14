@@ -1899,7 +1899,7 @@ export default function SettingsPage({ params }: any) {
                                                             onClick={() => {
 
                                                                 //router.push('/agent/' + nft.contract.address + '/' + nft.tokenId);
-                                                                router.push('/kr/polygon/agent/' + nft.contract.address + '/' + nft.tokenId + '/?center=' + center);
+                                                                router.push('/ko/polygon/agent/' + nft.contract.address + '/' + nft.tokenId + '/?center=' + center);
 
                                                             }}
                                                             className="p-2 bg-blue-500 text-zinc-100 rounded
@@ -2185,7 +2185,7 @@ function Header(
             <button
                 onClick={() => {
                     router.push(
-                        '/kr/polygon/?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
+                        '/ko/polygon/?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
                     );
                 }}
             >            
@@ -2208,7 +2208,7 @@ function Header(
                 <button
                 onClick={() => {
                     router.push(
-                        '/kr/polygon/my-nft?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
+                        '/ko/polygon/my-nft?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
                     );
                 }}
                 className="text-gray-600 hover:underline text-xs xl:text-lg"
