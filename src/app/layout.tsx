@@ -97,8 +97,8 @@ export default function RootLayout({
 
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>M포인트</title>
-        <meta name="description" content="M포인트는 M포인트를 모으고, 교환하고, 거래하는 플랫폼입니다." />
+        <title>MKRW</title>
+        <meta name="description" content="MKRW는 MKRW를 모으고, 교환하고, 거래하는 플랫폼입니다." />
         <link rel="icon" href="/favicon.ico" />
 
 

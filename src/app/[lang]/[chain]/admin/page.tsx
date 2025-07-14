@@ -75,7 +75,7 @@ const wallets = [
 
 const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
 
-const contractAddressKCT = "0xeb9198c8342BcB29A1Fe41d45A6CF6A3Ac568a0E"; // KCT on Polygon
+const contractAddressKCT = "0xEb0a5ea0001Aa9f419BbaF8ceDad265A60f0B10f"; // KCT on Polygon
 
 
 const claimWalletAddress = "0x35C482f619D3072c0fd6891E249f8BeCCB4e2FCb"; // claim wallet address
@@ -1533,7 +1533,7 @@ function HomeContent() {
                   )}
 
 
-                  {/* M포인트 NFT 목록 */}
+                  {/* MKRW NFT 목록 */}
                   {loadingNoahNft ? (
                     <div className="mt-5 flex flex-col items-center justify-center">
                         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-300"></div>
@@ -1542,7 +1542,7 @@ function HomeContent() {
                     
                     <div className="mt-5 w-full flex flex-col gap-2 items-start justify-between">
                         <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                            M포인트 NFT 목록
+                            MKRW NFT 목록
                         </div>
                         <div className="w-full grid grid-cols-8 gap-2 items-start justify-between">
 

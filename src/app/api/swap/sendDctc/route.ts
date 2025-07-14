@@ -79,7 +79,7 @@ import { token } from "thirdweb/extensions/vote";
 
 
 // KCT Token (KCT)
-const tokenContractAddressKCT = '0xeb9198c8342BcB29A1Fe41d45A6CF6A3Ac568a0E';
+const tokenContractAddressKCT = '0xEb0a5ea0001Aa9f419BbaF8ceDad265A60f0B10f';
 
 
 

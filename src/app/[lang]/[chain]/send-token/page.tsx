@@ -95,7 +95,7 @@ const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; //
 const contractAddressEthereum = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT on Ethereum
 const contractAddressBsc = "0x55d398326f99059fF775485246999027B3197955"; // USDT on BSC
 
-const contractAddressKCT = "0xeb9198c8342BcB29A1Fe41d45A6CF6A3Ac568a0E"; // KCT on Polygon
+const contractAddressKCT = "0xEb0a5ea0001Aa9f419BbaF8ceDad265A60f0B10f"; // KCT on Polygon
 
 
 
@@ -119,6 +119,36 @@ import { Router } from 'next/router';
 import path from 'path';
 
 import { TronWeb, utils as TronWebUtils, Trx, TransactionBuilder, Contract, Event, Plugin } from 'tronweb';
+
+
+
+
+
+
+
+/*
+const transactions = await Engine.searchTransactions({
+  client,
+  filters: [
+    {
+      filters: [
+        {
+          field: "from",
+          values: ["0x1234567890123456789012345678901234567890"],
+        },
+        {
+          field: "chainId",
+          values: ["8453"],
+        },
+      ],
+      operation: "AND",
+    },
+  ],
+  pageSize: 100,
+  page: 0,
+});
+console.log(transactions);
+*/
 
 
 
@@ -1332,6 +1362,45 @@ export default function SendUsdt({ params }: any) {
 
 
 
+  // transfer list USDT
+  const [transferListUSDT, setTransferListUSDT] = useState([]);
+  const [loadingTransferListUSDT, setLoadingTransferListUSDT] = useState(false);
+  useEffect(() => {
+    const getTransferListUSDT = async () => {
+      setLoadingTransferListUSDT(true);
+      const response = await fetch('/api/transfer/getAllTransferUSDT', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          walletAddress: address,
+        }),
+      });
+      if (!response.ok) {
+        toast.error("전송 내역을 불러오는 데 실패했습니다.");
+        setLoadingTransferListUSDT(false);
+        return;
+      }
+      const data = await response.json();
+      setTransferListUSDT(data.result.transfers);
+      setLoadingTransferListUSDT(false);
+    };
+    if (address) {
+      getTransferListUSDT();
+    }
+
+    // setInterval to refresh transfer list every 5 seconds
+    const interval = setInterval(() => {
+      if (address) {
+        getTransferListUSDT();
+      }
+    }
+    , 5000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [address]);
 
 
 
@@ -2415,7 +2484,7 @@ export default function SendUsdt({ params }: any) {
                       ">
                         {/*Buy_Description*/}
                         {token === "USDT" ? "스왑할 USDT 수량을 입력하세요."
-                        : "스왑할 MPOINT 수량을 입력하세요."
+                        : "스왑할 MKRW 수량을 입력하세요."
                         }
                       </div>
                     </div>
@@ -2700,7 +2769,7 @@ function Header(
                   className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
                   />
                   <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                  M포인트
+                  MKRW
                   </span>
               </div>
           </button>

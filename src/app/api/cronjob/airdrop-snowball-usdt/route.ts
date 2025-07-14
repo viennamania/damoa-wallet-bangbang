@@ -154,7 +154,7 @@ export async function GET(request: NextRequest) {
       }
     );
   
-    const snowballWalletPrivateKey = process.env.M포인트_REWARD_WALLET_PRIVATE_KEY || "";
+    const snowballWalletPrivateKey = process.env.MKRW_REWARD_WALLET_PRIVATE_KEY || "";
   
  
 

@@ -1012,7 +1012,7 @@ export default function AIPage({ params }: any) {
             if (item.center === 'ppump') {
                 market = 'PPUMP';
             } else if (item.center === 'owin') {
-                market = 'M포인트';
+                market = 'MKRW';
             } else if (item.center === 'exms') {
                 market = 'EXMS';
             }
@@ -1021,13 +1021,13 @@ export default function AIPage({ params }: any) {
             let marketingCenter = "";
 
             // if slice(0, 5) = "ppump" => "PPUMP"
-            // if slice(0, 4) = "owin" => "M포인트"
+            // if slice(0, 4) = "owin" => "MKRW"
             // if slice(0, 4) = "exms" => "EXMS"
 
             if (item.center?.slice(0, 5) === "ppump") {
                 marketingCenter = "PPUMP";
             } else if (item.center?.slice(0, 4) === "owin") {
-                marketingCenter = "M포인트";
+                marketingCenter = "MKRW";
             } else if (item.center?.slice(0, 4) === "exms") {
                 marketingCenter = "EXMS";
             }
@@ -1427,7 +1427,7 @@ export default function AIPage({ params }: any) {
                                             handleMarketingCenter("owin");
                                         }}
                                     />
-                                    <label htmlFor="owin">M포인트</label>
+                                    <label htmlFor="owin">MKRW</label>
                                 </div>
                                 <div className='flex flex-row items-center gap-2'>
                                     <input

@@ -158,7 +158,7 @@ const contractAddressEthereum = "0xdac17f958d2ee523a2206206994597c13d831ec7"; //
 const contractAddressBsc = "0x55d398326f99059fF775485246999027B3197955"; // USDT on BSC
 
 
-const contractAddressKCT = "0xeb9198c8342BcB29A1Fe41d45A6CF6A3Ac568a0E"; // KCT on Polygon
+const contractAddressMKRW = "0xEb0a5ea0001Aa9f419BbaF8ceDad265A60f0B10f"; // MKT on BSC
 
 
 const erc1155ContractAddress = "0x796f8867E6D474C1d63e4D7ea5f52B48E4bA83D6";
@@ -242,13 +242,13 @@ function IndexPage(
 
 
 
-  const contractKCT = getContract({
+  const contractMKRW = getContract({
     // the client you have created via `createThirdwebClient()`
     client,
     // the chain the contract is deployed on
-    chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
+    chain: bsc,
     // the contract's address
-    address: contractAddressKCT,
+    address: contractAddressMKRW,
   });
 
 
@@ -930,35 +930,35 @@ function IndexPage(
 
 
 
-  // KCT balance
-  const [KCTBalance, setKCTBalance] = useState(0);
+  // MKRW balance
+  const [MKRWBalance, setMKRWBalance] = useState(0);
   useEffect(() => {
     
-      const getKCTBalance = async () => {
+      const getMKRWBalance = async () => {
 
         const balance = await balanceOf({
-          contract: contractKCT,
+          contract: contractMKRW,
           address: address,
         });
 
-        setKCTBalance(Number(balance) / 10 ** 18);
+        setMKRWBalance(Number(balance) / 10 ** 18);
 
       };
 
-      address && contractKCT && getKCTBalance();
+      address && contractMKRW && getMKRWBalance();
 
       // timer
       
       const interval = setInterval(() => {
-        address && contractKCT && getKCTBalance();
+        address && contractMKRW && getMKRWBalance();
       }, 10000);
 
       return () => clearInterval(interval);
 
-  } , [address]);
+  } , [address, contractMKRW]);
 
   //console.log("address", address);
-  //console.log("contractKCT", contractKCT);
+  //console.log("contractMKRW", contractMKRW);
 
 
 
@@ -1495,29 +1495,29 @@ function IndexPage(
  
                 <Image
                   src="/logo-mpoint.png"
-                  alt="MPOINT"
+                  alt="MKRW"
                   width={35}
                   height={35}
                   className="rounded-full w-8 h-8 xl:w-10 xl:h-10"
                 />
                 <span className="w-32 text-sm md:text-xl font-bold text-gray-600">
-                  M포인트
+                  포인트
                 </span>
 
                 <div className="w-full text-2xl font-bold text-zinc-800 text-right">
                   {
-                    Number(KCTBalance)
+                    Number(MKRWBalance)
                       .toFixed(0)
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
                 </div>
                 <div className="w-32 text-sm text-gray-800 font-bold text-right">
-                  MPOINT
+                  MKRW
                 </div>
                 <button
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/send-token/?token=MPOINT"
+                      "/" + params.lang + "/" + params.chain + "/send-token/?token=MKRW"
                     );
                   }}
                   className="w-10 h-10"
@@ -1543,7 +1543,7 @@ function IndexPage(
                   className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
                 />
                 <span className="w-32 text-sm md:text-xl font-bold text-gray-600">
-                  Tether
+                  테더
                 </span>
 
 
@@ -2071,7 +2071,7 @@ function Header(
             className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
           />
           <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-            M포인트
+            MKRW
           </span>
         </div>
 
@@ -2157,7 +2157,7 @@ function Header(
 
       
       <h1 className="text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-yellow-500">
-        M포인트 Wallet
+        MKRW Wallet
         <span className="text-zinc-300 inline-block mx-1"> + </span>
         <span className="inline-block -skew-x-6 text-green-500 font-bold"> USDT </span>
       </h1>
