@@ -1451,7 +1451,7 @@ export default function SendUsdt({ params }: any) {
                       onClick={() => {
                         setSelectDeposit(true);
                         setSelectWithdraw(false);
-                        setSelectSwap(false);
+                        //setSelectSwap(false);
                       }}
                       className={`w-full p-2 rounded-lg text-sm font-semibold
 
@@ -1478,7 +1478,7 @@ export default function SendUsdt({ params }: any) {
                       onClick={() => {
                         setSelectDeposit(false);
                         setSelectWithdraw(true);
-                        setSelectSwap(false);
+                        //setSelectSwap(false);
                       }}
                       className={`w-full p-2 rounded-lg text-sm font-semibold
 
@@ -1489,6 +1489,7 @@ export default function SendUsdt({ params }: any) {
                       출금
                     </button>
 
+                    {/*
                     <button
                       onClick={() => {
                         setSelectDeposit(false);
@@ -1503,6 +1504,7 @@ export default function SendUsdt({ params }: any) {
                     >
                       스왑
                     </button>
+                    */}
 
                   </div>
    
@@ -1564,7 +1566,8 @@ export default function SendUsdt({ params }: any) {
 
 
                 <div className="w-full flex flex-col gap-2 items-center justify-center
-                  border border-zinc-400 rounded-md p-2">
+                  border border-gray-300 rounded-lg p-4 bg-white
+                ">
 
                   <div className="text-sm text-gray-800">
                     {My_Wallet_Address}
@@ -1880,9 +1883,6 @@ export default function SendUsdt({ params }: any) {
                           placeholder={User_wallet_address}
                           className=" w-80  xl:w-full p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
                           value={
-                            params.chain === "tron" ?
-                            recipient?.walletAddress
-                            :
                             recipient?.walletAddress
                           }
                           onChange={(e) => {
@@ -2369,9 +2369,9 @@ export default function SendUsdt({ params }: any) {
 
                     <div className="flex flex-row items-center justify-end  gap-2">
                       <span className="text-2xl font-semibold text-gray-800">
-
+                        {/*
                         {Number(swapTokenBalance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
-
+                        */}
                       </span>
                       <span className="text-lg">KCT</span>
                     </div>
@@ -2395,9 +2395,9 @@ export default function SendUsdt({ params }: any) {
 
                     <div className="flex flex-row items-center justify-end  gap-2">
                       <span className="text-2xl font-semibold text-gray-800">
-
+                        {/*
                         {Number(swapTokenBalance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
-
+                        */}
                       </span>
                       <span className="text-lg">USDT</span>
                     </div>
