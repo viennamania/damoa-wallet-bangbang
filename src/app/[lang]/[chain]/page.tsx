@@ -890,43 +890,9 @@ function IndexPage(
     
       const getUsdtBalance = async () => {
 
-        if (tronWalletAddress && params.chain === "tron") {
 
-          const response = await fetch('/api/tron/getUsdtBalance', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              chain: params.chain,
-              tronWalletAddress: tronWalletAddress,
-            }),
-          });
-
-          if (!response) return;
-
-          const data = await response.json();
-
-          setUsdtBalance(data.result?.usdtBalance || 0);
-
-        }
-
-
-
-        if (address
-          && params.chain === "polygon"
-          || params.chain === "arbitrum"
-          || params.chain === "ethereum"
-        ) {
+        if (address) {
           
-          /*
-          const contract = getContract({
-            client,
-            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
-          });
-          */
-
           if (contract) {
   
             const balance = await balanceOf({
@@ -936,12 +902,18 @@ function IndexPage(
 
             console.log("balance==========", balance);
 
-            setUsdtBalance(Number(balance) / 10 ** 6);
+            if (params.chain === "bsc") {
+              setUsdtBalance(Number(balance) / 10 ** 18);
+            } else {
+              setUsdtBalance(Number(balance) / 10 ** 6);
+            }
           }
 
         }
 
-      };
+      }
+
+
 
       address && getUsdtBalance();
 
@@ -953,9 +925,7 @@ function IndexPage(
 
       return () => clearInterval(interval);
       
-
-
-  } , [address, tronWalletAddress, params.chain, contract]);
+  } , [address, tronWalletAddress, contract, params.chain]);
 
 
 
@@ -1483,7 +1453,10 @@ function IndexPage(
                 bg-white p-5 rounded-b-lg
             ">
                 <span className="text-2xl md:text-3xl font-semibold text-zinc-800">
-                    {totoalUsdtBalance.toFixed(2)} USDT
+                    ${
+                      totoalUsdtBalance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }
+                    
                 </span>
 
             </div>
@@ -1527,26 +1500,22 @@ function IndexPage(
                   height={35}
                   className="rounded-full w-8 h-8 xl:w-10 xl:h-10"
                 />
-                <span className="text-sm md:text-xl font-bold text-gray-600">
+                <span className="w-32 text-sm md:text-xl font-bold text-gray-600">
                   M포인트
                 </span>
 
-                <div className="w-full text-sm font-bold text-zinc-800 text-right">
+                <div className="w-full text-2xl font-bold text-zinc-800 text-right">
                   {
                     Number(KCTBalance)
-                      .toFixed(2)
+                      .toFixed(0)
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
                 </div>
-                <p className="w-12 text-sm text-gray-800 font-bold">
+                <div className="w-32 text-sm text-gray-800 font-bold text-right">
                   MPOINT
-                </p>
+                </div>
                 <button
                   onClick={() => {
-                    params.chain === "tron" ?
-                    router.push(
-                      "/" + params.lang + "/" + params.chain + "/send-tron-token/?token=MPOINT"
-                    ) :
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=MPOINT"
                       + "&agent=" + agent + "&tokenId=" + agentNumber
@@ -1574,30 +1543,25 @@ function IndexPage(
                   height={35}
                   className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
                 />
-                <span className="text-sm md:text-xl font-bold text-gray-600">
+                <span className="w-32 text-sm md:text-xl font-bold text-gray-600">
                   Tether
                 </span>
 
 
                   {/* floating point number to fixed 5 and text size small */}
-                <div className="w-full text-sm font-bold text-zinc-800 text-right">
+                <div className="w-full text-2xl font-bold text-zinc-800 text-right">
                   {
                     Number(usdtBalance)
                     .toFixed(2)
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
                 </div>
-                <p className="w-12 text-sm text-gray-800 font-bold">
+                <div className="w-32 text-sm text-gray-800 font-bold text-right">
                   USDT
-                </p>
+                </div>
 
                 <button
                   onClick={() => {
-
-                    params.chain === "tron" ?
-                    router.push(
-                      "/" + params.lang + "/" + params.chain + "/send-tron-token/?token=USDT"
-                    ) :
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/send-token/?wallet=" + wallet + "&token=USDT"
                       + "&agent=" + agent + "&tokenId=" + agentNumber
