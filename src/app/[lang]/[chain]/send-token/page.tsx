@@ -798,20 +798,16 @@ export default function SendUsdt({ params }: any) {
         // Call the extension function to prepare the transaction
 
         if (String(token).toLowerCase() === "usdt") {
-          const contractUSDT = getContract({
-            client,
-            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: contractAddress,
-          });
+
 
           transaction = transfer({
-              //contract,
-
-              contract: contractUSDT,
+ 
+              contract: contract,
 
               to: recipient.walletAddress,
               amount: amount,
           });
+
         } else if (String(token).toLowerCase() === "kct") {
           const contractKCT = getContract({
             client,
@@ -896,19 +892,17 @@ export default function SendUsdt({ params }: any) {
           //console.log(result);
 
           if (String(token).toLowerCase() === "usdt") {
-
-            const contractUSDT = getContract({
-              client,
-              chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-              address: contractAddress,
-            });
-
             const result = await balanceOf({
-              contract: contractUSDT,
+              contract: contract,
               address: address,
             });
 
-            setBalance( Number(result) / 10 ** 6 );
+            if (params.chain === "bsc") {
+              setBalance( Number(result) / 10 ** 18 );
+            } else {
+              setBalance( Number(result) / 10 ** 6 );
+            }
+
           } else if (String(token).toLowerCase() === "kct") {
 
             const contractKCT = getContract({
@@ -1077,8 +1071,8 @@ export default function SendUsdt({ params }: any) {
 
   }, [address, params.chain]);
 
-  console.log("swapPoolUsdtBalance", swapPoolUsdtBalance);
-  console.log("swapPoolKCTBalance", swapPoolKCTBalance);
+  //console.log("swapPoolUsdtBalance", swapPoolUsdtBalance);
+  //console.log("swapPoolKCTBalance", swapPoolKCTBalance);
 
 
 
