@@ -258,7 +258,10 @@ export default function SendUsdt({ params }: any) {
   const searchParams = useSearchParams();
  
 
-  const token = searchParams.get('token');
+  //const token = searchParams.get('token');
+
+  const token = "MKRW"; // hardcoded for now, can be changed later
+
 
   const center = searchParams.get('center');
 
@@ -967,9 +970,9 @@ export default function SendUsdt({ params }: any) {
 
 
 
-  const [selectDeposit, setSelectDeposit] = useState(true);
+  const [selectDeposit, setSelectDeposit] = useState(false);
   const [selectWithdraw, setSelectWithdraw] = useState(false);
-  const [selectSwap, setSelectSwap] = useState(false);
+  const [selectSwap, setSelectSwap] = useState(true);
 
 
 
@@ -1368,7 +1371,7 @@ export default function SendUsdt({ params }: any) {
         </button>
 
         <h1 className="text-lg font-semibold text-gray-800">
-          {token} 지갑
+          {token} 구매
         </h1>
 
       </div>
@@ -1439,7 +1442,11 @@ export default function SendUsdt({ params }: any) {
 
                   {/* 입금 button / 출금 button / 스왑 button*/}
                   {/* radio buttons */}
+
                   <div className="w-full flex flex-row gap-2 items-center justify-between">
+
+                    {/*
+
                     <button
                       onClick={() => {
                         setSelectDeposit(true);
@@ -1453,14 +1460,6 @@ export default function SendUsdt({ params }: any) {
                       `}
                     >
                       <div className='flex flex-col gap-2 items-center justify-start'>
-                        {/*}
-                        <Image
-                          src="/icon-deposit.png"
-                          alt="deposit"
-                          width={20}
-                          height={20}
-                        />
-                        */}
                         <span className='text-sm'>
                           입금
                         </span>
@@ -1481,8 +1480,10 @@ export default function SendUsdt({ params }: any) {
                     >
                       출금
                     </button>
+                    */}
 
-                    {/*
+
+                    
                     <button
                       onClick={() => {
                         setSelectDeposit(false);
@@ -1497,7 +1498,6 @@ export default function SendUsdt({ params }: any) {
                     >
                       스왑
                     </button>
-                    */}
 
                   </div>
    
