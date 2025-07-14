@@ -1151,7 +1151,7 @@ function IndexPage(
               <option value="en">
                 English(US)
               </option>
-              <option value="kr">
+              <option value="ko">
                 한국어(KR)
               </option>
               <option value="zh">
@@ -1515,11 +1515,11 @@ function IndexPage(
 
 
 
-              {/* KCT balance */}
+              {/* M point balance */}
               <div className="w-full flex flex-row gap-2 justify-between items-center p-2
                 border-b border-gray-200
                 ">
-                {/* KCT logo */}
+ 
                 <Image
                   src="/logo-mpoint.png"
                   alt="MPOINT"
@@ -1530,6 +1530,7 @@ function IndexPage(
                 <span className="text-sm md:text-xl font-bold text-gray-600">
                   M포인트
                 </span>
+
                 <div className="w-full text-sm font-bold text-zinc-800 text-right">
                   {
                     Number(KCTBalance)
@@ -1565,7 +1566,6 @@ function IndexPage(
 
               {/* usdt balance */}
               <div className="w-full flex flex-row gap-2 justify-between items-center p-2
-                border-b border-gray-200
                 ">
                 <Image
                   src="/logo-tether.svg"
@@ -2134,8 +2134,8 @@ function Header(
                 English(US)
               </option>
               <option
-                value="kr"
-                selected={params.lang === "kr"}
+                value="ko"
+                selected={params.lang === "ko"}
               >
                 한국어(KR)
               </option>
