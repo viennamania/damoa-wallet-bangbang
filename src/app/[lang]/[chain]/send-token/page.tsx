@@ -1432,6 +1432,44 @@ export default function SendUsdt({ params }: any) {
             <div className="w-full flex flex-col gap-2 items-start">
 
 
+
+              <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
+
+                <div className='flex flex-row gap-2 items-center justify-start'>
+                  <Image
+                    src={tokenImage}
+                    alt="token"
+                    width={35}
+                    height={35}
+                    className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
+                  />
+                  {token?.toLowerCase() === "usdt" ? (
+                    <span className="text-lg font-semibold text-gray-800">
+                      테더
+                    </span>
+                  ) : (
+                    <span className="text-lg font-semibold text-gray-800">
+                      포인트
+                    </span>
+                  )}
+
+                </div>
+
+                <div className="flex flex-row items-center justify-end  gap-2">
+                  <span className="text-2xl font-semibold text-gray-800">
+                    {token?.toLowerCase() === "usdt" ? (
+                      Number(balance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    ) : (
+                      Number(balance).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    )}
+                  </span>
+                  <span className="text-lg">{token}</span>
+                </div>
+
+              </div>
+
+
+
               <div className="w-full flex flex-col xl:flex-row items-start justify-between gap-3">
 
                 <div className="w-full flex flex-col xl:flex-row items-start gap-3">
@@ -1500,18 +1538,6 @@ export default function SendUsdt({ params }: any) {
                     */}
 
                   </div>
-   
-
-
-
-
-
-                    
-
-
-
-
-
 
 
                 </div>
@@ -1530,32 +1556,6 @@ export default function SendUsdt({ params }: any) {
             && (
 
               <div className='mt-5 w-full flex flex-col gap-5'>
-
-
-                <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
-
-                <div className='flex flex-row gap-2 items-center justify-start'>
-                  <Image
-                    src={tokenImage}
-                    alt="token"
-                    width={35}
-                    height={35}
-                    className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                  />
-
-                </div>
-
-                <div className="flex flex-row items-center justify-end  gap-2">
-                  <span className="text-2xl font-semibold text-gray-800">
-
-                    {Number(balance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-
-                  </span>
-                  <span className="text-lg">{token}</span>
-                </div>
-                </div>
-
-
 
 
                 <div className="w-full flex flex-col gap-2 items-center justify-center
@@ -1704,32 +1704,6 @@ export default function SendUsdt({ params }: any) {
             && (
 
               <div className='mt-5 w-full flex flex-col gap-5'>
-
-
-                <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
-                  <div className='flex flex-row gap-2 items-center justify-start'>
-                    <Image
-                      src={tokenImage}
-                      alt="token"
-                      width={35}
-                      height={35}
-                      className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                    />
-
-                  </div>
-
-                  <div className="flex flex-row items-center justify-end  gap-2">
-                    <span className="text-2xl font-semibold text-gray-800">
-
-                      {Number(balance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-
-                    </span>
-                    <span className="text-lg">{token}</span>
-                  </div>
-                </div>
-
- 
-
 
                 <div className='
                   w-full  flex flex-col gap-5 border border-gray-300 rounded-lg p-4 bg-white
