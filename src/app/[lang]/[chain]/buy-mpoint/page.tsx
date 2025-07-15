@@ -1037,6 +1037,7 @@ export default function SendUsdt({ params }: any) {
           if (transactionHash) {
             toast.success("구매 완료");
             setSwapAmount(0); // reset amount
+            setSwapAmountTo(0); // reset swap amount to
           } else {
             toast.error("구매 실패");
           }
@@ -1069,6 +1070,7 @@ export default function SendUsdt({ params }: any) {
           toast.success("구매 완료");
 
           setSwapAmount(0); // reset amount
+          setSwapAmountTo(0); // reset swap amount to
 
           // refresh balance
           // get the balance of USDT and MKRW

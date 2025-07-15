@@ -1076,16 +1076,6 @@ export default function SendUsdt({ params }: any) {
       return;
     }
 
-    if (token === "USDT" && swapAmount > swapPoolKCTBalance) {
-      toast.error("스왑 풀에 KCT 잔액이 부족합니다.");
-      return;
-    }
-
-    if (token === "KCT" && swapAmount > swapPoolUsdtBalance) {
-      toast.error("스왑 풀에 USDT 잔액이 부족합니다.");
-      return;
-    }
-
 
 
     setLoadingSwap(true);
@@ -1244,7 +1234,7 @@ export default function SendUsdt({ params }: any) {
 
 
 
-
+  
   const [transferListKCT, setTransferListKCT] = useState([]);
   const [loadingTransferListKCT, setLoadingTransferListKCT] = useState(false);
   useEffect(() => {
