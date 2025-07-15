@@ -444,6 +444,9 @@ export default function SendUsdt({ params }: any) {
 
 
 
+  const usdtRate = 1360;
+
+
   const [amount, setAmount] = useState(0);
 
 
@@ -1412,7 +1415,15 @@ export default function SendUsdt({ params }: any) {
                             setSwapAmount(e.target.value as any),
 
                             setSwapAmountTo(
-                              Number(e.target.value) / 1000 // 1 MKRW = 1000 USDT
+                              //Number(e.target.value) / 1000 // 1 USDT = 1360 MKRW
+
+                              // floating point 2
+                              Math.floor(
+                                (Number(e.target.value) / usdtRate) * 100
+                              ) / 100
+
+                             // Number(e.target.value) / usdtRate
+                              
                             )
 
                           )}
@@ -1422,14 +1433,14 @@ export default function SendUsdt({ params }: any) {
                       </div>
 
 
-                      {/* 1 USDT = 1000 MKRW */}
+                      
                       <div className='flex flex-row gap-2 items-center justify-start'>
                         {/* dot icon */}
                         <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                         <div className="text-sm
                           text-white
                         ">
-                          1 USDT = 1000 MKRW
+                          1 USDT = { usdtRate } MKRW
                         </div>
                       </div>
 

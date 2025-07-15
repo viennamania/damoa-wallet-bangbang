@@ -558,6 +558,7 @@ function IndexPage(
 
 
 
+  const usdtRate = 1360;
 
  
 
@@ -1415,7 +1416,7 @@ function IndexPage(
 
 
         {/* 총 자산 */}
-        {/* 23,355 USDT */}
+        {/* ₩23,355*/}
         {address && (
 
           <div className="mt-5 w-full flex flex-col gap-0 items-center justify-between">
@@ -1447,9 +1448,11 @@ function IndexPage(
                 bg-white p-5 rounded-b-lg
             ">
                 <span className="text-2xl md:text-3xl font-semibold text-zinc-800">
-                    ${
-                      totoalUsdtBalance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    }
+                    {
+                      Number(totoalUsdtBalance * usdtRate + MKRWBalance)
+                        .toFixed(0)
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }{' '}원
                     
                 </span>
 
@@ -1558,7 +1561,6 @@ function IndexPage(
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/send-token/?token=USDT"
                     );
-
                   }}
                   className="w-10 h-10"
                 >
@@ -1629,7 +1631,7 @@ function IndexPage(
                               현재 환율
                             </div>
                             <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                              1 USDT = 1000 MKRW
+                              1 USDT = { usdtRate } MKRW
                             </div>
                           </div>
 
