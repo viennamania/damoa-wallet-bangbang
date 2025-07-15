@@ -1625,37 +1625,38 @@ function IndexPage(
                         <div className="w-3/4 flex flex-col gap-1 items-center justify-center">
 
                           <div className="w-full flex flex-row gap-2 items-center justify-start">
-                            <div className="w-1/2 text-sm text-zinc-800">
+                            <div className="w-32 text-sm text-zinc-800">
                               현재 환율
                             </div>
                             <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                              1 USDT = 1340 MKRW
+                              1 USDT = 1000 MKRW
                             </div>
                           </div>
 
                           <div className="w-full flex flex-row gap-2 items-center justify-start">
-                            <div className="w-1/2 text-sm text-zinc-800">
+                            <div className="w-32 text-sm text-zinc-800">
                               최소 구매 금액
                             </div>
                             <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                              10 USDT
+                              1 USDT
                             </div>
                           </div>
 
                         </div>
+
                       </div>
 
 
                       <button
                           onClick={() => {
                               // redirect to nft detail page
-                              /*
+                              
                               router.push(
                                   "/" + params.lang + "/" + params.chain + "/buy-mpoint"
                               );
-                              */
+                              
                              {/* 준비중입니다. */}
-                              alert("준비중입니다.");
+                              //alert("준비중입니다.");
                           }}
                           className="w-full
                             rounded-b-lg

@@ -40,8 +40,21 @@ import {
     sendAndConfirmTransaction,
 } from "thirdweb";
 
-import { balanceOf, transfer } from "thirdweb/extensions/erc20";
+import {
+  balanceOf,
+  transfer,
+  allowance,
+  approve,
+  claimTo,
+} from "thirdweb/extensions/erc20";
  
+
+
+
+
+
+
+
 
 
 import {
@@ -933,81 +946,6 @@ export default function SendUsdt({ params }: any) {
 
 
 
-  // usdt balance
-  /*
-  const [usdtBalance, setUsdtBalance] = useState(0);
-  useEffect(() => {
-    
-      const getUsdtBalance = async () => {
-
-
-
-        
-        if (address) {
-          
-
-
-          if (contract) {
-  
-            const balance = await balanceOf({
-              contract: contract,
-              address: address,
-            });
-
-            console.log("balance==========", balance);
-
-            setUsdtBalance(Number(balance) / 10 ** 6);
-          }
-
-        }
-          
-
-
-
-      };
-
-      getUsdtBalance();
-
-  } , [address, params.chain, contract]);
-
-  */
-
-  // 0xef236138f40fadCac5Af0E01bB51612ad116C91f
-  // usdt balance
-  // MKRW balance
-  const swapPoolAddress = "0xef236138f40fadCac5Af0E01bB51612ad116C91f";
-
-  const [swapPoolUsdtBalance, setSwapPoolUsdtBalance] = useState(0);
-  const [swapPoolKCTBalance, setSwapPoolKCTBalance] = useState(0);
-  useEffect(() => {
-    const getSwapPoolBalance = async () => {
-
-
-      const usdtBalance = await balanceOf({
-        contract: contract,
-        address: swapPoolAddress,
-      });
-
-      setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 6);
-
-      const MKRWBalance = await balanceOf({
-        contract: contractMKRW,
-        address: swapPoolAddress,
-      });
-
-      setSwapPoolKCTBalance(Number(MKRWBalance) / 10 ** 18);
-
-    };
-
-    getSwapPoolBalance();
-
-  }, [address, params.chain]);
-
-  //console.log("swapPoolUsdtBalance", swapPoolUsdtBalance);
-  //console.log("swapPoolKCTBalance", swapPoolKCTBalance);
-
-
-
 
   // swap function
   // 스왑할 수량
@@ -1034,15 +972,8 @@ export default function SendUsdt({ params }: any) {
       return;
     }
 
-    if (token === "USDT" && swapAmount > swapPoolKCTBalance) {
-      toast.error("스왑 풀에 KCT 잔액이 부족합니다.");
-      return;
-    }
 
-    if (token === "KCT" && swapAmount > swapPoolUsdtBalance) {
-      toast.error("스왑 풀에 USDT 잔액이 부족합니다.");
-      return;
-    }
+    console.log("swapAmount", swapAmount);
 
 
 
@@ -1050,136 +981,122 @@ export default function SendUsdt({ params }: any) {
 
     try {
 
-      // if swap USDT to KCT
-      // swapAmount is USDT amount
-      // send swapAmount USDT to swap pool address
 
-      if (token === "USDT") {
-        const contractUsdt = getContract({
-          client,
-          chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-          address: contractAddress,
-        });
+      // page.tsx:1024 error TransactionError: Error - BEP20: transfer amount exceeds allowance
+      // check allowance
+           // // ERC20: transfer amount exceeds allowance
 
-        const transaction = transfer({
-          contract: contractUsdt as any,
-          to: swapPoolAddress,
-          amount: swapAmount,
-        });
+      const result = await allowance({
+          contract: contract,
+          owner: address as string,
+          spender: contractAddressBsc,
+      });
 
-        const { transactionHash } = await sendTransaction({
-          account: activeAccount as any,
-          transaction,
-        });
+      //console.log("result", result);
+      const allowanceAmount = Number(result) / 10 ** 18;
+      console.log("allowanceAmount", allowanceAmount);
 
-        if (transactionHash) {
-          //toast.success(USDT_sent_successfully);
 
-          // api call to send swapAmount KCT to user wallet address
 
-          await fetch('/api/swap/sendKCT', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              lang: params.lang,
-              chain: params.chain,
-              walletAddress: address,
-              amount: swapAmountTo,
-              toWalletAddress: address,
-            }),
+      if (allowanceAmount < swapAmountTo) {
+          
+          //throw new Error('USDT 토큰을 먼저 채굴 NFT 발행 계약에 승인해주세요');
+
+          // approve
+
+          const transactionApprove = approve({
+              contract: contract,
+              spender: contractAddressBsc,
+              amount: BigInt(swapAmountTo * 10 ** 18).toString(),
           });
 
+          
+          const transactionResultApprove = await sendAndConfirmTransaction({
+              account: activeAccount as any,
+              transaction: transactionApprove,
+          });
 
-          toast.success("스왑 완료");
+          if (!transactionResultApprove) {
+              throw new Error('USDT 토큰을 먼저 채굴 NFT 발행 계약에 승인해주세요.');
+          }
+          
 
-          // refresh swap pool balance
+          const transaction = claimTo({
+            contract: contractMKRW,
+            to: address,
+            quantity: BigInt(swapAmount).toString(),
+          });
 
-          if (token === "USDT") {
-            const USDTBalance = await balanceOf({
-              contract: contract,
-              address: swapPoolAddress,
-            });
-            setSwapPoolKCTBalance(Number(USDTBalance) / 10 ** 18);
-          } else if (token === "MKRW") {
+          const { transactionHash } = await sendAndConfirmTransaction({
+            transaction: transaction,
+            account: activeAccount,
+          });
 
-            const usdtBalance = await balanceOf({
-              contract: contractMKRW,
-              address: swapPoolAddress,
-            });
-            setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 18);
+          console.log("transactionHash", transactionHash);
+          if (transactionHash) {
+            toast.success("스왑 완료");
+          } else {
+            toast.error("스왑 실패");
           }
 
 
-          // 
+
+
+      } else {
+        console.log("allowance is enough");
 
 
 
-          setSwapAmount(0); // reset amount
-          setSwapAmountTo(0); // reset amount to
-
-        } else {
-
-          toast.error("스왑 실패");
-        }
-
-      } else if (token === "MKRW") {
-
-        const transaction = transfer({
+        const transaction = claimTo({
           contract: contractMKRW,
-          to: swapPoolAddress,
-          amount: swapAmount,
+          to: address,
+          quantity: BigInt(swapAmount).toString(),
         });
 
-        const { transactionHash } = await sendTransaction({
-          account: activeAccount as any,
+        const { transactionHash } = await sendAndConfirmTransaction({
           transaction,
+          account: activeAccount,
         });
+
+
+
+        console.log("transactionHash", transactionHash);
 
         if (transactionHash) {
-          //toast.success(USDT_sent_successfully);
-
-          // api call to send swapAmount USDT to user wallet address
-
-          await fetch('/api/swap/sendUsdt', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              lang: params.lang,
-              chain: params.chain,
-              walletAddress: address,
-              amount: swapAmountTo,
-              toWalletAddress: address,
-            }),
-          });
 
           toast.success("스왑 완료");
 
-          // refresh swap pool balance
-          const contractUsdt = getContract({
-            client,
-            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: contractAddress,
-          });
-          const usdtBalance = await balanceOf({
-            contract: contractUsdt as any,
-            address: swapPoolAddress,
-          });
-          setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 6);
-
           setSwapAmount(0); // reset amount
-          setSwapAmountTo(0); // reset amount to
+
+          // refresh balance
+          // get the balance of USDT and MKRW
+
+          const result = await balanceOf({
+            contract: contract,
+            address: address,
+          });
+          if (params.chain === "bsc") {
+            setBalance( Number(result) / 10 ** 18 );
+          } else {
+            setBalance( Number(result) / 10 ** 6 );
+          }
+          
+          const resultMKRW = await balanceOf({
+            contract: contractMKRW,
+            address: address,
+          });
+          setBalanceMKRW( Number(resultMKRW) / 10 ** 18 );
+
 
         } else {
           toast.error("스왑 실패");
         }
 
-      } else {
-        toast.error("잘못된 스왑 요청입니다.");
+
       }
+
+
+
 
 
 
@@ -1202,7 +1119,7 @@ export default function SendUsdt({ params }: any) {
 
 
 
-
+  /*
   const [transferListKCT, setTransferListKCT] = useState([]);
   const [loadingTransferListKCT, setLoadingTransferListKCT] = useState(false);
   useEffect(() => {
@@ -1247,10 +1164,12 @@ export default function SendUsdt({ params }: any) {
 
 
   }, [address]);
+  */
 
 
 
   // transfer list USDT
+  /*
   const [transferListUSDT, setTransferListUSDT] = useState([]);
   const [loadingTransferListUSDT, setLoadingTransferListUSDT] = useState(false);
   useEffect(() => {
@@ -1289,7 +1208,7 @@ export default function SendUsdt({ params }: any) {
       clearInterval(interval);
     };
   }, [address]);
-
+  */
 
 
 
@@ -1326,7 +1245,7 @@ export default function SendUsdt({ params }: any) {
         </button>
 
         <h1 className="text-lg font-semibold text-gray-800">
-          {token} 구매
+          포인트 구매
         </h1>
 
       </div>
@@ -1387,98 +1306,6 @@ export default function SendUsdt({ params }: any) {
 
 
 
-            <div className="w-full flex flex-col gap-2 items-start">
-
-
-              <div className="w-full flex flex-col xl:flex-row items-start justify-between gap-3">
-
-                <div className="w-full flex flex-col xl:flex-row items-start gap-3">
-                  
-
-                  {/* 입금 button / 출금 button / 스왑 button*/}
-                  {/* radio buttons */}
-
-                  <div className="w-full flex flex-row gap-2 items-center justify-between">
-
-                    {/*
-
-                    <button
-                      onClick={() => {
-                        setSelectDeposit(true);
-                        setSelectWithdraw(false);
-                        //setSelectSwap(false);
-                      }}
-                      className={`w-full p-2 rounded-lg text-sm font-semibold
-
-                        ${selectDeposit ? 'bg-[#3167b4] text-white' : 'bg-gray-300 text-gray-400'}
-                        
-                      `}
-                    >
-                      <div className='flex flex-col gap-2 items-center justify-start'>
-                        <span className='text-sm'>
-                          입금
-                        </span>
-                      </div>
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        setSelectDeposit(false);
-                        setSelectWithdraw(true);
-                        //setSelectSwap(false);
-                      }}
-                      className={`w-full p-2 rounded-lg text-sm font-semibold
-
-                        ${selectWithdraw ? 'bg-[#3167b4] text-white' : 'bg-gray-300 text-gray-400'}
-                        
-                      `}
-                    >
-                      출금
-                    </button>
-                    */}
-
-
-                    
-                    <button
-                      onClick={() => {
-                        setSelectDeposit(false);
-                        setSelectWithdraw(false);
-                        setSelectSwap(true);
-                      }}
-                      className={`w-full p-2 rounded-lg text-sm font-semibold
-
-                        ${selectSwap ? 'bg-[#3167b4] text-white' : 'bg-gray-300 text-gray-400'}
-                        
-                      `}
-                    >
-                      스왑
-                    </button>
-
-                  </div>
-   
-
-
-
-
-
-                    
-
-
-
-
-
-
-
-                </div>
-
-              </div>
-
-
-
-            </div>
-
-
-
 
             {/* select swap */}
             {/* usdt -> MKRW */}
@@ -1489,46 +1316,6 @@ export default function SendUsdt({ params }: any) {
               && (
 
                 <div className='mt-5 w-full flex flex-col gap-5'>
-
-
-                  <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
-
-                    <div className='flex flex-row gap-2 items-center justify-start'>
-                      <Image
-                        src="/token-usdt-icon.png"
-                        alt="token"
-                        width={35}
-                        height={35}
-                        className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                      />
-                      <span className="text-lg font-semibold text-gray-800">
-                        테더
-                      </span>
-                    </div>
-
-                    <div className="flex flex-row items-center justify-end  gap-2">
-                      <span className="text-2xl font-semibold text-gray-800">
-
-                        {Number(balance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-
-                      </span>
-                      <span className="text-lg">USDT</span>
-                    </div>
-                  </div>
-
-
-
-                  {/* below arrow image */}
-                  {/*
-                  <div className="w-full flex flex-row gap-2 items-center justify-center">
-                    <Image
-                      src="/icon-swap-updown.png"
-                      alt="arrow"
-                      width={30}
-                      height={30}
-                    />
-                  </div>
-                  */}
 
 
                   <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
@@ -1555,11 +1342,37 @@ export default function SendUsdt({ params }: any) {
                   </div>
 
 
+                  <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
+
+                    <div className='flex flex-row gap-2 items-center justify-start'>
+                      <Image
+                        src="/token-usdt-icon.png"
+                        alt="token"
+                        width={35}
+                        height={35}
+                        className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
+                      />
+                      <span className="text-lg font-semibold text-gray-800">
+                        테더
+                      </span>
+                    </div>
+
+                    <div className="flex flex-row items-center justify-end  gap-2">
+                      <span className="text-2xl font-semibold text-gray-800">
+
+                        {Number(balance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+
+                      </span>
+                      <span className="text-lg">USDT</span>
+                    </div>
+                  </div>
                 
 
                   <div className='
                     w-full  flex flex-col gap-5 border
-                    bg-zinc-800 text-white
+                    bg-gray-600
+                    border-gray-500
+                    text-gray-200
                     p-4 rounded-lg
 
                     '>
@@ -1570,7 +1383,7 @@ export default function SendUsdt({ params }: any) {
                         text-white
 
                       ">
-                        스왑할 테더(USDT) 수량을 입력하세요.
+                        구매할 포인트(MKRW) 수량을 입력하세요.
                       </div>
                     </div>
 
@@ -1595,55 +1408,19 @@ export default function SendUsdt({ params }: any) {
                             setSwapAmount(e.target.value as any),
 
                             setSwapAmountTo(
-                              Number(e.target.value) * 1000.0
+                              Number(e.target.value) / 1000 // 1 MKRW = 1000 USDT
                             )
 
                           )}
 
                         />
-                
-            
-
-                        {/* check box for want to receive wallet address */}
-                        {/*
-                        <div className="flex flex-row items-center gap-2">
-                          <input
-                            type="checkbox"
-                            className="w-6 h-6"
-                            checked={wantToReceiveWalletAddress}
-                            onChange={(e) => setWantToReceiveWalletAddress(e.target.checked)}
-                          />
-                          <div className="text-white">{Enter_Wallet_Address}</div>
-                        </div>
-                        */}
 
                       </div>
 
-                      {/*
-                      <div className='w-full flex flex-row gap-5 items-center justify-between'>
-                        <div className='flex flex-row gap-2 items-center justify-start'>
-                          <Image
-                            src="/token-mkrw-icon.png"
-                            alt="token"
-                            width={35}
-                            height={35}
-                            className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                          />
-
-                          <span className="text-lg font-semibold text-gray-200">
-                            {swapPoolKCTBalance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} KCT
-                          </span>
-                        </div>
-                        <div className="text-sm text-gray-400">
-                          스왑 풀 잔액
-                        </div>
-                      </div>
-                      */}
 
 
 
-                      {/* swapAmountTo */}
-                      {/* 받게될 수량 */}
+                      {/* 결제할 테더 수량 */}
                       <div className='w-full flex flex-col gap-5 items-start justify-between'>
                         <div className='flex flex-row gap-2 items-center justify-start'>
                           {/* dot icon */}
@@ -1651,12 +1428,24 @@ export default function SendUsdt({ params }: any) {
                           <div className="text-sm
                             text-white
                           ">
-                            받게될 포인트 수량
+                            결제할 테더(USDT) 수량
                           </div>
                         </div>
+
+                        {/* 1 USDT = 1000 MKRW */}
+                        <div className='flex flex-row gap-2 items-center justify-start'>
+                          {/* dot icon */}
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <div className="text-sm
+                            text-white
+                          ">
+                            1 USDT = 1000 MKRW
+                          </div>
+                        </div>
+
                         <div className="text-2xl font-semibold text-gray-200">
-                          {swapAmountTo.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                          { ' MKRW'}
+                          {swapAmountTo.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                          { ' USDT'}
                         </div>
                       </div>
         
@@ -1664,13 +1453,19 @@ export default function SendUsdt({ params }: any) {
                     </div>
 
                     <button
-                      disabled={!address || !swapAmount || loadingSwap}
+                      disabled={
+                        !address || !swapAmount || loadingSwap
+                        || swapAmountTo > balance
+                        || swapAmountTo < 1 // 최소 1 USDT 이상 스왑 가능
+                      }
 
                       onClick={swap}
 
                       className={`w-full p-2 rounded-lg text-xl font-semibold
                           ${
                           !address || !swapAmount || loadingSwap
+                          || swapAmountTo > balance
+                          || swapAmountTo < 1 // 최소 1 USDT 이상 스왑 가능
                           ?'bg-gray-300 text-gray-400'
                           : 'bg-green-500 text-white'
                           }
@@ -1703,6 +1498,19 @@ export default function SendUsdt({ params }: any) {
                         </div>
                       )}
                     </button>
+
+                    { swapAmountTo > balance && (
+                      <div className='text-red-500 text-sm'>
+                        테더(USDT) 잔액이 부족합니다. <br />
+                        현재 잔액: {Number(balance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} USDT
+                      </div>
+                    ) }
+
+                    { swapAmountTo < 10 && (
+                      <div className='text-red-500 text-sm'>
+                        최소 1 USDT 이상 스왑 가능합니다.
+                      </div>
+                    ) }
 
                   </div>
 
