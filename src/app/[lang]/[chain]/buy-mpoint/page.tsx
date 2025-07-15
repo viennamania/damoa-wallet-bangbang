@@ -271,11 +271,6 @@ export default function SendUsdt({ params }: any) {
 
   
 
-  //console.log("token", token);
-
-  const tokenImage = "/token-" + String(token).toLowerCase() + "-icon.png";
-  
-
   const contract = getContract({
     // the client you have created via `createThirdwebClient()`
     client,
@@ -441,7 +436,7 @@ export default function SendUsdt({ params }: any) {
 
 
 
-  const [nativeBalance, setNativeBalance] = useState(0);
+
 
   const [balance, setBalance] = useState(0);
   useEffect(() => {
@@ -449,10 +444,10 @@ export default function SendUsdt({ params }: any) {
     // get the balance
     const getBalance = async () => {
 
-      if (!address || !params.chain || !token) return;
+      if (!address || !params.chain ) return;
   
       try {
-        if (String(token).toLowerCase() === "usdt") {
+
 
           const result = await balanceOf({
             contract : contract,
@@ -469,19 +464,6 @@ export default function SendUsdt({ params }: any) {
             setBalance(0);
           }
 
-        } else if (String(token).toLowerCase() === "mkrw") {
-
-          const result = await balanceOf({
-            contract : contractMKRW,
-            address: address,
-          });
-
-          if (result !== undefined && result !== null) {
-            setBalance( Number(result) / 10 ** 18 );
-          } else {
-            setBalance(0);
-          }
-        }
       } catch (error) {
         console.error("Error getting balance:", error);
         setBalance(0);
@@ -489,7 +471,7 @@ export default function SendUsdt({ params }: any) {
 
     };
 
-    if (address && params.chain && token) getBalance();
+    if (address && params.chain) getBalance();
 
     const interval = setInterval(() => {
       if (address) getBalance();
@@ -498,78 +480,51 @@ export default function SendUsdt({ params }: any) {
     return () => clearInterval(interval);
 
 
-  } , [address, params.chain, token, contract, contractMKRW]);
+  } , [address, params.chain, contract]);
 
 
 
 
-  /*
-  // swap token balance
-  const [swapTokenBalance, setSwapTokenBalance] = useState(0);
+
+  const [balanceMKRW, setBalanceMKRW] = useState(0);
   useEffect(() => {
 
     // get the balance
-    const getSwapTokenBalance = async () => {
+    const getBalance = async () => {
 
+      if (!address || !params.chain ) return;
+  
       try {
-        ///console.log('getBalance address', address);
 
-        if (token === "USDT") {
-          
-          const contract = getContract({
-            client,
-            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: contractAddressKCT,
-          });
-          
+
           const result = await balanceOf({
-            contract : contract as any,
-            address: address || "",
+            contract : contractMKRW,
+            address: address,
           });
-          
+
           if (result !== undefined && result !== null) {
-            setSwapTokenBalance( Number(result) / 10 ** 18 );
+              setBalanceMKRW( Number(result) / 10 ** 18 );
           } else {
-            setSwapTokenBalance(0);
+            setBalanceMKRW(0);
           }
-          
-        } else if (token === "KCT") {
-          const contract = getContract({
-            client,
-            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: contractAddress,
-          });
-          
-          const result = await balanceOf({
-            contract : contract as any,
-            address: address || "",
-          });
-          
-          if (result !== undefined && result !== null) {
-            setSwapTokenBalance( Number(result) / 10 ** 6 );
-          } else {
-            setSwapTokenBalance(0);
-          }
-        }
+
       } catch (error) {
-        console.error("Error getting swap token balance:", error);
-        setSwapTokenBalance(0);
+        console.error("Error getting balance:", error);
+        setBalanceMKRW(0);
       }
 
     };
 
-    if (address) getSwapTokenBalance();
+    if (address && params.chain) getBalance();
 
     const interval = setInterval(() => {
-      if (address) getSwapTokenBalance();
+      if (address) getBalance();
     } , 1000);
 
     return () => clearInterval(interval);
 
-  } , [address, contract, params.chain, token]);
-  */
 
-
+  } , [address, params.chain, contractMKRW]);
 
 
 
@@ -1525,782 +1480,8 @@ export default function SendUsdt({ params }: any) {
 
 
 
-            {address
-            && selectDeposit
-            && (
-
-              <div className='mt-5 w-full flex flex-col gap-5'>
-
-
-                <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
-
-                <div className='flex flex-row gap-2 items-center justify-start'>
-                  <Image
-                    src={tokenImage}
-                    alt="token"
-                    width={35}
-                    height={35}
-                    className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                  />
-
-                </div>
-
-                <div className="flex flex-row items-center justify-end  gap-2">
-                  <span className="text-2xl font-semibold text-gray-800">
-
-                    {Number(balance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-
-                  </span>
-                  <span className="text-lg">{token}</span>
-                </div>
-                </div>
-
-
-
-
-                <div className="w-full flex flex-col gap-2 items-center justify-center
-                  border border-gray-300 rounded-lg p-4 bg-white
-                ">
-
-                  <div className="text-sm text-gray-800">
-                    {My_Wallet_Address}
-                  </div>
-
-                  <div className="w-full flex flex-row items-center justify-center gap-2">
-                    <button
-                      className="text-sm text-zinc-400 underline"
-                      onClick={() => {
-                        navigator.clipboard.writeText(address);
-                        toast.success('지갑주소가 복사되었습니다.');
-                      } }
-                    >
-                      {address.substring(0, 6)}...{address.substring(address.length - 4)}
-                    </button>
-
-                  </div>
-
-                  <Canvas
-                    text={address}
-                      options={{
-                        //level: 'M',
-                        margin: 2,
-                        scale: 4,
-                        ///width: 200,
-                        // width 100%
-                        width: 200,
-                        color: {
-                            dark: '#000000FF',
-                            light: '#FFFFFFFF',
-                        },
-          
-                      }}
-                  />
-
-
-
-                </div>
-
-
-
-
-
-                {String(token).toLowerCase() === "kct" && (
-                  <div className="w-full mt-5 bg-white rounded-lg p-4">
-                    <h2 className="text-xl font-semibold mb-4">전송 내역</h2>
-                    
-                    {loadingTransferListKCT ? (
-                      <div className="w-full flex items-center justify-center">
-                        <Image
-                          src="/loading.png"
-                          alt="loading"
-                          width={50}
-                          height={50}
-                          className='animate-spin'
-                        />
-                      </div>
-                    ) : (
-                      <table className="w-full table-auto">
-                        <thead>
-                          <tr
-                            className="bg-gray-200 text-gray-700 text-sm font-semibold">
-
-
-                            <th className="px-4 py-2">날짜<br/>보내기 / 받기</th>
-                            <th className="px-4 py-2">보낸 사람<br/>받는 사람</th>
-                            <th className="px-4 py-2">수량</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {transferListKCT.map((transfer : any, index: number) => (
-
-
-                            <tr key={transfer._id}
-
-                              className={`${
-                                index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
-                              }`}
-                            >
-                              <td className="border px-4 py-2">
-                                <div className='flex flex-col gap-1'>
-                                  <span className="text-sm">
-                                    {new Date(transfer.transferData.timestamp).toLocaleTimeString()}
-                                  </span>
-                                  <span className="text-xs text-gray-500">
-                                    {new Date(transfer.transferData.timestamp).toLocaleDateString()}
-                                  </span>
-                                </div>
-
-                                <span className="font-semibold text-lg">
-                                  {transfer.sendOrReceive === "send" ? (
-                                    <span className="text-red-500">보내기</span>
-                                  ) : (
-                                    <span className="text-green-500">받기</span>
-                                  )}
-                                </span>
-
-
-                              </td>
-
-                              <td className="border px-4 py-2">
-                                {transfer.transferData.fromAddress.slice(0, 6)}...{transfer.transferData.fromAddress.slice(-4)}<br/>
-                                {transfer.transferData.toAddress.slice(0, 6)}...{transfer.transferData.toAddress.slice(-4)}
-                              </td>
-                              <td className="border px-4 py-2">
-                                {
-                                  (Number(transfer.transferData.value) / 10 ** 18)
-                                  .toFixed(2)
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-
-
-
-
-
-                )}
-
-
-
-
-
-              </div>
-
-            ) }
-
-
-
-
-
-
-
-            {address
-            && selectWithdraw
-            && (
-
-              <div className='mt-5 w-full flex flex-col gap-5'>
-
-
-                <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
-                  <div className='flex flex-row gap-2 items-center justify-start'>
-                    <Image
-                      src={tokenImage}
-                      alt="token"
-                      width={35}
-                      height={35}
-                      className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                    />
-
-                  </div>
-
-                  <div className="flex flex-row items-center justify-end  gap-2">
-                    <span className="text-2xl font-semibold text-gray-800">
-
-                      {Number(balance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-
-                    </span>
-                    <span className="text-lg">{token}</span>
-                  </div>
-                </div>
-
- 
-
-
-                <div className='
-                  w-full  flex flex-col gap-5 border border-gray-300 rounded-lg p-4 bg-white
-                  '>
-
-
-                  <div className='flex flex-row gap-2 items-center justify-start'>
-                    {/* dot icon */}
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <div className="text-sm
-                      text-gray-800
-                    ">
-                      {Enter_the_amount_and_recipient_address}
-                    </div>
-                  </div>
-
-
-                  <div className='w-full mb-5 flex flex-col xl:flex-row gap-5 items-start justify-between'>
-
-                    <div className='w-full flex flex-col gap-5 items-start justify-between'>
-                      <input
-                        disabled={sending}
-                        type="number"
-                        //placeholder="Enter amount"
-                        className=" w-full p-2 border
-                        border-gray-300 rounded text-zinc-800 text-2xl font-semibold"
-
-
-                        placeholder="Enter amount"
-                        
-                        value={amount}
-
-                        onChange={(e) => (
-
-                          // check if the value is a number
-
-
-                          // check if start 0, if so remove it
-
-                          e.target.value = e.target.value.replace(/^0+/, ''),
-
-
-
-                          // check balance
-
-                          setAmount(e.target.value as any)
-
-                        )}
-                      />
-                
-            
-
-                      {/* check box for want to receive wallet address */}
-                      {/*
-                      <div className="flex flex-row items-center gap-2">
-                        <input
-                          type="checkbox"
-                          className="w-6 h-6"
-                          checked={wantToReceiveWalletAddress}
-                          onChange={(e) => setWantToReceiveWalletAddress(e.target.checked)}
-                        />
-                        <div className="text-white">{Enter_Wallet_Address}</div>
-                      </div>
-                      */}
-
-                    </div>
-
-
-                
-                
-                    {!wantToReceiveWalletAddress ? (
-                      <>
-                        <div className='w-full flex flex-col gap-5 items-start justify-between'>
-
-
-
-
-                          <select
-                            disabled={sending}
-
-                            className="
-                              
-                              w-56 p-2 border border-gray-300 rounded text-black text-2xl font-semibold "
-                              
-                            value={
-                              recipient?.nickname
-                            }
-
-
-                            onChange={(e) => {
-
-                              const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
-
-                              console.log("selectedUser", selectedUser);
-
-                              setRecipient(selectedUser);
-
-                            } } 
-
-                          >
-                            <option value="">{Select_a_user}</option>
-                            
-
-                            {users.map((user) => (
-                              <option key={user.id} value={user.nickname}>{user.nickname}</option>
-                            ))}
-                          </select>
-
-                          {/* select user profile image */}
-
-                          <div className=" w-full flex flex-row gap-2 items-center justify-center">
-                            <Image
-                              src={recipient?.avatar || '/profile-default.png'}
-                              alt="profile"
-                              width={38}
-                              height={38}
-                              className="rounded-full"
-                              style={{
-                                objectFit: 'cover',
-                                width: '38px',
-                                height: '38px',
-                              }}
-                            />
-
-                            {recipient?.walletAddress && (
-                              <Image
-                                src="/verified.png"
-                                alt="check"
-                                width={28}
-                                height={28}
-                              />
-                            )}
-
-                          </div>
-
-                        </div>
-
-                
-                        {/* input wallet address */}
-                        
-                        <input
-                          disabled={true}
-                          type="text"
-                          placeholder={User_wallet_address}
-                          className=" w-80  xl:w-full p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
-                          value={
-                            recipient?.walletAddress
-                          }
-                          onChange={(e) => {
-          
-                            setRecipient({
-                              ...recipient,
-                              walletAddress: e.target.value,
-                            });
-
-                          } }
-
-                        />
-
-                  
-
-
-              
-
-
-                      </>
-
-                    ) : (
-
-                      <div className='w-full flex flex-col gap-5 items-center justify-between'>
-                        <input
-                          disabled={sending}
-                          type="text"
-                          placeholder={User_wallet_address}
-                          className=" w-full p-2 border border-gray-300 rounded
-                          text-zinc-800 text-sm font-semibold"
-
-                          value={recipient.walletAddress}
-
-                          onChange={(e) => setRecipient({
-                            ...recipient,
-                            walletAddress: e.target.value,
-                          })}
-
-                        />
-
-                        {isWhateListedUser ? (
-                          <div className="flex flex-row gap-2 items-center justify-center">
-
-
-                            <Image
-                              src={recipient.avatar || '/profile-default.png'}
-                              alt="profile"
-                              width={30}
-                              height={30}
-                              className="rounded-full"
-                              style={{
-                                objectFit: 'cover',
-                                width: '38px',
-                                height: '38px',
-                              }}
-                            />
-                            <div className="text-white">{recipient?.nickname}</div>
-                            <Image
-                              src="/verified.png"
-                              alt="check"
-                              width={30}
-                              height={30}
-                            />
-                            
-                          </div>
-                        ) : (
-                          <>
-
-                          {/*
-                          {recipient?.walletAddress && (
-                            <div className='flex flex-row gap-2 items-center justify-center'>
-
-                              <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
-
-                              <div className="text-red-500">
-                                {This_address_is_not_white_listed}<br />
-                                {If_you_are_sure_please_click_the_send_button}
-                              </div>
-                            </div>
-
-                          )}
-                          */}
-
-                          </>
-                        )}
-
-
-
-                        {/* qr scanner button */}
-                        <div className="w-full flex flex-row gap-2 items-center justify-center">
-                          <button
-                            disabled={sending}
-                            onClick={() => setShowQrScanner(!showQrScanner)}
-                            className="w-full p-2 rounded-lg text-sm font-semibold bg-gray-300 text-gray-400"
-                          >
-                            {showQrScanner ? 'Close QR Scanner' : 'Open QR Scanner'}
-                          </button>
-                        </div>
-
-                        { showQrScanner && (
-
-
-                          <div className="w-full flex flex-col items-center justify-center gap-2">
-                            {/*
-                            <div style={styles.controls}>
-                              <select onChange={(e) => setDeviceId(e.target.value)}>
-                                <option value={undefined}>Select a device</option>
-                                {devices.map((device, index) => (
-                                  <option key={index} value={device.deviceId}>
-                                    {device.label}
-                                  </option>
-                                ))}
-                              </select>
-                              <select
-                                style={{ marginLeft: 5 }}
-                                onChange={(e) => setTracker(e.target.value)}
-                              >
-                                <option value="centerText">Center Text</option>
-                                <option value="outline">Outline</option>
-                                <option value="boundingBox">Bounding Box</option>
-                                <option value={undefined}>No Tracker</option>
-                              </select>
-                            </div>
-                            */}
-                            <Scanner
-                              formats={[
-                                "qr_code",
-                                "micro_qr_code",
-                                "rm_qr_code",
-                                "maxi_code",
-                                "pdf417",
-                                "aztec",
-                                "data_matrix",
-                                "matrix_codes",
-                                "dx_film_edge",
-                                "databar",
-                                "databar_expanded",
-                                "codabar",
-                                "code_39",
-                                "code_93",
-                                "code_128",
-                                "ean_8",
-                                "ean_13",
-                                "itf",
-                                "linear_codes",
-                                "upc_a",
-                                "upc_e",
-                              ]}
-                              constraints={{
-                                deviceId: deviceId,
-                              }}
-                              onScan={(detectedCodes) => {
-                                handleScan(detectedCodes[0].rawValue);
-                              }}
-                              onError={(error) => {
-                                console.log(`onError: ${error}'`);
-                              }}
-                              styles={{ container: { height: "400px", width: "350px" } }}
-                              components={{
-                                onOff: true,
-                                torch: true,
-                                zoom: true,
-                                finder: true,
-                                tracker: getTracker(),
-                              }}
-                              allowMultiple={true}
-                              scanDelay={2000}
-                              paused={pause}
-                            />
-                          </div>
-
-
-                        )}
-
-
-
-
-
-                      </div>
-
-                    )}
-
-                    
-
-                  </div>
-
-                  {/* otp verification */}
-                  {/*
-                  {verifiedOtp ? (
-                    <div className="w-full flex flex-row gap-2 items-center justify-center">
-                      <Image
-                        src="/verified.png"
-                        alt="check"
-                        width={30}
-                        height={30}
-                      />
-                      <div className="text-white">OTP verified</div>
-                    </div>
-                  ) : (
-                
-            
-                    <div className="w-full flex flex-row gap-2 items-start">
-
-                      <button
-                        disabled={!address || !recipient?.walletAddress || !amount || isSendingOtp}
-                        onClick={sendOtp}
-                        className={`
-                          
-                          ${isSendedOtp && 'hidden'}
-
-                          w-32 p-2 rounded-lg text-sm font-semibold
-
-                            ${
-                            !address || !recipient?.walletAddress || !amount || isSendingOtp
-                            ?'bg-gray-300 text-gray-400'
-                            : 'bg-green-500 text-white'
-                            }
-                          
-                          `}
-                      >
-                          Send OTP
-                      </button>
-
-                      <div className={`flex flex-row gap-2 items-center justify-center ${!isSendedOtp && 'hidden'}`}>
-                        <input
-                          type="text"
-                          placeholder="Enter OTP"
-                          className=" w-40 p-2 border border-gray-300 rounded text-black text-sm font-semibold"
-                          value={otp}
-                          onChange={(e) => setOtp(e.target.value)}
-                        />
-
-                        <button
-                          disabled={!otp || isVerifingOtp}
-                          onClick={verifyOtp}
-                          className={`w-32 p-2 rounded-lg text-sm font-semibold
-
-                              ${
-                              !otp || isVerifingOtp
-                              ?'bg-gray-300 text-gray-400'
-                              : 'bg-green-500 text-white'
-                              }
-                            
-                            `}
-                        >
-                            Verify OTP
-                        </button>
-                      </div>
-
-                    </div>
-
-                  )}
-                  */}
-                  
-
-
-
-                  <button
-                    
-                    disabled={!address || !recipient?.walletAddress || !amount || sending || !verifiedOtp}
-
-                    onClick={sendUsdt}
-
-                    className={`mt-5 w-full p-2 rounded-lg text-xl font-semibold
-
-                        ${
-                        !address || !recipient?.walletAddress || !amount || sending || !verifiedOtp
-                        ?'bg-gray-300 text-gray-400'
-                        : 'bg-green-500 text-white'
-                        }
-                      
-                      `}
-                  >
-                      {token} 출금
-                  </button>
-
-                  <div className="w-full flex flex-row gap-2 text-xl font-semibold">
-
-                    {/* sending rotate animation with white color*/}
-                    {sending && (
-                      <div className="
-                        w-6 h-6
-                        border-2 border-zinc-800
-                        rounded-full
-                        animate-spin
-                      ">
-                        <Image
-                          src="/loading.png"
-                          alt="loading"
-                          width={24}
-                          height={24}
-                        />
-                      </div>
-                    )}
-                    <div className="text-white">
-                      {sending ? Sending : ''}
-                    </div>
-
-                  </div>
-
-                </div>
-
-                {/* transfer history */}
-                {/* table view */}
-                {/*
-
-                  [
-                    {
-                        "_id": "683a833a7a4edd08cb8716df",
-                        "user": {
-                            "_id": "67f46b566692fd42650470f0",
-                            "telegramId": "",
-                            "walletAddress": "0x534ea8bf168AEBf71ea37ba2Ae0fCEC8E09aA83A"
-                        },
-                        "sendOrReceive": "send",
-                        "transferData": {
-                            "transactionHash": "0x425678ff54ad22e524cb013e5e1472e5b081eade5ddf1ff98f6c6035e4d4b838",
-                            "transactionIndex": 17,
-                            "fromAddress": "0x534ea8bf168AEBf71ea37ba2Ae0fCEC8E09aA83A",
-                            "toAddress": "0x5FD40E75e88eb09AA2F4cC772E2263a140a34405",
-                            "value": "1000000000000000000000",
-                            "timestamp": 1748665142000,
-                            "_id": "683a833a7a4edd08cb8716de"
-                        }
-                    }
-                ]
-                  */}
-
-                {String(token).toLowerCase() === "kct" && (
-                  <div className="w-full mt-5 bg-white rounded-lg p-4">
-                    <h2 className="text-xl font-semibold mb-4">전송 내역</h2>
-                    
-                    {loadingTransferListKCT ? (
-                      <div className="w-full flex items-center justify-center">
-                        <Image
-                          src="/loading.png"
-                          alt="loading"
-                          width={50}
-                          height={50}
-                          className='animate-spin'
-                        />
-                      </div>
-                    ) : (
-                      <table className="w-full table-auto">
-                        <thead>
-                          <tr
-                            className="bg-gray-200 text-gray-700 text-sm font-semibold">
-
-
-                            <th className="px-4 py-2">날짜<br/>보내기 / 받기</th>
-                            <th className="px-4 py-2">보낸 사람<br/>받는 사람</th>
-                            <th className="px-4 py-2">수량</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {transferListKCT.map((transfer : any, index: number) => (
-
-
-                            <tr key={transfer._id}
-
-                              className={`${
-                                index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
-                              }`}
-                            >
-                              <td className="border px-4 py-2">
-                                <div className='flex flex-col gap-1'>
-                                  <span className="text-sm">
-                                    {new Date(transfer.transferData.timestamp).toLocaleTimeString()}
-                                  </span>
-                                  <span className="text-xs text-gray-500">
-                                    {new Date(transfer.transferData.timestamp).toLocaleDateString()}
-                                  </span>
-                                </div>
-
-                                <span className="font-semibold text-lg">
-                                  {transfer.sendOrReceive === "send" ? (
-                                    <span className="text-red-500">보내기</span>
-                                  ) : (
-                                    <span className="text-green-500">받기</span>
-                                  )}
-                                </span>
-
-
-                              </td>
-
-                              <td className="border px-4 py-2">
-                                {transfer.transferData.fromAddress.slice(0, 6)}...{transfer.transferData.fromAddress.slice(-4)}<br/>
-                                {transfer.transferData.toAddress.slice(0, 6)}...{transfer.transferData.toAddress.slice(-4)}
-                              </td>
-                              <td className="border px-4 py-2">
-                                {
-                                  (Number(transfer.transferData.value) / 10 ** 18)
-                                  .toFixed(2)
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-
-
-
-
-
-                )}
-
-
-
-
-
-
-
-
-              </div>
-
-            )}
-
-
-
             {/* select swap */}
-            {/* KCT -> usdt */}
-            {/* usdt -> KCT */}
+            {/* usdt -> MKRW */}
             {/* input 스왑 수량 */}
             {
               address
@@ -2314,13 +1495,15 @@ export default function SendUsdt({ params }: any) {
 
                     <div className='flex flex-row gap-2 items-center justify-start'>
                       <Image
-                        src={tokenImage}
+                        src="/token-usdt-icon.png"
                         alt="token"
                         width={35}
                         height={35}
                         className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
                       />
-
+                      <span className="text-lg font-semibold text-gray-800">
+                        테더
+                      </span>
                     </div>
 
                     <div className="flex flex-row items-center justify-end  gap-2">
@@ -2329,74 +1512,49 @@ export default function SendUsdt({ params }: any) {
                         {Number(balance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
 
                       </span>
-                      <span className="text-lg">{token}</span>
-                    </div>
-                  </div>
-
-
-
-               {/* below arrow image */}
-               <div className="w-full flex flex-row gap-2 items-center justify-center">
-                  <Image
-                    src="/icon-swap-updown.png"
-                    alt="arrow"
-                    width={30}
-                    height={30}
-                  />
-                </div>
-
-
-                {token === "USDT" && (
-                  <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
-
-                    <div className='flex flex-row gap-2 items-center justify-start'>
-                      <Image
-                        src="/token-KCT-icon.png"
-                        alt="token"
-                        width={35}
-                        height={35}
-                        className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                      />
-
-                    </div>
-
-                    <div className="flex flex-row items-center justify-end  gap-2">
-                      <span className="text-2xl font-semibold text-gray-800">
-                        {/*
-                        {Number(swapTokenBalance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
-                        */}
-                      </span>
-                      <span className="text-lg">KCT</span>
-                    </div>
-                  </div>
-
-                )}
-
-                {token === "KCT" && (
-                  <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
-
-                    <div className='flex flex-row gap-2 items-center justify-start'>
-                      <Image
-                        src="/token-usdt-icon.png"
-                        alt="token"
-                        width={35}
-                        height={35}
-                        className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                      />
-
-                    </div>
-
-                    <div className="flex flex-row items-center justify-end  gap-2">
-                      <span className="text-2xl font-semibold text-gray-800">
-                        {/*
-                        {Number(swapTokenBalance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
-                        */}
-                      </span>
                       <span className="text-lg">USDT</span>
                     </div>
                   </div>
 
-                )}
+
+
+                  {/* below arrow image */}
+                  {/*
+                  <div className="w-full flex flex-row gap-2 items-center justify-center">
+                    <Image
+                      src="/icon-swap-updown.png"
+                      alt="arrow"
+                      width={30}
+                      height={30}
+                    />
+                  </div>
+                  */}
+
+
+                  <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
+
+                    <div className='flex flex-row gap-2 items-center justify-start'>
+                      <Image
+                        src={`/token-mkrw-icon.png`}
+                        alt="token"
+                        width={35}
+                        height={35}
+                        className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
+                      />
+                      <span className="text-lg font-semibold text-gray-800">
+                        포인트
+                      </span>
+                    </div>
+
+                    <div className="flex flex-row items-center justify-end  gap-2">
+                      <span className="text-2xl font-semibold text-gray-800">
+                          {Number(balanceMKRW).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                      </span>
+                      <span className="text-lg">MKRW</span>
+                    </div>
+                  </div>
+
+
                 
 
                   <div className='
@@ -2412,10 +1570,7 @@ export default function SendUsdt({ params }: any) {
                         text-white
 
                       ">
-                        {/*Buy_Description*/}
-                        {token === "USDT" ? "스왑할 USDT 수량을 입력하세요."
-                        : "스왑할 MKRW 수량을 입력하세요."
-                        }
+                        스왑할 테더(USDT) 수량을 입력하세요.
                       </div>
                     </div>
 
@@ -2439,11 +1594,8 @@ export default function SendUsdt({ params }: any) {
 
                             setSwapAmount(e.target.value as any),
 
-                            // if swapAmount is USDT, set swapAmountTo to swapAmount * 10.0
-                            // if swapAmount is KCT, set swapAmountTo to swapAmount * 0.1
-
                             setSwapAmountTo(
-                              token === "USDT" ? Number(e.target.value) * 10.0 : Number(e.target.value) * 0.1
+                              Number(e.target.value) * 1000.0
                             )
 
                           )}
@@ -2467,47 +1619,27 @@ export default function SendUsdt({ params }: any) {
 
                       </div>
 
+                      {/*
+                      <div className='w-full flex flex-row gap-5 items-center justify-between'>
+                        <div className='flex flex-row gap-2 items-center justify-start'>
+                          <Image
+                            src="/token-mkrw-icon.png"
+                            alt="token"
+                            width={35}
+                            height={35}
+                            className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
+                          />
 
-                      {/* swap 풀 balance */}
-                      {token === "USDT" ? (
-                        <div className='w-full flex flex-row gap-5 items-center justify-between'>
-                          <div className='flex flex-row gap-2 items-center justify-start'>
-                            <Image
-                              src="/token-KCT-icon.png"
-                              alt="token"
-                              width={35}
-                              height={35}
-                              className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                            />
-
-                            <span className="text-lg font-semibold text-gray-200">
-                              {swapPoolKCTBalance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} KCT
-                            </span>
-                          </div>
-                          <div className="text-sm text-gray-400">
-                            스왑 풀 잔액
-                          </div>
+                          <span className="text-lg font-semibold text-gray-200">
+                            {swapPoolKCTBalance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} KCT
+                          </span>
                         </div>
-                      ) : (
-                        <div className='w-full flex flex-row gap-5 items-center justify-between'>
-                          <div className='flex flex-row gap-2 items-center justify-start'>
-                            <Image
-                              src="/token-usdt-icon.png"
-                              alt="token"
-                              width={35}
-                              height={35}
-                              className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                            />
-
-                            <span className="text-lg font-semibold text-gray-200">
-                              {swapPoolUsdtBalance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} USDT
-                            </span>
-                          </div>
-                          <div className="text-sm text-gray-400">
-                            스왑 풀 잔액
-                          </div>
+                        <div className="text-sm text-gray-400">
+                          스왑 풀 잔액
                         </div>
-                      )}
+                      </div>
+                      */}
+
 
 
                       {/* swapAmountTo */}
@@ -2519,16 +1651,12 @@ export default function SendUsdt({ params }: any) {
                           <div className="text-sm
                             text-white
                           ">
-                            {token === "USDT" ? "받게될 KCT 수량"
-                            : "받게될 USDT 수량"
-                            }
+                            받게될 포인트 수량
                           </div>
                         </div>
                         <div className="text-2xl font-semibold text-gray-200">
-                          {swapAmountTo.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                          {token === "USDT" ? " KCT"
-                          : " USDT"
-                          }
+                          {swapAmountTo.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                          { ' MKRW'}
                         </div>
                       </div>
         
@@ -2566,12 +1694,12 @@ export default function SendUsdt({ params }: any) {
                             />
                           </div>
                           <div className="text-white">
-                            {token} 스왑 중...
+                            스왑 중...
                           </div>
                         </div>
                       ) : (
                         <div className="w-full flex flex-row items-center justify-center gap-2">
-                          {token} 스왑
+                          스왑하기
                         </div>
                       )}
                     </button>
