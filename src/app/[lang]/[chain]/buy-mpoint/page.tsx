@@ -1035,10 +1035,10 @@ export default function SendUsdt({ params }: any) {
 
           console.log("transactionHash", transactionHash);
           if (transactionHash) {
-            toast.success("스왑 완료");
+            toast.success("구매 완료");
             setSwapAmount(0); // reset amount
           } else {
-            toast.error("스왑 실패");
+            toast.error("구매 실패");
           }
 
 
@@ -1066,7 +1066,7 @@ export default function SendUsdt({ params }: any) {
 
         if (transactionHash) {
 
-          toast.success("스왑 완료");
+          toast.success("구매 완료");
 
           setSwapAmount(0); // reset amount
 
@@ -1091,7 +1091,7 @@ export default function SendUsdt({ params }: any) {
 
 
         } else {
-          toast.error("스왑 실패");
+          toast.error("구매 실패");
         }
 
 
@@ -1106,7 +1106,7 @@ export default function SendUsdt({ params }: any) {
       
       console.error("error", error);
 
-      toast.error("스왑 실패");
+      toast.error("구매 실패");
     }
 
     setLoadingSwap(false);
@@ -1420,6 +1420,16 @@ export default function SendUsdt({ params }: any) {
                       </div>
 
 
+                      {/* 1 USDT = 1000 MKRW */}
+                      <div className='flex flex-row gap-2 items-center justify-start'>
+                        {/* dot icon */}
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <div className="text-sm
+                          text-white
+                        ">
+                          1 USDT = 1000 MKRW
+                        </div>
+                      </div>
 
 
                       {/* 결제할 테더 수량 */}
@@ -1434,21 +1444,20 @@ export default function SendUsdt({ params }: any) {
                           </div>
                         </div>
 
-                        {/* 1 USDT = 1000 MKRW */}
                         <div className='flex flex-row gap-2 items-center justify-start'>
-                          {/* dot icon */}
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <div className="text-sm
-                            text-white
-                          ">
-                            1 USDT = 1000 MKRW
+                          <Image
+                            src="/token-usdt-icon.png"
+                            alt="token"
+                            width={35}
+                            height={35}
+                            className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
+                          />
+                          <div className="text-2xl font-semibold text-gray-200">
+                            {swapAmountTo.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            { ' USDT'}
                           </div>
                         </div>
 
-                        <div className="text-2xl font-semibold text-gray-200">
-                          {swapAmountTo.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                          { ' USDT'}
-                        </div>
                       </div>
         
 
@@ -1490,13 +1499,13 @@ export default function SendUsdt({ params }: any) {
                               height={24}
                             />
                           </div>
-                          <div className="text-white">
-                            스왑 중...
+                          <div className="text-gray-800">
+                            구매 중...
                           </div>
                         </div>
                       ) : (
                         <div className="w-full flex flex-row items-center justify-center gap-2">
-                          스왑하기
+                          구매하기
                         </div>
                       )}
                     </button>
@@ -1510,7 +1519,7 @@ export default function SendUsdt({ params }: any) {
 
                     { swapAmountTo < 10 && (
                       <div className='text-red-500 text-sm'>
-                        최소 1 USDT 이상 스왑 가능합니다.
+                        최소 1 USDT 이상 구매 가능합니다.
                       </div>
                     ) }
 
