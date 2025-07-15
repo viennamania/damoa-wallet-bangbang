@@ -974,6 +974,7 @@ export default function SendUsdt({ params }: any) {
 
 
     console.log("swapAmount", swapAmount);
+    console.log("swapAmountTo", swapAmountTo);
 
 
 
@@ -989,16 +990,16 @@ export default function SendUsdt({ params }: any) {
       const result = await allowance({
           contract: contract,
           owner: address as string,
-          spender: contractAddressBsc,
+          spender: contractAddressMKRW,
       });
 
       //console.log("result", result);
-      const allowanceAmount = Number(result) / 10 ** 18;
+      const allowanceAmount = Number(result);
       console.log("allowanceAmount", allowanceAmount);
 
 
 
-      if (allowanceAmount < swapAmountTo) {
+      if (allowanceAmount < swapAmountTo * 10 ** 18) {
           
           //throw new Error('USDT 토큰을 먼저 채굴 NFT 발행 계약에 승인해주세요');
 
@@ -1006,7 +1007,7 @@ export default function SendUsdt({ params }: any) {
 
           const transactionApprove = approve({
               contract: contract,
-              spender: contractAddressBsc,
+              spender: contractAddressMKRW,
               amount: BigInt(swapAmountTo * 10 ** 18).toString(),
           });
 
@@ -1035,6 +1036,7 @@ export default function SendUsdt({ params }: any) {
           console.log("transactionHash", transactionHash);
           if (transactionHash) {
             toast.success("스왑 완료");
+            setSwapAmount(0); // reset amount
           } else {
             toast.error("스왑 실패");
           }
