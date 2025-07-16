@@ -1920,7 +1920,7 @@ function AgentPage(
                     className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
                   />
                   <p className="text-xs md:text-lg text-gray-600 font-bold">
-                    친구목록
+                    회원목록
                   </p>
                 </button>
 

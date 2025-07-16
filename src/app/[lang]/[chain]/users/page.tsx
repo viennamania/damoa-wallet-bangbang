@@ -1343,22 +1343,63 @@ function AgentPage(
                     <h2 className="text-xl font-semibold mb-3">회원목록</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {sendbirdUsers.map((user) => (
+
+
+                            
                             <div key={user.user_id} className="p-4 bg-white rounded-lg shadow-md">
-                                <div className="flex items-center gap-4">
-                                    <Image
-                                        src={user.profile_url || "/profile-default.png"}
-                                        alt={user.nickname}
-                                        width={50}
-                                        height={50}
-                                        className="rounded-full"
-                                    />
-                                    <div>
-                                        <h3 className="text-lg font-semibold">{user.nickname}</h3>
-                                        <p className="text-sm text-gray-600">회원 지갑: {user.user_id.length > 10 ? user.user_id.slice(0, 10) + '...' : user.user_id}</p>
-                                        <p className="text-sm text-gray-500">온라인: {user.is_online ? "예" : "아니오"}</p>
+
+
+                                <div className="flex justify-between items-center mb-3">
+
+                                    <div className="flex items-center gap-4">
+                                        <Image
+                                            src={user.profile_url || "/profile-default.png"}
+                                            alt={user.nickname}
+                                            width={50}
+                                            height={50}
+                                            className="rounded-full"
+                                        />
+                                        <div>
+                                            <h3 className="text-lg font-semibold">{user.nickname}</h3>
+                                            <p className="text-sm text-gray-600">회원 지갑: {user.user_id.length > 10 ? user.user_id.slice(0, 10) + '...' : user.user_id}</p>
+                                            <p className="text-sm text-gray-500">온라인: {user.is_online ? "예" : "아니오"}</p>
+                                        </div>
                                     </div>
+
+                                    {/* 채팅하기, 송금하기 버튼 */}
+                                    <div className="flex flex-col gap-2">
+                                        <Button
+                                            onClick={() => {
+                                                
+                                                //router.push(
+                                                //</div>    "/" + params.lang + "/" + params.chain + "/chat/" + user.user_id
+                                                //);
+                                                // 준비중입니다.
+                                                alert("준비중입니다. 곧 업데이트됩니다.");
+
+                                            }}
+                                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                                        >
+                                            채팅하기
+                                        </Button>
+                                        <Button
+                                            onClick={() => {
+                                                router.push(
+                                                    "/" + params.lang + "/" + params.chain + "/sendToUser/" + user.user_id
+                                                );
+                                            }}
+                                            className="bg-green-500 text-white px-4 py-2 rounded"
+                                        >
+                                            송금하기
+                                        </Button>
+                                    </div>
+
+
                                 </div>
+
                             </div>
+
+                            
                         ))}
                     </div>
                     {pageToken && (
@@ -1426,7 +1467,7 @@ function AgentPage(
             )}
 
             {/* footer menu */}
-            {/* 홈 / NFT 상점 / 친구목록 / 마이페이지 */}
+            {/* 홈 / NFT 상점 / 회원목록 / 마이페이지 */}
             {/* same width footer menu */}
 
             {address && (
@@ -1444,16 +1485,16 @@ function AgentPage(
                     {/* selected state */}
                     
                     <button
-                    /*
+                    
                     onClick={() => {
                         router.push(
                         "/" + params.lang + "/" + params.chain + "/"
                         );
                     }}
-                    */
+                    
 
                     className="flex flex-col justify-center items-center gap-0
-                        bg-blue-200 text-blue-800
+                        hover:bg-blue-200 hover:text-blue-800
                         transition duration-300 ease-in-out
                         transform hover:-translate-y-1
                         p-2
@@ -1471,50 +1512,23 @@ function AgentPage(
                     </p>
                     </button>
 
-                    {/* NFT 상점 */}
-                    {/*
+                    {/* 친구목록 */}
                     <button
-                    onClick={() => {
-                        router.push(
-                        "/" + params.lang + "/" + params.chain + "/my-nft-snowball"
-                        + "?start=" + start
-                        );
-                    }}
-                    className="flex flex-col justify-center items-center gap-0
-                        hover:bg-blue-200 hover:text-blue-800
-                        transition duration-300 ease-in-out
-                        transform hover:-translate-y-1
-                        p-2
-                    "
-                    >
-                    <Image
-                        src="/icon-shopping-cart.png"
-                        alt="NFT Market"
-                        width={35}
-                        height={35}
-                        className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
-                    />
-                    <p className="text-xs md:text-lg text-gray-600 font-bold">
-                        NFT 상점
-                    </p>
-                    </button>
-                    */}
-
-                    {/* NFT 상점 */}
-
-                    {/* 친구 초대 */}
-                    <button
+                    /*
                     onClick={() => {
                         router.push(
                         "/" + params.lang + "/" + params.chain + "/users"
                         );
                     }}
+                    */
                     className="flex flex-col justify-center items-center gap-0
-                        hover:bg-blue-200 hover:text-blue-800
+                        bg-blue-200 text-blue-800
                         transition duration-300 ease-in-out
                         transform hover:-translate-y-1
                         p-2
                     "
+
+
                     >
                     <Image
                         src="/icon-invite.png"
@@ -1524,7 +1538,7 @@ function AgentPage(
                         className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
                     />
                     <p className="text-xs md:text-lg text-gray-600 font-bold">
-                        친구목록
+                        회원목록
                     </p>
                     </button>
 
