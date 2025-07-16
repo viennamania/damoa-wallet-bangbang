@@ -1594,6 +1594,8 @@ function AgentPage(
 
                 <div className="w-full flex flex-col items-start justify-center gap-4 p-4">
 
+
+
                     {!address && (
 
                         <div className="w-full flex flex-col justify-center items-center gap-2 p-2">
@@ -1687,7 +1689,7 @@ function AgentPage(
                                         || !address || !nickname ? "opacity-50 cursor-not-allowed" : ""}
                                         p-2 bg-blue-500 text-zinc-100 rounded
                                     `}>
-                                    프로필 생성
+                                    회원가입
                                 </button>
                             </div>
 

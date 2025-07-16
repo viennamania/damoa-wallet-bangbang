@@ -763,125 +763,47 @@ function IndexPage(
 
 
 
-  const [storeCodeNumber, setStoreCodeNumber] = useState('');
-
-  useEffect(() => {
-
-    const fetchStoreCode = async () => {
-
-      const response = await fetch('/api/order/getStoreCodeNumber', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
-      const data = await response.json();
-
-      //console.log('getStoreCodeNumber data', data);
-
-      setStoreCodeNumber(data?.storeCodeNumber);
-
-    }
-
-    fetchStoreCode();
-
-  } , []);
 
 
 
 
+    // get sendbird user data
+    const [loadingSendbirdUser, setLoadingSendbirdUser] = useState(false);
+    const [sendbirdUser, setSendbirdUser] = useState(null) as any;
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoadingSendbirdUser(true);
+            const response = await fetch("/api/sendbird/getOneUser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                }),
+            });
 
+            const data = await response.json();
 
-  // if chain is tron, then get tron wallet address
+            //console.log("sendbird user data", data);
 
-  //console.log("params.chain", params.chain);
+            if (data.error) {
+                setSendbirdUser(null);
+            } else {
+                setSendbirdUser(data.result.user);
+            }
 
-  const [tronWalletAddress, setTronWalletAddress] = useState('');
-  useEffect(() => {
-        
-      // get tron wallet address
-      const getTronWalletAddress = async () => {
+            setLoadingSendbirdUser(false);
+        };
 
-        const response = await fetch('/api/tron/getTronWalletAddress', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            walletAddress: address,
-          }),
-        });
-
-        if (!response) return;
-
-        const data = await response.json();
-
-        console.log("getTronWalletAddress data", data);
-
-        setTronWalletAddress(data?.result?.tronWalletAddress);
-
-      };
-  
-      if (address) {
-        getTronWalletAddress();
-      }
-  
-      
-  
-    } , [address]);
-
-
-  //console.log("tronWalletAddress", tronWalletAddress);
-
-
-  //console.log("address", address);
+        address && fetchData();
+    }, [address]);
 
 
 
-  // getTronBalance
-  /*
-  const [tronBalance, setTronBalance] = useState(0);
-  useEffect(() => {
-    
-    const getTronBalance = async () => {
-      const response = await fetch('/api/tron/getTronBalance', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          tronWalletAddress: tronWalletAddress,
-        }),
-      });
-
-      if (!response) return;
-
-      const data = await response.json();
-
-      data.result && setTronBalance(data.result.tronBalance);
-
-    };
-
-    if (tronWalletAddress) {
-      getTronBalance();
-    }
-
-    // timer
-    
-    const interval = setInterval(() => {
-      tronWalletAddress && getTronBalance();
-    } , 10000);
-
-    return () => clearInterval(interval);
-    
 
 
 
-  } , [tronWalletAddress]);
-
-  //console.log("tronBalance", tronBalance);
-  */
 
 
 
@@ -926,7 +848,7 @@ function IndexPage(
 
       return () => clearInterval(interval);
       
-  } , [address, tronWalletAddress, contract, params.chain]);
+  } , [address, contract, params.chain]);
 
 
 
@@ -1431,13 +1353,34 @@ function IndexPage(
                 <span className="text-sm md:text-lg text-white">
                   총 자산
                 </span>
-                <span className="text-sm md:text-lg text-white">
-                  {address && !loadingUserData && (
-                    <>
-                      {nickname}님, 반갑습니다.
-                    </>
+
+                <div className="flex flex-row gap-2 items-center justify-end">
+
+                  {address && !loadingSendbirdUser &&
+                    sendbirdUser && sendbirdUser.nickname && (
+                    <span className="text-sm md:text-lg text-white">
+                      {
+                      sendbirdUser.nickname
+                      }님, 반갑습니다.
+                    </span>
                   )}
-                </span>
+
+                  {address && !loadingSendbirdUser &&
+                    !sendbirdUser && (
+                    <button
+                      onClick={() => {
+                        router.push(
+                          "/" + params.lang + "/" + params.chain + "/my-page"
+                        );
+                      }}
+                      className="text-sm md:text-lg text-white"
+                    >
+                      {Profile_Settings}
+                    </button>
+                  )}
+
+
+                </div>
             </div>
 
 
