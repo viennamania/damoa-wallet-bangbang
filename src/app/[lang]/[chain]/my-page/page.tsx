@@ -721,7 +721,7 @@ function AgentPage(
             },
             body: JSON.stringify({
                 walletAddress: address,
-                nickname: editedNickname || nickname,
+                nickname: nickname,
                 profileUrl: avatar,
                 issueAccessToken: true,
             }),
@@ -1668,9 +1668,9 @@ function AgentPage(
                                 <input
                                     type="text"
                                     placeholder="닉네임을 입력해주세요"
-                                    value={editedNickname || nickname}
+                                    value={nickname}
                                     onChange={(e) => {
-                                        setEditedNickname(e.target.value);
+                                        setNickname(e.target.value);
                                         checkNicknameIsDuplicate(e.target.value);
                                     }}
                                     className="p-2 border border-gray-300 rounded w-full max-w-xs"
