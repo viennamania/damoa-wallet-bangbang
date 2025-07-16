@@ -1903,7 +1903,6 @@ function AgentPage(
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/affiliation"
-                      + "?start=" + start
                     );
                   }}
                   className="flex flex-col justify-center items-center gap-0

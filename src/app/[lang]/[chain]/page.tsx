@@ -1447,6 +1447,7 @@ function IndexPage(
             <div className="w-full flex flex-col gap-2 items-center justify-start
                 bg-white p-5 rounded-b-lg
             ">
+                
                 <span className="text-2xl md:text-3xl font-semibold text-zinc-800">
                     {
                       Number(totoalUsdtBalance * usdtRate + MKRWBalance)
@@ -1455,6 +1456,7 @@ function IndexPage(
                     }{' '}원
                     
                 </span>
+
 
             </div>
 
@@ -2070,7 +2072,6 @@ function IndexPage(
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/affiliation"
-                      + "?start=" + start
                     );
                   }}
                   className="flex flex-col justify-center items-center gap-0
@@ -2097,7 +2098,6 @@ function IndexPage(
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/my-page"
-                      + "?start=" + start
                     );
                   }}
                   className="flex flex-col justify-center items-center gap-0

@@ -674,6 +674,72 @@ function AgentPage(
     
 
 
+    // get sendbird user data
+    const [loadingSendbirdUser, setLoadingSendbirdUser] = useState(false);
+    const [sendbirdUser, setSendbirdUser] = useState(null) as any;
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoadingSendbirdUser(true);
+            const response = await fetch("/api/sendbird/getOneUser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                }),
+            });
+
+            const data = await response.json();
+
+            console.log("sendbird user data", data);
+
+            if (data.error) {
+                setSendbirdUser(null);
+            } else {
+                setSendbirdUser(data.result.user);
+            }
+
+            setLoadingSendbirdUser(false);
+        };
+
+        address && fetchData();
+    }, [address]);
+
+
+    //console.log("sendbirdUser", sendbirdUser);
+
+
+    // create sendbird user if not exists
+    const [loadingCreateSendbirdUser, setLoadingCreateSendbirdUser] = useState(false);
+    const createSendbirdUser = async () => {
+        setLoadingCreateSendbirdUser(true);
+        const response = await fetch("/api/sendbird/createOneUser", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                walletAddress: address,
+                nickname: editedNickname || nickname,
+                profileUrl: avatar,
+                issueAccessToken: true,
+            }),
+        });
+        const data = await response.json();
+        console.log("createSendbirdUser data", data);
+        if (data.error) {
+            toast.error("Failed to create Sendbird user");
+        } else {
+            setSendbirdUser(data.result.user);
+            toast.success("Sendbird user created successfully");
+        }
+        setLoadingCreateSendbirdUser(false);
+    };
+
+
+
+
 
     // check user nickname duplicate
 
@@ -1576,6 +1642,105 @@ function AgentPage(
                     )}
 
 
+                    {address && loadingSendbirdUser && (
+                        <div className="w-full flex flex-col justify-center items-center gap-2 p-2">
+                            <div className="flex flex-row items-center justify-center gap-2">
+                                <span className="text-sm texxt-gray-500 font-semibold">
+                                    회원정보 불러오는 중...
+                                </span>
+                            </div>
+                        </div>
+                    )}
+
+                    {address && !loadingSendbirdUser && !sendbirdUser && (
+                        <div className="w-full flex flex-col justify-center items-center gap-2 p-2">
+                            
+                            <div className="flex flex-row items-center justify-center gap-2">
+                                {/* dot */}
+                                <div className="w-2 h-2 bg-red-500 rounded-full" />
+                                <span className="text-sm texxt-gray-500 font-semibold">
+                                    회원정보가 없습니다. 프로필을 설정해주세요.
+                                </span>
+                            </div>
+
+
+                            <div className="flex flex-row items-center justify-center gap-2">
+
+                                <input
+                                    type="text"
+                                    placeholder="닉네임을 입력해주세요"
+                                    value={editedNickname || nickname}
+                                    onChange={(e) => {
+                                        setEditedNickname(e.target.value);
+                                        checkNicknameIsDuplicate(e.target.value);
+                                    }}
+                                    className="p-2 border border-gray-300 rounded w-full max-w-xs"
+                                />
+
+
+                                <button
+                                    disabled={loadingCreateSendbirdUser
+                                    || !address || !nickname}
+                                    onClick={createSendbirdUser}
+                                    className={`
+                                        ${loadingCreateSendbirdUser
+                                        || !address || !nickname ? "opacity-50 cursor-not-allowed" : ""}
+                                        p-2 bg-blue-500 text-zinc-100 rounded
+                                    `}>
+                                    프로필 생성
+                                </button>
+                            </div>
+
+                        </div>
+                    )}
+
+                    {/* 회원정보가 있는 경우 회원정보 보여주기 */}
+                    {/*
+                        닉네임 sendbirdUser.nickname,
+                        프로필사진 sendbirdUser.profileUrl,
+                    */}
+
+                    {address && !loadingSendbirdUser && sendbirdUser && (
+                        <div className="w-full flex flex-col justify-center items-center gap-2 p-2">
+                            <div className="flex flex-row items-center justify-center gap-2">
+                                <span className="text-sm texxt-gray-500 font-semibold">
+                                    회원정보
+                                </span>
+                                {/*
+                                <button
+                                    disabled={loadingCreateSendbirdUser}
+                                    onClick={createSendbirdUser}
+                                    className={`
+                                        ${loadingCreateSendbirdUser ? "opacity-50 cursor-not-allowed" : ""}
+                                        p-2 bg-blue-500 text-zinc-100 rounded
+                                    `}>
+                                    프로필 갱신
+                                </button>
+                                */}
+                            </div>
+
+                            <div className='w-full flex flex-col items-start justify-start gap-2 p-4 border border-gray-300 rounded-lg'>
+
+                                <Image
+                                    src={sendbirdUser.profileUrl || "/icon-profile.png"}
+                                    alt="Profile Picture"
+                                    width={50}
+                                    height={50}
+                                    className="rounded-full object-cover bg-gray-300
+                                    border border-gray-300 w-12 h-12"
+                                />
+                                <span className="text-xl font-semibold text-blue-500">
+                                    {sendbirdUser.nickname}
+                                </span>
+                            </div>
+                        </div>
+                    )}
+                            
+
+
+
+
+
                     {loadingUserData && (
                         <div className="w-full flex flex-col justify-center items-center gap-2 p-2">
                             <div className="flex flex-row items-center justify-center gap-2">
@@ -1585,6 +1750,9 @@ function AgentPage(
                             </div>
                         </div>
                     )}
+
+
+                    {/*
 
                     {address
                     && !loadingUserData
@@ -1650,21 +1818,17 @@ function AgentPage(
 
                         </div>
                     )}
+                    */}
 
 
-
+                    
                     <div className='w-full  flex flex-col gap-5 '>
 
-                        {/* profile picture */}
-                    
-
-
-
+                        {/*
                         {address && userCode && (
                             <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div className='flex flex-row items-center gap-2'>
-                                    {/* dot */}
                                     <div className='w-2 h-2 bg-green-500 rounded-full' />
                                     <span className='text-sm font-semibold text-blue-500'>
                                         내 이름
@@ -1708,7 +1872,6 @@ function AgentPage(
                             <div className=' flex flex-col xl:flex-row gap-2 items-start justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div className='flex flex-row items-center gap-2'>
-                                    {/* dot */}
                                     <div className='w-2 h-2 bg-green-500 rounded-full' />
                                     <span className='text-sm font-semibold text-blue-500'>
                                         {!userCode ? "이름을 입력하세요" :
@@ -1740,21 +1903,6 @@ function AgentPage(
                                                 return;
                                             }
 
-
-
-                                            /*
-                                            if (!/^[a-z0-9]*$/.test(e.target.value)) {
-                                                toast.error(Nickname_should_be_alphanumeric_lowercase);
-                                                return;
-                                            }
-
-
-
-                                            if ( e.target.value.length > 10) {
-                                                toast.error(Nickname_should_be_at_least_5_characters_and_at_most_10_characters);
-                                                return;
-                                            }
-                                            */
 
                                             //setNickname(e.target.value);
 
@@ -1822,6 +1970,7 @@ function AgentPage(
 
                             </div>
                         )}
+                        */}
 
 
                         {false && userCode && (
@@ -2350,7 +2499,6 @@ function AgentPage(
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/affiliation"
-                        + "?start=" + start
                     );
                   }}
                   className="flex flex-col justify-center items-center gap-0
