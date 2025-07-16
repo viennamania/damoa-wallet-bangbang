@@ -1301,8 +1301,8 @@ function IndexPage(
 
             {/* 회원아이디를 만들어주세요 */}
             {
-            !loadingUserData
-            && address && !userCode && (
+            !loadingSendbirdUser
+            && address && !sendbirdUser && (
 
                 <div className="w-full flex flex-col justify-start items-start gap-2 p-2">
                     {/* 회원아이디를 만들어주세요 */}
@@ -1319,7 +1319,7 @@ function IndexPage(
                     onClick={() => {
 
                         router.push(
-                        "/" + params.lang + "/" + params.chain + "/my-page" + "?start=" + start
+                        "/" + params.lang + "/" + params.chain + "/my-page"
                         );
 
                     }}
