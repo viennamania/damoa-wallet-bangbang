@@ -1159,6 +1159,11 @@ function AgentPage(
     }
 
 
+    // search user by nickname
+    const [searchNickname, setSearchNickname] = useState("");
+
+
+
     // call api /api/sendbirds/getAllUsers
     const [loadingSendbirdUsers, setLoadingSendbirdUsers] = useState(false);
     const [sendbirdUsers, setSendbirdUsers] = useState([] as any[]);
@@ -1364,6 +1369,45 @@ function AgentPage(
                         />
                         <h2 className="text-xl font-bold">회원 목록</h2>
                     </div>
+
+
+                    {/* 검색 기능 */}
+                    <div className="flex flex-row gap-2 mb-4">
+                        <Image
+                            src="/icon-search.png"
+                            alt="Search Icon"
+                            width={24}
+                            height={24}
+                            className="self-center"
+                        />
+                        <input
+                            type="text"
+                            placeholder="회원 검색 (닉네임)"
+                            value={searchNickname}
+                            onChange={(e) => setSearchNickname(e.target.value)}
+                            className="w-full p-2 border border-gray-300 rounded-lg"
+                        />
+                        <Button
+                            onClick={() => {
+                                // 검색 기능 구현
+                                // 예시: sendbirdUsers.filter(user => user.nickname.includes(searchNickname));
+                                // 현재는 전체 회원 목록을 보여줍니다.
+                                getSendbirdUsers();
+                            }}
+                            className={`
+                                ${searchNickname ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-700"}
+                                w-32  flex-shrink-0
+                                hover:bg-blue-600 hover:text-white
+                                px-4 py-2 rounded-lg
+                                transition-colors duration-200
+                            `}
+                        >
+                            검색
+                        </Button>
+                    </div>
+
+
+
 
                     { loadingSendbirdUsers && (
                         <div className="flex justify-center items-center py-4">
