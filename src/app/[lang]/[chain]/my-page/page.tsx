@@ -1640,6 +1640,22 @@ function AgentPage(
 
                     )}
 
+                    {/* icon-my-page.png */}
+
+                    {/* icon-invite.png */}
+                    <div className="flex items-center gap-2 mb-4
+                        border-b-2 border-gray-200 pb-2">
+                        <Image
+                            src="/icon-my-page.png"
+                            alt="My Page Icon"
+                            width={24}
+                            height={24}
+                        />
+                        <h2 className="text-xl font-bold">
+                            마이페이지
+                        </h2>
+                    </div>
+
 
                     {address && loadingSendbirdUser && (
                         <div className="w-full flex flex-col justify-center items-center gap-2 p-2">

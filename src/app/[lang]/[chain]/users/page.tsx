@@ -1160,10 +1160,17 @@ function AgentPage(
 
 
     // call api /api/sendbirds/getAllUsers
+    const [loadingSendbirdUsers, setLoadingSendbirdUsers] = useState(false);
     const [sendbirdUsers, setSendbirdUsers] = useState([] as any[]);
     const [pageToken, setPageToken] = useState("");
     const getSendbirdUsers = async () => {
         try {
+
+            if (loadingSendbirdUsers) {
+                return;
+            }
+
+            setLoadingSendbirdUsers(true);
             const response = await fetch("/api/sendbird/getAllUsers", {
                 method: "POST",
                 headers: {
@@ -1194,8 +1201,13 @@ function AgentPage(
 
             setPageToken(data.result.next || "");
 
+            setLoadingSendbirdUsers(false);
+
+
         } catch (error) {
             console.error("getSendbirdUsers error", error);
+
+            setLoadingSendbirdUsers(false);
         }
     }
 
@@ -1340,7 +1352,26 @@ function AgentPage(
 
                {/* list of sendbird users */}
                 <div className="w-full mb-5">
-                    <h2 className="text-xl font-semibold mb-3">회원목록</h2>
+                    
+                    {/* icon-invite.png */}
+                    <div className="flex items-center gap-2 mb-4
+                        border-b-2 border-gray-200 pb-2">
+                        <Image
+                            src="/icon-invite.png"
+                            alt="Invite Icon"
+                            width={24}
+                            height={24}
+                        />
+                        <h2 className="text-xl font-bold">회원 목록</h2>
+                    </div>
+
+                    { loadingSendbirdUsers && (
+                        <div className="flex justify-center items-center py-4">
+                            <p className="text-gray-500">회원 목록을 불러오는 중...</p>
+                        </div>
+                    )}
+
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {sendbirdUsers.map((user) => (
 
@@ -1403,12 +1434,27 @@ function AgentPage(
                         ))}
                     </div>
                     {pageToken && (
-                        <Button
-                            onClick={getSendbirdUsers}
-                            className="w-full mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-                        >
-                            더 불러오기
-                        </Button>
+                        <>
+
+                            {loadingSendbirdUsers && (
+                                <div className="flex justify-center items-center py-4">
+                                    <p className="text-gray-500">더 많은 회원을 불러오는 중...</p>
+                                </div>
+                            )}
+
+                            {!loadingSendbirdUsers && (
+
+
+                                <Button
+                                    onClick={getSendbirdUsers}
+                                    className="w-full mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+                                >
+                                    더 불러오기
+                                </Button>
+
+                            )}
+
+                        </>
                     )}
                 </div>
 
@@ -1512,7 +1558,7 @@ function AgentPage(
                     </p>
                     </button>
 
-                    {/* 친구목록 */}
+                    {/* 회원목록 */}
                     <button
                     /*
                     onClick={() => {
