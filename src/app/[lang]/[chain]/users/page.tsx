@@ -1270,9 +1270,77 @@ function AgentPage(
 
 
 
+
+                {!address && (
+
+                <div className="
+                    mt-16
+                    w-full flex flex-col justify-center items-center gap-2 p-2">
+                
+                    <ConnectButton
+                    client={client}
+                    wallets={wallets}
+                    accountAbstraction={{
+                        chain: bsc,
+                        sponsorGas: true
+                    }}
+                    
+                    theme={"light"}
+
+                    // button color is dark skyblue convert (49, 103, 180) to hex
+                    connectButton={{
+                        style: {
+                        backgroundColor: "#3167b4", // dark skyblue
+                        // font color is gray-300
+                        color: "#f3f4f6", // gray-300
+                        padding: "10px 20px",
+                        borderRadius: "10px",
+                        fontSize: "16px",
+                        // w-full
+                        width: "100%",
+                        },
+                        label: "로그인 및 회원가입",
+                    }}
+
+                    connectModal={{
+                        size: "wide", 
+                        //size: "compact",
+                        titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
+                        showThirdwebBranding: false,
+                    }}
+
+                    locale={"ko_KR"}
+                    //locale={"en_US"}
+                    />
+
+
+
+
+                    <div className="mt-20
+                    flex flex-row gap-2 justify-center items-center">
+                    <span className="text-sm md:text-lg text-zinc-500">
+                        이용방법이 궁금하신가요?
+                    </span>
+                    <Link
+                        href="#"
+                        className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+                    >
+                        이용가이드
+                    </Link>
+                    </div>
+
+
+
+                </div>
+
+                )}
+
+
+
+
                {/* list of sendbird users */}
                 <div className="w-full mb-5">
-                    <h2 className="text-xl font-semibold mb-3">Sendbird Users</h2>
+                    <h2 className="text-xl font-semibold mb-3">회원목록</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {sendbirdUsers.map((user) => (
                             <div key={user.user_id} className="p-4 bg-white rounded-lg shadow-md">
@@ -1286,8 +1354,8 @@ function AgentPage(
                                     />
                                     <div>
                                         <h3 className="text-lg font-semibold">{user.nickname}</h3>
-                                        <p className="text-sm text-gray-600">ID: {user.user_id.length > 10 ? user.user_id.slice(0, 10) + '...' : user.user_id}</p>
-                                        <p className="text-sm text-gray-500">Online: {user.is_online ? "Yes" : "No"}</p>
+                                        <p className="text-sm text-gray-600">회원 지갑: {user.user_id.length > 10 ? user.user_id.slice(0, 10) + '...' : user.user_id}</p>
+                                        <p className="text-sm text-gray-500">온라인: {user.is_online ? "예" : "아니오"}</p>
                                     </div>
                                 </div>
                             </div>
@@ -1296,19 +1364,204 @@ function AgentPage(
                     {pageToken && (
                         <Button
                             onClick={getSendbirdUsers}
-                            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+                            className="w-full mt-4 bg-blue-500 text-white px-4 py-2 rounded"
                         >
-                            Load More
+                            더 불러오기
                         </Button>
                     )}
                 </div>
 
 
-
-
-
-
             </div>
+
+
+
+
+
+
+            {/* 이용방법인 궁금하신가요? 이용가이드 */}
+            {/* 계속하면 이용약관에 동의하는것입니다. 이용약관 */}
+            {/* 개인정보 처리방침을 확인하세요. 개인정보 처리방침 */}
+            {!address && (
+
+                <div className="w-full fixed bottom-0 left-0 right-0 items-center justify-center pb-5">
+
+
+                <div className="flex flex-col items-center justify-center gap-2">
+
+
+
+                    <div className="
+                    flex flex-row gap-2 justify-center items-center">
+                    <span className="text-sm md:text-lg text-zinc-500">
+                        계속하면 이용약관에 동의하는것입니다.
+                    </span>
+                    <Link
+                        href="#"
+                        className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+                    >
+                        이용약관
+                    </Link>
+                    </div>
+
+                    <div className="
+                    flex flex-row gap-2 justify-center items-center">
+                    <span className="text-sm md:text-lg text-zinc-500">
+                        개인정보 처리방침을 확인하세요.
+                    </span>
+                    <Link
+                        href="#"
+                        className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+                    >
+                        개인정보 처리방침
+                    </Link>
+                    </div>
+
+
+
+                </div>
+
+                </div>
+
+            )}
+
+            {/* footer menu */}
+            {/* 홈 / NFT 상점 / 친구목록 / 마이페이지 */}
+            {/* same width footer menu */}
+
+            {address && (
+
+                <div className="w-full fixed bottom-0 left-0 right-0 items-center justify-center">
+
+
+                <div className="w-full grid grid-cols-3 gap-0 justify-center items-center p-0
+                    bg-zinc-100 rounded-lg text-center
+                ">
+
+                    {/* logo */}
+
+                    {/* home */}
+                    {/* selected state */}
+                    
+                    <button
+                    /*
+                    onClick={() => {
+                        router.push(
+                        "/" + params.lang + "/" + params.chain + "/"
+                        );
+                    }}
+                    */
+
+                    className="flex flex-col justify-center items-center gap-0
+                        bg-blue-200 text-blue-800
+                        transition duration-300 ease-in-out
+                        transform hover:-translate-y-1
+                        p-2
+                    "
+                    >
+                    <Image
+                        src="/icon-home.png"
+                        alt="Home"
+                        width={35}
+                        height={35}
+                        className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
+                    />
+                    <p className="text-xs md:text-lg text-gray-600 font-bold">
+                        홈
+                    </p>
+                    </button>
+
+                    {/* NFT 상점 */}
+                    {/*
+                    <button
+                    onClick={() => {
+                        router.push(
+                        "/" + params.lang + "/" + params.chain + "/my-nft-snowball"
+                        + "?start=" + start
+                        );
+                    }}
+                    className="flex flex-col justify-center items-center gap-0
+                        hover:bg-blue-200 hover:text-blue-800
+                        transition duration-300 ease-in-out
+                        transform hover:-translate-y-1
+                        p-2
+                    "
+                    >
+                    <Image
+                        src="/icon-shopping-cart.png"
+                        alt="NFT Market"
+                        width={35}
+                        height={35}
+                        className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
+                    />
+                    <p className="text-xs md:text-lg text-gray-600 font-bold">
+                        NFT 상점
+                    </p>
+                    </button>
+                    */}
+
+                    {/* NFT 상점 */}
+
+                    {/* 친구 초대 */}
+                    <button
+                    onClick={() => {
+                        router.push(
+                        "/" + params.lang + "/" + params.chain + "/users"
+                        );
+                    }}
+                    className="flex flex-col justify-center items-center gap-0
+                        hover:bg-blue-200 hover:text-blue-800
+                        transition duration-300 ease-in-out
+                        transform hover:-translate-y-1
+                        p-2
+                    "
+                    >
+                    <Image
+                        src="/icon-invite.png"
+                        alt="Invite Friend"
+                        width={35}
+                        height={35}
+                        className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
+                    />
+                    <p className="text-xs md:text-lg text-gray-600 font-bold">
+                        친구목록
+                    </p>
+                    </button>
+
+                    {/* 마이페이지 */}
+                    <button
+                    onClick={() => {
+                        router.push(
+                        "/" + params.lang + "/" + params.chain + "/my-page"
+                        );
+                    }}
+                    className="flex flex-col justify-center items-center gap-0
+                        hover:bg-blue-200 hover:text-blue-800
+                        transition duration-300 ease-in-out
+                        transform hover:-translate-y-1
+                        p-2
+                    "
+                    >
+                    <Image
+                        src="/icon-my-page.png"
+                        alt="My Page"
+                        width={35}
+                        height={35}
+                        className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
+                    />
+                    <p className="text-xs md:text-lg text-gray-600 font-bold">
+                        마이페이지
+                    </p>
+                    </button>
+
+                </div>
+
+                </div>
+
+            )}
+
+
+
 
         </main>
 
@@ -1318,77 +1571,6 @@ function AgentPage(
 
           
 
-function Header(
-    {
-        center,
-        agent,
-        tokenId,
-    } : {
-        center: string
-        agent: string
-        tokenId: string
-    }
-) {
-
-    const router = useRouter();
-  
-  
-    return (
-      <header className="flex flex-col items-center mb-5 md:mb-10">
-  
-        {/* header menu */}
-        <div className="w-full flex flex-row justify-between items-center gap-2
-          bg-green-500 p-4 rounded-lg mb-5
-        ">
-            {/* logo */}
-            <button
-                onClick={() => {
-                    router.push('/?center=' + center + '&agent=' + agent + '&tokenId=' + tokenId);
-                }}
-            >            
-                <div className="flex flex-row gap-2 items-center">
-                    <Image
-                    src="/logo-aiagent.png"
-                    alt="Circle Logo"
-                    width={35}
-                    height={35}
-                    className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
-                    />
-                    <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                    AI Agent
-                    </span>
-                </div>
-            </button>
-
-            {/*}
-            <div className="flex flex-row gap-2 items-center">
-                <button
-                onClick={() => {
-                    router.push(
-                        "/tbot?center=" + center + "agent=" + agent + "&tokenId=" + tokenId
-                    );
-                }}
-                className="text-gray-600 hover:underline text-xs xl:text-lg"
-                >
-                TBOT
-                </button>
-                <button
-                onClick={() => {
-                    router.push('/profile?center=' + center + 'agent=' + agent + '&tokenId=' + tokenId);
-                }}
-                className="text-gray-600 hover:underline text-xs xl:text-lg"
-                >
-                SETTINGS
-                </button>
-            </div>
-            */}
-
-
-        </div>
-        
-      </header>
-    );
-  }
 
 
 

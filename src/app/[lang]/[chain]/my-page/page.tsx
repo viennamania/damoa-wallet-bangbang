@@ -2420,7 +2420,7 @@ function AgentPage(
 
 
           {/* footer menu */}
-          {/* 홈 / NFT 상점 / 친구초대 / 마이페이지 */}
+          {/* 홈 / NFT 상점 / 친구목록 / 마이페이지 */}
           {/* same width footer menu */}
 
           {true && (
@@ -2497,7 +2497,7 @@ function AgentPage(
                 <button
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/affiliation"
+                      "/" + params.lang + "/" + params.chain + "/users"
                     );
                   }}
                   className="flex flex-col justify-center items-center gap-0
@@ -2515,7 +2515,7 @@ function AgentPage(
                     className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
                   />
                   <p className="text-xs md:text-lg text-gray-600 font-bold">
-                    친구초대
+                    친구목록
                   </p>
                 </button>
 

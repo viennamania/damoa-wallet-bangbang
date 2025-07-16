@@ -1887,194 +1887,189 @@ function IndexPage(
 
 
 
-          {/* 이용방법인 궁금하신가요? 이용가이드 */}
-          {/* 계속하면 이용약관에 동의하는것입니다. 이용약관 */}
-          {/* 개인정보 처리방침을 확인하세요. 개인정보 처리방침 */}
-          {!address && (
+      {/* 이용방법인 궁금하신가요? 이용가이드 */}
+      {/* 계속하면 이용약관에 동의하는것입니다. 이용약관 */}
+      {/* 개인정보 처리방침을 확인하세요. 개인정보 처리방침 */}
+      {!address && (
 
-            <div className="w-full fixed bottom-0 left-0 right-0 items-center justify-center pb-5">
-
-
-              <div className="flex flex-col items-center justify-center gap-2">
+        <div className="w-full fixed bottom-0 left-0 right-0 items-center justify-center pb-5">
 
 
-
-                <div className="
-                  flex flex-row gap-2 justify-center items-center">
-                  <span className="text-sm md:text-lg text-zinc-500">
-                    계속하면 이용약관에 동의하는것입니다.
-                  </span>
-                  <Link
-                    href="#"
-                    className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
-                  >
-                    이용약관
-                  </Link>
-                </div>
-
-                <div className="
-                  flex flex-row gap-2 justify-center items-center">
-                  <span className="text-sm md:text-lg text-zinc-500">
-                    개인정보 처리방침을 확인하세요.
-                  </span>
-                  <Link
-                    href="#"
-                    className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
-                  >
-                    개인정보 처리방침
-                  </Link>
-                </div>
+          <div className="flex flex-col items-center justify-center gap-2">
 
 
 
-              </div>
-
+            <div className="
+              flex flex-row gap-2 justify-center items-center">
+              <span className="text-sm md:text-lg text-zinc-500">
+                계속하면 이용약관에 동의하는것입니다.
+              </span>
+              <Link
+                href="#"
+                className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+              >
+                이용약관
+              </Link>
             </div>
 
-          )}
-
-          {/* footer menu */}
-          {/* 홈 / NFT 상점 / 친구초대 / 마이페이지 */}
-          {/* same width footer menu */}
-
-          {address && (
-
-            <div className="w-full fixed bottom-0 left-0 right-0 items-center justify-center">
-
-
-              <div className="w-full grid grid-cols-3 gap-0 justify-center items-center p-0
-                bg-zinc-100 rounded-lg text-center
-              ">
-
-                {/* logo */}
-
-                {/* home */}
-                {/* selected state */}
-                
-                <button
-                  /*
-                  onClick={() => {
-                    router.push(
-                      "/" + params.lang + "/" + params.chain + "/"
-                    );
-                  }}
-                  */
-
-                  className="flex flex-col justify-center items-center gap-0
-                    bg-blue-200 text-blue-800
-                    transition duration-300 ease-in-out
-                    transform hover:-translate-y-1
-                    p-2
-                  "
-                >
-                  <Image
-                    src="/icon-home.png"
-                    alt="Home"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
-                  />
-                  <p className="text-xs md:text-lg text-gray-600 font-bold">
-                    홈
-                  </p>
-                </button>
-
-                {/* NFT 상점 */}
-                {/*
-                <button
-                  onClick={() => {
-                    router.push(
-                      "/" + params.lang + "/" + params.chain + "/my-nft-snowball"
-                      + "?start=" + start
-                    );
-                  }}
-                  className="flex flex-col justify-center items-center gap-0
-                    hover:bg-blue-200 hover:text-blue-800
-                    transition duration-300 ease-in-out
-                    transform hover:-translate-y-1
-                    p-2
-                  "
-                >
-                  <Image
-                    src="/icon-shopping-cart.png"
-                    alt="NFT Market"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
-                  />
-                  <p className="text-xs md:text-lg text-gray-600 font-bold">
-                    NFT 상점
-                  </p>
-                </button>
-                */}
-
-                {/* NFT 상점 */}
-
-                {/* 친구 초대 */}
-                <button
-                  onClick={() => {
-                    router.push(
-                      "/" + params.lang + "/" + params.chain + "/affiliation"
-                    );
-                  }}
-                  className="flex flex-col justify-center items-center gap-0
-                    hover:bg-blue-200 hover:text-blue-800
-                    transition duration-300 ease-in-out
-                    transform hover:-translate-y-1
-                    p-2
-                  "
-                >
-                  <Image
-                    src="/icon-invite.png"
-                    alt="Invite Friend"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
-                  />
-                  <p className="text-xs md:text-lg text-gray-600 font-bold">
-                    친구초대
-                  </p>
-                </button>
-
-                {/* 마이페이지 */}
-                <button
-                  onClick={() => {
-                    router.push(
-                      "/" + params.lang + "/" + params.chain + "/my-page"
-                    );
-                  }}
-                  className="flex flex-col justify-center items-center gap-0
-                    hover:bg-blue-200 hover:text-blue-800
-                    transition duration-300 ease-in-out
-                    transform hover:-translate-y-1
-                    p-2
-                  "
-                >
-                  <Image
-                    src="/icon-my-page.png"
-                    alt="My Page"
-                    width={35}
-                    height={35}
-                    className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
-                  />
-                  <p className="text-xs md:text-lg text-gray-600 font-bold">
-                    마이페이지
-                  </p>
-                </button>
-
-              </div>
-
+            <div className="
+              flex flex-row gap-2 justify-center items-center">
+              <span className="text-sm md:text-lg text-zinc-500">
+                개인정보 처리방침을 확인하세요.
+              </span>
+              <Link
+                href="#"
+                className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+              >
+                개인정보 처리방침
+              </Link>
             </div>
 
-          )}
 
 
-      
+          </div>
+
+        </div>
+
+      )}
+
+      {/* footer menu */}
+      {/* 홈 / NFT 상점 / 친구목록 / 마이페이지 */}
+      {/* same width footer menu */}
+
+      {address && (
+
+        <div className="w-full fixed bottom-0 left-0 right-0 items-center justify-center">
 
 
-      {/*}
-      <MarketResources />
-      */}
+          <div className="w-full grid grid-cols-3 gap-0 justify-center items-center p-0
+            bg-zinc-100 rounded-lg text-center
+          ">
+
+            {/* logo */}
+
+            {/* home */}
+            {/* selected state */}
+            
+            <button
+              /*
+              onClick={() => {
+                router.push(
+                  "/" + params.lang + "/" + params.chain + "/"
+                );
+              }}
+              */
+
+              className="flex flex-col justify-center items-center gap-0
+                bg-blue-200 text-blue-800
+                transition duration-300 ease-in-out
+                transform hover:-translate-y-1
+                p-2
+              "
+            >
+              <Image
+                src="/icon-home.png"
+                alt="Home"
+                width={35}
+                height={35}
+                className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
+              />
+              <p className="text-xs md:text-lg text-gray-600 font-bold">
+                홈
+              </p>
+            </button>
+
+            {/* NFT 상점 */}
+            {/*
+            <button
+              onClick={() => {
+                router.push(
+                  "/" + params.lang + "/" + params.chain + "/my-nft-snowball"
+                  + "?start=" + start
+                );
+              }}
+              className="flex flex-col justify-center items-center gap-0
+                hover:bg-blue-200 hover:text-blue-800
+                transition duration-300 ease-in-out
+                transform hover:-translate-y-1
+                p-2
+              "
+            >
+              <Image
+                src="/icon-shopping-cart.png"
+                alt="NFT Market"
+                width={35}
+                height={35}
+                className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
+              />
+              <p className="text-xs md:text-lg text-gray-600 font-bold">
+                NFT 상점
+              </p>
+            </button>
+            */}
+
+            {/* NFT 상점 */}
+
+            {/* 친구 초대 */}
+            <button
+              onClick={() => {
+                router.push(
+                  "/" + params.lang + "/" + params.chain + "/users"
+                );
+              }}
+              className="flex flex-col justify-center items-center gap-0
+                hover:bg-blue-200 hover:text-blue-800
+                transition duration-300 ease-in-out
+                transform hover:-translate-y-1
+                p-2
+              "
+            >
+              <Image
+                src="/icon-invite.png"
+                alt="Invite Friend"
+                width={35}
+                height={35}
+                className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
+              />
+              <p className="text-xs md:text-lg text-gray-600 font-bold">
+                친구목록
+              </p>
+            </button>
+
+            {/* 마이페이지 */}
+            <button
+              onClick={() => {
+                router.push(
+                  "/" + params.lang + "/" + params.chain + "/my-page"
+                );
+              }}
+              className="flex flex-col justify-center items-center gap-0
+                hover:bg-blue-200 hover:text-blue-800
+                transition duration-300 ease-in-out
+                transform hover:-translate-y-1
+                p-2
+              "
+            >
+              <Image
+                src="/icon-my-page.png"
+                alt="My Page"
+                width={35}
+                height={35}
+                className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
+              />
+              <p className="text-xs md:text-lg text-gray-600 font-bold">
+                마이페이지
+              </p>
+            </button>
+
+          </div>
+
+        </div>
+
+      )}
+
+
+
 
     </main>
   );

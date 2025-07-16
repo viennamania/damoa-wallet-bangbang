@@ -1179,7 +1179,7 @@ function AgentPage(
                 />
                 */}
 
-                {/* 카카오톡 친구초대 */}
+                {/* 카카오톡 친구목록 */}
                 <div className="w-full flex flex-col gap-2 items-start justify-start p-2">
                     
                     <div className="w-full flex flex-row items-center justify-start gap-2">
@@ -1191,7 +1191,7 @@ function AgentPage(
                             className="rounded-lg"
                         />
                         <h2 className="text-sm md:text-lg font-semibold text-zinc-800">
-                            카카오톡 친구초대
+                            카카오톡 친구목록
                         </h2>
                     </div>
 
@@ -1207,7 +1207,7 @@ function AgentPage(
                             }}
                             className="w-full bg-[#3167b4] text-white px-4 py-2 rounded-lg hover:bg-[#3167b4]"
                         >
-                            카카오톡 친구초대하기
+                            카카오톡 친구목록하기
                         </button>
 
                     </div>
@@ -2017,7 +2017,7 @@ function AgentPage(
                     /*
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/affiliation"
+                      "/" + params.lang + "/" + params.chain + "/users"
                     );
                   }}
                     */
@@ -2036,7 +2036,7 @@ function AgentPage(
                     className="rounded-lg w-5 h-5 xl:w-10 xl:h-10"
                   />
                   <p className="text-xs md:text-lg text-gray-600 font-bold">
-                    친구초대
+                    친구목록
                   </p>
                 </button>
 
