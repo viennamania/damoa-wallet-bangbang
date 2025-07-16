@@ -4,6 +4,8 @@
 
 import React, { use, useEffect, useState } from 'react';
 
+import Link from "next/link";
+
 import { toast } from 'react-hot-toast';
 import { client } from '../../../client';
 
@@ -1370,51 +1372,70 @@ export default function SendUsdt({ params }: any) {
         p-4 w-full min-h-[100vh] bg-[#E7EDF1]">
 
 
-        {!address && (
+            {!address && (
 
-          <div className="
-          mt-16
-          w-full flex flex-col justify-center items-center gap-2 p-2">
+            <div className="
+                mt-16
+                w-full flex flex-col justify-center items-center gap-2 p-2">
+            
+                <ConnectButton
+                client={client}
+                wallets={wallets}
+                accountAbstraction={{
+                    chain: bsc,
+                    sponsorGas: true
+                }}
+                
+                theme={"light"}
+
+                // button color is dark skyblue convert (49, 103, 180) to hex
+                connectButton={{
+                    style: {
+                    backgroundColor: "#3167b4", // dark skyblue
+                    // font color is gray-300
+                    color: "#f3f4f6", // gray-300
+                    padding: "10px 20px",
+                    borderRadius: "10px",
+                    fontSize: "16px",
+                    // w-full
+                    width: "100%",
+                    },
+                    label: "로그인 및 회원가입",
+                }}
+
+                connectModal={{
+                    size: "wide", 
+                    //size: "compact",
+                    titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
+                    showThirdwebBranding: false,
+                }}
+
+                locale={"ko_KR"}
+                //locale={"en_US"}
+                />
 
 
-            <ConnectButton
-              client={client}
-              wallets={wallets}
-              accountAbstraction={{
-                chain: bsc,
-                sponsorGas: true
-              }}
-              
-              theme={"light"}
 
-              // button color is dark skyblue convert (49, 103, 180) to hex
-              connectButton={{
-                style: {
-                  backgroundColor: "#3167b4", // dark skyblue
-                  // font color is gray-300
-                  color: "#f3f4f6", // gray-300
-                  padding: "10px 20px",
-                  borderRadius: "10px",
-                  fontSize: "16px",
-                  // w-full
-                  width: "100%",
-                },
-                label: "로그인 및 회원가입",
-              }}
 
-              connectModal={{
-                size: "wide", 
-                //size: "compact",
-                titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
-                showThirdwebBranding: false,
-              }}
+                <div className="mt-20
+                flex flex-row gap-2 justify-center items-center">
+                <span className="text-sm md:text-lg text-zinc-500">
+                    이용방법이 궁금하신가요?
+                </span>
+                <Link
+                    href="#"
+                    className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+                >
+                    이용가이드
+                </Link>
+                </div>
 
-              locale={"ko_KR"}
-              //locale={"en_US"}
-            />
 
-          </div>
-        )}
+
+            </div>
+
+            )}
+
 
 
 

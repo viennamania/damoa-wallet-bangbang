@@ -4,6 +4,9 @@
 
 import React, { use, useEffect, useState } from 'react';
 
+import Link from "next/link";
+
+
 import { toast } from 'react-hot-toast';
 import { client } from '../../../../client';
 
@@ -218,8 +221,6 @@ export default function SendUsdt({ params }: any) {
       walletAddress: data,
     })
 
-    // close scanner
-    setShowQrScanner(false);
 
     /*
     try {
@@ -248,7 +249,7 @@ export default function SendUsdt({ params }: any) {
 
 
 
-
+  const userid = params.userid;
 
 
 
@@ -258,15 +259,7 @@ export default function SendUsdt({ params }: any) {
   const searchParams = useSearchParams();
  
 
-  const token = searchParams.get('token');
-
-  const center = searchParams.get('center');
-
-
-  const agent = searchParams.get('agent');
-  const agentNumber = searchParams.get('tokenId');
-
-  
+  const token = "USDT"; 
 
   //console.log("token", token);
 
@@ -500,194 +493,6 @@ export default function SendUsdt({ params }: any) {
 
 
 
-  /*
-  // swap token balance
-  const [swapTokenBalance, setSwapTokenBalance] = useState(0);
-  useEffect(() => {
-
-    // get the balance
-    const getSwapTokenBalance = async () => {
-
-      try {
-        ///console.log('getBalance address', address);
-
-        if (token === "USDT") {
-          
-          const contract = getContract({
-            client,
-            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: contractAddressKCT,
-          });
-          
-          const result = await balanceOf({
-            contract : contract as any,
-            address: address || "",
-          });
-          
-          if (result !== undefined && result !== null) {
-            setSwapTokenBalance( Number(result) / 10 ** 18 );
-          } else {
-            setSwapTokenBalance(0);
-          }
-          
-        } else if (token === "KCT") {
-          const contract = getContract({
-            client,
-            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: contractAddress,
-          });
-          
-          const result = await balanceOf({
-            contract : contract as any,
-            address: address || "",
-          });
-          
-          if (result !== undefined && result !== null) {
-            setSwapTokenBalance( Number(result) / 10 ** 6 );
-          } else {
-            setSwapTokenBalance(0);
-          }
-        }
-      } catch (error) {
-        console.error("Error getting swap token balance:", error);
-        setSwapTokenBalance(0);
-      }
-
-    };
-
-    if (address) getSwapTokenBalance();
-
-    const interval = setInterval(() => {
-      if (address) getSwapTokenBalance();
-    } , 1000);
-
-    return () => clearInterval(interval);
-
-  } , [address, contract, params.chain, token]);
-  */
-
-
-
-
-
-
-
-
-
-
-  const [user, setUser] = useState(
-    {
-      _id: '',
-      id: 0,
-      email: '',
-      nickname: '',
-      avatar: '',
-      mobile: '',
-      walletAddress: '',
-      createdAt: '',
-      settlementAmountOfFee: '',
-      tronWalletAddress: '',
-      tronWalletPrivateKey: '',
-    }
-  );
-
-  useEffect(() => {
-
-    if (!address) return;
-
-    const getUser = async () => {
-
-      const response = await fetch('/api/user/getUserByWalletAddress', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          walletAddress: address,
-        }),
-      });
-
-      if (!response) return;
-
-      const data = await response.json();
-
-
-      setUser(data.result);
-
-    };
-
-    getUser();
-
-  }, [address]);
-
-
-
-
-
-
-
-
-  // get list of user wallets from api
-  const [users, setUsers] = useState([
-    {
-      _id: '',
-      id: 0,
-      email: '',
-      avatar: '',
-      nickname: '',
-      mobile: '',
-      walletAddress: '',
-      createdAt: '',
-      settlementAmountOfFee: '',
-    }
-  ]);
-
-  const [totalCountOfUsers, setTotalCountOfUsers] = useState(0);
-
-  useEffect(() => {
-
-    if (!address) return;
-
-    const getUsers = async () => {
-
-      const response = await fetch('/api/user/getAllUsers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-
-        }),
-      });
-
-      if (!response) return;
-
-      const data = await response.json();
-
-      console.log("getUsers", data);
-
-
-      ///setUsers(data.result.users);
-      // set users except the current user
-
-      setUsers(data.result.users.filter((user: any) => user.walletAddress !== address));
-
-
-
-      setTotalCountOfUsers(data.result.totalCount);
-
-    };
-
-    ///getUsers();
-
-
-  }, [address]);
-
-
-
-
-
-
 
 
 
@@ -716,70 +521,6 @@ export default function SendUsdt({ params }: any) {
   const [isVerifingOtp, setIsVerifingOtp] = useState(false);
 
   
-
-  const sendOtp = async () => {
-
-    setIsSendingOtp(true);
-      
-    const response = await fetch('/api/transaction/setOtp', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        lang: params.lang,
-        chain: params.chain,
-        walletAddress: address,
-        mobile: user.mobile,
-      }),
-    });
-
-    const data = await response.json();
-
-    //console.log("data", data);
-
-    if (data.result) {
-      setIsSendedOtp(true);
-      toast.success('OTP sent successfully');
-    } else {
-      toast.error('Failed to send OTP');
-    }
-
-    setIsSendingOtp(false);
-
-  };
-
-  const verifyOtp = async () => {
-
-    setIsVerifingOtp(true);
-      
-    const response = await fetch('/api/transaction/verifyOtp', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        lang: params.lang,
-        chain: params.chain,
-        walletAddress: address,
-        otp: otp,
-      }),
-    });
-
-    const data = await response.json();
-
-    //console.log("data", data);
-
-    if (data.status === 'success') {
-      setVerifiedOtp(true);
-      toast.success('OTP verified successfully');
-    } else {
-      toast.error('Failed to verify OTP');
-    }
-
-    setIsVerifingOtp(false);
-  
-  }
 
 
   const [wantToReceiveWalletAddress, setWantToReceiveWalletAddress] = useState(true);
@@ -814,7 +555,7 @@ export default function SendUsdt({ params }: any) {
 
 
 
-      console.log("recipient", recipient);
+   
 
       let transaction = null;
 
@@ -828,7 +569,7 @@ export default function SendUsdt({ params }: any) {
  
               contract: contract,
 
-              to: recipient.walletAddress,
+              to: userid,
               amount: amount,
           });
 
@@ -967,8 +708,8 @@ export default function SendUsdt({ params }: any) {
 
 
 
-  const [selectDeposit, setSelectDeposit] = useState(true);
-  const [selectWithdraw, setSelectWithdraw] = useState(false);
+  const [selectDeposit, setSelectDeposit] = useState(false);
+  const [selectWithdraw, setSelectWithdraw] = useState(true);
   const [selectSwap, setSelectSwap] = useState(false);
 
 
@@ -1014,313 +755,40 @@ export default function SendUsdt({ params }: any) {
 
   */
 
-  // 0xef236138f40fadCac5Af0E01bB51612ad116C91f
-  // usdt balance
-  // MKRW balance
-  const swapPoolAddress = "0xef236138f40fadCac5Af0E01bB51612ad116C91f";
-
-  const [swapPoolUsdtBalance, setSwapPoolUsdtBalance] = useState(0);
-  const [swapPoolKCTBalance, setSwapPoolKCTBalance] = useState(0);
-  useEffect(() => {
-    const getSwapPoolBalance = async () => {
-
-
-      const usdtBalance = await balanceOf({
-        contract: contract,
-        address: swapPoolAddress,
-      });
-
-      setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 6);
-
-      const MKRWBalance = await balanceOf({
-        contract: contractMKRW,
-        address: swapPoolAddress,
-      });
-
-      setSwapPoolKCTBalance(Number(MKRWBalance) / 10 ** 18);
-
-    };
-
-    getSwapPoolBalance();
-
-  }, [address, params.chain]);
-
-  //console.log("swapPoolUsdtBalance", swapPoolUsdtBalance);
-  //console.log("swapPoolKCTBalance", swapPoolKCTBalance);
-
-
-
-
-  // swap function
-  // 스왑할 수량
-  const [swapAmount, setSwapAmount] = useState(0);
-
-  // 스왑될 수량
-  const [swapAmountTo, setSwapAmountTo] = useState(0);
-
-
-  const [loadingSwap, setLoadingSwap] = useState(false);
-
-  const swap = async () => {
-    if (loadingSwap) {
-      return;
-    }
-
-    if (!address) {
-      toast.error('Please connect your wallet first');
-      return;
-    }
-
-    if (!swapAmount) {
-      toast.error('Please enter a valid amount');
-      return;
-    }
-
-
-
-    setLoadingSwap(true);
-
-    try {
-
-      // if swap USDT to KCT
-      // swapAmount is USDT amount
-      // send swapAmount USDT to swap pool address
-
-      if (token === "USDT") {
-        const contractUsdt = getContract({
-          client,
-          chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-          address: contractAddress,
-        });
-
-        const transaction = transfer({
-          contract: contractUsdt as any,
-          to: swapPoolAddress,
-          amount: swapAmount,
-        });
-
-        const { transactionHash } = await sendTransaction({
-          account: activeAccount as any,
-          transaction,
-        });
-
-        if (transactionHash) {
-          //toast.success(USDT_sent_successfully);
-
-          // api call to send swapAmount KCT to user wallet address
-
-          await fetch('/api/swap/sendKCT', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              lang: params.lang,
-              chain: params.chain,
-              walletAddress: address,
-              amount: swapAmountTo,
-              toWalletAddress: address,
-            }),
-          });
-
-
-          toast.success("스왑 완료");
-
-          // refresh swap pool balance
-
-          if (token === "USDT") {
-            const USDTBalance = await balanceOf({
-              contract: contract,
-              address: swapPoolAddress,
-            });
-            setSwapPoolKCTBalance(Number(USDTBalance) / 10 ** 18);
-          } else if (token === "MKRW") {
-
-            const usdtBalance = await balanceOf({
-              contract: contractMKRW,
-              address: swapPoolAddress,
-            });
-            setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 18);
-          }
-
-
-          // 
-
-
-
-          setSwapAmount(0); // reset amount
-          setSwapAmountTo(0); // reset amount to
-
-        } else {
-
-          toast.error("스왑 실패");
-        }
-
-      } else if (token === "MKRW") {
-
-        const transaction = transfer({
-          contract: contractMKRW,
-          to: swapPoolAddress,
-          amount: swapAmount,
-        });
-
-        const { transactionHash } = await sendTransaction({
-          account: activeAccount as any,
-          transaction,
-        });
-
-        if (transactionHash) {
-          //toast.success(USDT_sent_successfully);
-
-          // api call to send swapAmount USDT to user wallet address
-
-          await fetch('/api/swap/sendUsdt', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              lang: params.lang,
-              chain: params.chain,
-              walletAddress: address,
-              amount: swapAmountTo,
-              toWalletAddress: address,
-            }),
-          });
-
-          toast.success("스왑 완료");
-
-          // refresh swap pool balance
-          const contractUsdt = getContract({
-            client,
-            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: contractAddress,
-          });
-          const usdtBalance = await balanceOf({
-            contract: contractUsdt as any,
-            address: swapPoolAddress,
-          });
-          setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 6);
-
-          setSwapAmount(0); // reset amount
-          setSwapAmountTo(0); // reset amount to
-
-        } else {
-          toast.error("스왑 실패");
-        }
-
-      } else {
-        toast.error("잘못된 스왑 요청입니다.");
-      }
-
-
-
-    } catch (error) {
-      
-      console.error("error", error);
-
-      toast.error("스왑 실패");
-    }
-
-    setLoadingSwap(false);
-
-  }
-
   
 
-  // toggle qr scanner
-  const [showQrScanner, setShowQrScanner] = useState(false);
 
+    // get sendbird user data
+    const [loadingSendbirdUser, setLoadingSendbirdUser] = useState(false);
+    const [sendbirdUser, setSendbirdUser] = useState(null) as any;
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoadingSendbirdUser(true);
+            const response = await fetch("/api/sendbird/getOneUser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: userid
+                }),
+            });
 
+            const data = await response.json();
 
+            //console.log("sendbird user data", data);
 
-  
-  const [transferListKCT, setTransferListKCT] = useState([]);
-  const [loadingTransferListKCT, setLoadingTransferListKCT] = useState(false);
-  useEffect(() => {
-    const getTransferListKCT = async () => {
-      setLoadingTransferListKCT(true);
-      const response = await fetch('/api/transfer/getAllTransferKCT', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          walletAddress: address,
-        }),
-      });
-      if (!response.ok) {
-        toast.error("전송 내역을 불러오는 데 실패했습니다.");
-        setLoadingTransferListKCT(false);
-        return;
-      }
-      const data = await response.json();
+            if (data.error) {
+                setSendbirdUser(null);
+            } else {
+                setSendbirdUser(data.result.user);
+            }
 
-      setTransferListKCT(data.result.transfers);
+            setLoadingSendbirdUser(false);
+        };
 
-      setLoadingTransferListKCT(false);
-    };
-
-
-    if (address) {
-      getTransferListKCT();
-    }
-
-    // setInterval to refresh transfer list every 5 seconds
-    const interval = setInterval(() => {
-      if (address) {
-        getTransferListKCT();
-      }
-    }
-    , 5000);
-    return () => {
-      clearInterval(interval);
-    };
-
-
-  }, [address]);
-
-
-
-  // transfer list USDT
-  const [transferListUSDT, setTransferListUSDT] = useState([]);
-  const [loadingTransferListUSDT, setLoadingTransferListUSDT] = useState(false);
-  useEffect(() => {
-    const getTransferListUSDT = async () => {
-      setLoadingTransferListUSDT(true);
-      const response = await fetch('/api/transfer/getAllTransferUSDT', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          walletAddress: address,
-        }),
-      });
-      if (!response.ok) {
-        toast.error("전송 내역을 불러오는 데 실패했습니다.");
-        setLoadingTransferListUSDT(false);
-        return;
-      }
-      const data = await response.json();
-      setTransferListUSDT(data.result.transfers);
-      setLoadingTransferListUSDT(false);
-    };
-    if (address) {
-      getTransferListUSDT();
-    }
-
-    // setInterval to refresh transfer list every 5 seconds
-    const interval = setInterval(() => {
-      if (address) {
-        getTransferListUSDT();
-      }
-    }
-    , 5000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [address]);
+        userid && fetchData();
+    }, [userid]);
 
 
 
@@ -1358,7 +826,7 @@ export default function SendUsdt({ params }: any) {
         </button>
 
         <h1 className="text-lg font-semibold text-gray-800">
-          {token} 지갑
+          회원에게 {token} 보내기
         </h1>
 
       </div>
@@ -1370,53 +838,70 @@ export default function SendUsdt({ params }: any) {
         p-4 w-full min-h-[100vh] bg-[#E7EDF1]">
 
 
-        {!address && (
 
-          <div className="
-          mt-16
-          w-full flex flex-col justify-center items-center gap-2 p-2">
+            {!address && (
 
+            <div className="
+                mt-16
+                w-full flex flex-col justify-center items-center gap-2 p-2">
+            
+                <ConnectButton
+                client={client}
+                wallets={wallets}
+                accountAbstraction={{
+                    chain: bsc,
+                    sponsorGas: true
+                }}
+                
+                theme={"light"}
 
-            <ConnectButton
-              client={client}
-              wallets={wallets}
-              accountAbstraction={{
-                chain: bsc,
-                sponsorGas: true
-              }}
-              
-              theme={"light"}
+                // button color is dark skyblue convert (49, 103, 180) to hex
+                connectButton={{
+                    style: {
+                    backgroundColor: "#3167b4", // dark skyblue
+                    // font color is gray-300
+                    color: "#f3f4f6", // gray-300
+                    padding: "10px 20px",
+                    borderRadius: "10px",
+                    fontSize: "16px",
+                    // w-full
+                    width: "100%",
+                    },
+                    label: "로그인 및 회원가입",
+                }}
 
-              // button color is dark skyblue convert (49, 103, 180) to hex
-              connectButton={{
-                style: {
-                  backgroundColor: "#3167b4", // dark skyblue
-                  // font color is gray-300
-                  color: "#f3f4f6", // gray-300
-                  padding: "10px 20px",
-                  borderRadius: "10px",
-                  fontSize: "16px",
-                  // w-full
-                  width: "100%",
-                },
-                label: "로그인 및 회원가입",
-              }}
+                connectModal={{
+                    size: "wide", 
+                    //size: "compact",
+                    titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
+                    showThirdwebBranding: false,
+                }}
 
-              connectModal={{
-                size: "wide", 
-                //size: "compact",
-                titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
-                showThirdwebBranding: false,
-              }}
-
-              locale={"ko_KR"}
-              //locale={"en_US"}
-            />
-
-          </div>
-        )}
+                locale={"ko_KR"}
+                //locale={"en_US"}
+                />
 
 
+
+
+                <div className="mt-20
+                flex flex-row gap-2 justify-center items-center">
+                <span className="text-sm md:text-lg text-zinc-500">
+                    이용방법이 궁금하신가요?
+                </span>
+                <Link
+                    href="#"
+                    className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+                >
+                    이용가이드
+                </Link>
+                </div>
+
+
+
+            </div>
+
+            )}
 
 
             <div className="w-full flex flex-col gap-2 items-start">
@@ -1468,6 +953,7 @@ export default function SendUsdt({ params }: any) {
                   {/* 입금 button / 출금 button / 스왑 button*/}
                   {/* radio buttons */}
                   <div className="w-full flex flex-row gap-2 items-center justify-between">
+                    {/*
                     <button
                       onClick={() => {
                         setSelectDeposit(true);
@@ -1481,34 +967,13 @@ export default function SendUsdt({ params }: any) {
                       `}
                     >
                       <div className='flex flex-col gap-2 items-center justify-start'>
-                        {/*}
-                        <Image
-                          src="/icon-deposit.png"
-                          alt="deposit"
-                          width={20}
-                          height={20}
-                        />
-                        */}
                         <span className='text-sm'>
                           입금
                         </span>
                       </div>
                     </button>
+                    */}
 
-                    <button
-                      onClick={() => {
-                        setSelectDeposit(false);
-                        setSelectWithdraw(true);
-                        //setSelectSwap(false);
-                      }}
-                      className={`w-full p-2 rounded-lg text-sm font-semibold
-
-                        ${selectWithdraw ? 'bg-[#3167b4] text-white' : 'bg-gray-300 text-gray-400'}
-                        
-                      `}
-                    >
-                      출금
-                    </button>
 
                     {/*
                     <button
@@ -1541,153 +1006,6 @@ export default function SendUsdt({ params }: any) {
 
 
 
-            {address
-            && selectDeposit
-            && (
-
-              <div className='mt-5 w-full flex flex-col gap-5'>
-
-
-                <div className="w-full flex flex-col gap-2 items-center justify-center
-                  border border-gray-300 rounded-lg p-4 bg-white
-                ">
-
-                  <div className="text-sm text-gray-800">
-                    {My_Wallet_Address}
-                  </div>
-
-                  <div className="w-full flex flex-row items-center justify-center gap-2">
-                    <button
-                      className="text-sm text-zinc-400 underline"
-                      onClick={() => {
-                        navigator.clipboard.writeText(address);
-                        toast.success('지갑주소가 복사되었습니다.');
-                      } }
-                    >
-                      {address.substring(0, 6)}...{address.substring(address.length - 4)}
-                    </button>
-
-                  </div>
-
-                  <Canvas
-                    text={address}
-                      options={{
-                        //level: 'M',
-                        margin: 2,
-                        scale: 4,
-                        ///width: 200,
-                        // width 100%
-                        width: 200,
-                        color: {
-                            dark: '#000000FF',
-                            light: '#FFFFFFFF',
-                        },
-          
-                      }}
-                  />
-
-
-
-                </div>
-
-
-
-
-
-                {String(token).toLowerCase() === "kct" && (
-                  <div className="w-full mt-5 bg-white rounded-lg p-4">
-                    <h2 className="text-xl font-semibold mb-4">전송 내역</h2>
-                    
-                    {loadingTransferListKCT ? (
-                      <div className="w-full flex items-center justify-center">
-                        <Image
-                          src="/loading.png"
-                          alt="loading"
-                          width={50}
-                          height={50}
-                          className='animate-spin'
-                        />
-                      </div>
-                    ) : (
-                      <table className="w-full table-auto">
-                        <thead>
-                          <tr
-                            className="bg-gray-200 text-gray-700 text-sm font-semibold">
-
-
-                            <th className="px-4 py-2">날짜<br/>보내기 / 받기</th>
-                            <th className="px-4 py-2">보낸 사람<br/>받는 사람</th>
-                            <th className="px-4 py-2">수량</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {transferListKCT.map((transfer : any, index: number) => (
-
-
-                            <tr key={transfer._id}
-
-                              className={`${
-                                index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
-                              }`}
-                            >
-                              <td className="border px-4 py-2">
-                                <div className='flex flex-col gap-1'>
-                                  <span className="text-sm">
-                                    {new Date(transfer.transferData.timestamp).toLocaleTimeString()}
-                                  </span>
-                                  <span className="text-xs text-gray-500">
-                                    {new Date(transfer.transferData.timestamp).toLocaleDateString()}
-                                  </span>
-                                </div>
-
-                                <span className="font-semibold text-lg">
-                                  {transfer.sendOrReceive === "send" ? (
-                                    <span className="text-red-500">보내기</span>
-                                  ) : (
-                                    <span className="text-green-500">받기</span>
-                                  )}
-                                </span>
-
-
-                              </td>
-
-                              <td className="border px-4 py-2">
-                                {transfer.transferData.fromAddress.slice(0, 6)}...{transfer.transferData.fromAddress.slice(-4)}<br/>
-                                {transfer.transferData.toAddress.slice(0, 6)}...{transfer.transferData.toAddress.slice(-4)}
-                              </td>
-                              <td className="border px-4 py-2">
-                                {
-                                  (Number(transfer.transferData.value) / 10 ** 18)
-                                  .toFixed(2)
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-
-
-
-
-
-                )}
-
-
-
-
-
-              </div>
-
-            ) }
-
-
-
-
-
-
 
             {address
             && selectWithdraw
@@ -1700,13 +1018,49 @@ export default function SendUsdt({ params }: any) {
                   '>
 
 
+
+                  {/* sendbirdUser 에게 보내기 */}
+                  {sendbirdUser && (
+                    <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                      {/* 보낼 회원 정보 */}
+                      <span className='text-lg font-semibold text-gray-800'>
+                        보낼 회원
+                      </span>
+                      {/* sendbirdUser 정보 */}
+                      <div className='flex flex-col gap-2 items-center justify-start'>
+                        <div className='flex flex-row gap-2 items-center justify-start'>
+                          <Image
+                            src={sendbirdUser.avatar || "/profile-default.png"}
+                            alt="user avatar"
+                            width={35}
+                            height={35}
+                            className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
+                          />
+                          <span className="text-lg font-semibold text-gray-800">
+                            {sendbirdUser.nickname || "익명"}
+                          </span>
+                        </div>
+                        {/* userid */}
+                        <span className="text-sm text-gray-600">
+                          {userid.substring(0, 6)}...{userid.substring(userid.length - 4)}
+                        </span>
+
+                      </div>
+
+
+
+                    </div>
+                  )}
+
+
+
                   <div className='flex flex-row gap-2 items-center justify-start'>
                     {/* dot icon */}
                     <div className="w-2 h-2 bg-red-500 rounded-full"></div>
                     <div className="text-sm
                       text-gray-800
                     ">
-                      {Enter_the_amount_and_recipient_address}
+                      보낼 금액을 입력해주세요
                     </div>
                   </div>
 
@@ -1762,267 +1116,7 @@ export default function SendUsdt({ params }: any) {
                     </div>
 
 
-                
-                
-                    {!wantToReceiveWalletAddress ? (
-                      <>
-                        <div className='w-full flex flex-col gap-5 items-start justify-between'>
 
-
-
-
-                          <select
-                            disabled={sending}
-
-                            className="
-                              
-                              w-56 p-2 border border-gray-300 rounded text-black text-2xl font-semibold "
-                              
-                            value={
-                              recipient?.nickname
-                            }
-
-
-                            onChange={(e) => {
-
-                              const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
-
-                              console.log("selectedUser", selectedUser);
-
-                              setRecipient(selectedUser);
-
-                            } } 
-
-                          >
-                            <option value="">{Select_a_user}</option>
-                            
-
-                            {users.map((user) => (
-                              <option key={user.id} value={user.nickname}>{user.nickname}</option>
-                            ))}
-                          </select>
-
-                          {/* select user profile image */}
-
-                          <div className=" w-full flex flex-row gap-2 items-center justify-center">
-                            <Image
-                              src={recipient?.avatar || '/profile-default.png'}
-                              alt="profile"
-                              width={38}
-                              height={38}
-                              className="rounded-full"
-                              style={{
-                                objectFit: 'cover',
-                                width: '38px',
-                                height: '38px',
-                              }}
-                            />
-
-                            {recipient?.walletAddress && (
-                              <Image
-                                src="/verified.png"
-                                alt="check"
-                                width={28}
-                                height={28}
-                              />
-                            )}
-
-                          </div>
-
-                        </div>
-
-                
-                        {/* input wallet address */}
-                        
-                        <input
-                          disabled={true}
-                          type="text"
-                          placeholder={User_wallet_address}
-                          className=" w-80  xl:w-full p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
-                          value={
-                            recipient?.walletAddress
-                          }
-                          onChange={(e) => {
-          
-                            setRecipient({
-                              ...recipient,
-                              walletAddress: e.target.value,
-                            });
-
-                          } }
-
-                        />
-
-                  
-
-
-              
-
-
-                      </>
-
-                    ) : (
-
-                      <div className='w-full flex flex-col gap-5 items-center justify-between'>
-                        <input
-                          disabled={sending}
-                          type="text"
-                          placeholder={User_wallet_address}
-                          className=" w-full p-2 border border-gray-300 rounded
-                          text-zinc-800 text-sm font-semibold"
-
-                          value={recipient.walletAddress}
-
-                          onChange={(e) => setRecipient({
-                            ...recipient,
-                            walletAddress: e.target.value,
-                          })}
-
-                        />
-
-                        {isWhateListedUser ? (
-                          <div className="flex flex-row gap-2 items-center justify-center">
-
-
-                            <Image
-                              src={recipient.avatar || '/profile-default.png'}
-                              alt="profile"
-                              width={30}
-                              height={30}
-                              className="rounded-full"
-                              style={{
-                                objectFit: 'cover',
-                                width: '38px',
-                                height: '38px',
-                              }}
-                            />
-                            <div className="text-white">{recipient?.nickname}</div>
-                            <Image
-                              src="/verified.png"
-                              alt="check"
-                              width={30}
-                              height={30}
-                            />
-                            
-                          </div>
-                        ) : (
-                          <>
-
-                          {/*
-                          {recipient?.walletAddress && (
-                            <div className='flex flex-row gap-2 items-center justify-center'>
-
-                              <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
-
-                              <div className="text-red-500">
-                                {This_address_is_not_white_listed}<br />
-                                {If_you_are_sure_please_click_the_send_button}
-                              </div>
-                            </div>
-
-                          )}
-                          */}
-
-                          </>
-                        )}
-
-
-
-                        {/* qr scanner button */}
-                        <div className="w-full flex flex-row gap-2 items-center justify-center">
-                          <button
-                            disabled={sending}
-                            onClick={() => setShowQrScanner(!showQrScanner)}
-                            className="w-full p-2 rounded-lg text-sm font-semibold bg-gray-300 text-gray-400"
-                          >
-                            {showQrScanner ? 'Close QR Scanner' : 'Open QR Scanner'}
-                          </button>
-                        </div>
-
-                        { showQrScanner && (
-
-
-                          <div className="w-full flex flex-col items-center justify-center gap-2">
-                            {/*
-                            <div style={styles.controls}>
-                              <select onChange={(e) => setDeviceId(e.target.value)}>
-                                <option value={undefined}>Select a device</option>
-                                {devices.map((device, index) => (
-                                  <option key={index} value={device.deviceId}>
-                                    {device.label}
-                                  </option>
-                                ))}
-                              </select>
-                              <select
-                                style={{ marginLeft: 5 }}
-                                onChange={(e) => setTracker(e.target.value)}
-                              >
-                                <option value="centerText">Center Text</option>
-                                <option value="outline">Outline</option>
-                                <option value="boundingBox">Bounding Box</option>
-                                <option value={undefined}>No Tracker</option>
-                              </select>
-                            </div>
-                            */}
-                            <Scanner
-                              formats={[
-                                "qr_code",
-                                "micro_qr_code",
-                                "rm_qr_code",
-                                "maxi_code",
-                                "pdf417",
-                                "aztec",
-                                "data_matrix",
-                                "matrix_codes",
-                                "dx_film_edge",
-                                "databar",
-                                "databar_expanded",
-                                "codabar",
-                                "code_39",
-                                "code_93",
-                                "code_128",
-                                "ean_8",
-                                "ean_13",
-                                "itf",
-                                "linear_codes",
-                                "upc_a",
-                                "upc_e",
-                              ]}
-                              constraints={{
-                                deviceId: deviceId,
-                              }}
-                              onScan={(detectedCodes) => {
-                                handleScan(detectedCodes[0].rawValue);
-                              }}
-                              onError={(error) => {
-                                console.log(`onError: ${error}'`);
-                              }}
-                              styles={{ container: { height: "400px", width: "350px" } }}
-                              components={{
-                                onOff: true,
-                                torch: true,
-                                zoom: true,
-                                finder: true,
-                                tracker: getTracker(),
-                              }}
-                              allowMultiple={true}
-                              scanDelay={2000}
-                              paused={pause}
-                            />
-                          </div>
-
-
-                        )}
-
-
-
-
-
-                      </div>
-
-                    )}
-
-                    
 
                   </div>
 
@@ -2113,7 +1207,7 @@ export default function SendUsdt({ params }: any) {
                       
                       `}
                   >
-                      {token} 출금
+                      {token} 보내기
                   </button>
 
                   <div className="w-full flex flex-row gap-2 text-xl font-semibold">
@@ -2142,469 +1236,12 @@ export default function SendUsdt({ params }: any) {
 
                 </div>
 
-                {/* transfer history */}
-                {/* table view */}
-                {/*
-
-                  [
-                    {
-                        "_id": "683a833a7a4edd08cb8716df",
-                        "user": {
-                            "_id": "67f46b566692fd42650470f0",
-                            "telegramId": "",
-                            "walletAddress": "0x534ea8bf168AEBf71ea37ba2Ae0fCEC8E09aA83A"
-                        },
-                        "sendOrReceive": "send",
-                        "transferData": {
-                            "transactionHash": "0x425678ff54ad22e524cb013e5e1472e5b081eade5ddf1ff98f6c6035e4d4b838",
-                            "transactionIndex": 17,
-                            "fromAddress": "0x534ea8bf168AEBf71ea37ba2Ae0fCEC8E09aA83A",
-                            "toAddress": "0x5FD40E75e88eb09AA2F4cC772E2263a140a34405",
-                            "value": "1000000000000000000000",
-                            "timestamp": 1748665142000,
-                            "_id": "683a833a7a4edd08cb8716de"
-                        }
-                    }
-                ]
-                  */}
-
-                {String(token).toLowerCase() === "kct" && (
-                  <div className="w-full mt-5 bg-white rounded-lg p-4">
-                    <h2 className="text-xl font-semibold mb-4">전송 내역</h2>
-                    
-                    {loadingTransferListKCT ? (
-                      <div className="w-full flex items-center justify-center">
-                        <Image
-                          src="/loading.png"
-                          alt="loading"
-                          width={50}
-                          height={50}
-                          className='animate-spin'
-                        />
-                      </div>
-                    ) : (
-                      <table className="w-full table-auto">
-                        <thead>
-                          <tr
-                            className="bg-gray-200 text-gray-700 text-sm font-semibold">
-
-
-                            <th className="px-4 py-2">날짜<br/>보내기 / 받기</th>
-                            <th className="px-4 py-2">보낸 사람<br/>받는 사람</th>
-                            <th className="px-4 py-2">수량</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {transferListKCT.map((transfer : any, index: number) => (
-
-
-                            <tr key={transfer._id}
-
-                              className={`${
-                                index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
-                              }`}
-                            >
-                              <td className="border px-4 py-2">
-                                <div className='flex flex-col gap-1'>
-                                  <span className="text-sm">
-                                    {new Date(transfer.transferData.timestamp).toLocaleTimeString()}
-                                  </span>
-                                  <span className="text-xs text-gray-500">
-                                    {new Date(transfer.transferData.timestamp).toLocaleDateString()}
-                                  </span>
-                                </div>
-
-                                <span className="font-semibold text-lg">
-                                  {transfer.sendOrReceive === "send" ? (
-                                    <span className="text-red-500">보내기</span>
-                                  ) : (
-                                    <span className="text-green-500">받기</span>
-                                  )}
-                                </span>
-
-
-                              </td>
-
-                              <td className="border px-4 py-2">
-                                {transfer.transferData.fromAddress.slice(0, 6)}...{transfer.transferData.fromAddress.slice(-4)}<br/>
-                                {transfer.transferData.toAddress.slice(0, 6)}...{transfer.transferData.toAddress.slice(-4)}
-                              </td>
-                              <td className="border px-4 py-2">
-                                {
-                                  (Number(transfer.transferData.value) / 10 ** 18)
-                                  .toFixed(2)
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-
-
-
-
-
-                )}
-
-
-
-
-
 
 
 
               </div>
 
             )}
-
-
-
-            {/* select swap */}
-            {/* KCT -> usdt */}
-            {/* usdt -> KCT */}
-            {/* input 스왑 수량 */}
-            {
-              address
-              && selectSwap
-              && (
-
-                <div className='mt-5 w-full flex flex-col gap-5'>
-
-
-                  <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
-
-                    <div className='flex flex-row gap-2 items-center justify-start'>
-                      <Image
-                        src={tokenImage}
-                        alt="token"
-                        width={35}
-                        height={35}
-                        className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                      />
-
-                    </div>
-
-                    <div className="flex flex-row items-center justify-end  gap-2">
-                      <span className="text-2xl font-semibold text-gray-800">
-
-                        {Number(balance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-
-                      </span>
-                      <span className="text-lg">{token}</span>
-                    </div>
-                  </div>
-
-
-
-               {/* below arrow image */}
-               <div className="w-full flex flex-row gap-2 items-center justify-center">
-                  <Image
-                    src="/icon-swap-updown.png"
-                    alt="arrow"
-                    width={30}
-                    height={30}
-                  />
-                </div>
-
-
-                {token === "USDT" && (
-                  <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
-
-                    <div className='flex flex-row gap-2 items-center justify-start'>
-                      <Image
-                        src="/token-KCT-icon.png"
-                        alt="token"
-                        width={35}
-                        height={35}
-                        className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                      />
-
-                    </div>
-
-                    <div className="flex flex-row items-center justify-end  gap-2">
-                      <span className="text-2xl font-semibold text-gray-800">
-                        {/*
-                        {Number(swapTokenBalance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
-                        */}
-                      </span>
-                      <span className="text-lg">KCT</span>
-                    </div>
-                  </div>
-
-                )}
-
-                {token === "KCT" && (
-                  <div className="w-full flex flex-row gap-2 items-center justify-between bg-white border border-gray-300 rounded-lg p-4">
-
-                    <div className='flex flex-row gap-2 items-center justify-start'>
-                      <Image
-                        src="/token-usdt-icon.png"
-                        alt="token"
-                        width={35}
-                        height={35}
-                        className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                      />
-
-                    </div>
-
-                    <div className="flex flex-row items-center justify-end  gap-2">
-                      <span className="text-2xl font-semibold text-gray-800">
-                        {/*
-                        {Number(swapTokenBalance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
-                        */}
-                      </span>
-                      <span className="text-lg">USDT</span>
-                    </div>
-                  </div>
-
-                )}
-                
-
-                  <div className='
-                    w-full  flex flex-col gap-5 border
-                    bg-zinc-800 text-white
-                    p-4 rounded-lg
-
-                    '>
-                    <div className='flex flex-row gap-2 items-center justify-start'>
-                      {/* dot icon */}
-                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                      <div className="text-sm
-                        text-white
-
-                      ">
-                        {/*Buy_Description*/}
-                        {token === "USDT" ? "스왑할 USDT 수량을 입력하세요."
-                        : "스왑할 MKRW 수량을 입력하세요."
-                        }
-                      </div>
-                    </div>
-
-                    <div className='w-full mb-5 flex flex-col xl:flex-row gap-5 items-start justify-between'>
-
-                      <div className='w-full flex flex-row gap-5 items-start justify-between'>
-                        <input
-                          disabled={loadingSwap}
-                          type="number"
-                          //placeholder="Enter amount"
-                          className=" w-full p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
-                          
-                          value={swapAmount}
-
-                          onChange={(e) => (
-
-                            // check if the value is a number
-                            // check if start 0, if so remove it
-                            e.target.value = e.target.value.replace(/^0+/, ''),
-                            // check balance
-
-                            setSwapAmount(e.target.value as any),
-
-                            // if swapAmount is USDT, set swapAmountTo to swapAmount * 10.0
-                            // if swapAmount is KCT, set swapAmountTo to swapAmount * 0.1
-
-                            setSwapAmountTo(
-                              token === "USDT" ? Number(e.target.value) * 10.0 : Number(e.target.value) * 0.1
-                            )
-
-                          )}
-
-                        />
-                
-            
-
-                        {/* check box for want to receive wallet address */}
-                        {/*
-                        <div className="flex flex-row items-center gap-2">
-                          <input
-                            type="checkbox"
-                            className="w-6 h-6"
-                            checked={wantToReceiveWalletAddress}
-                            onChange={(e) => setWantToReceiveWalletAddress(e.target.checked)}
-                          />
-                          <div className="text-white">{Enter_Wallet_Address}</div>
-                        </div>
-                        */}
-
-                      </div>
-
-
-                      {/* swap 풀 balance */}
-                      {token === "USDT" ? (
-                        <div className='w-full flex flex-row gap-5 items-center justify-between'>
-                          <div className='flex flex-row gap-2 items-center justify-start'>
-                            <Image
-                              src="/token-KCT-icon.png"
-                              alt="token"
-                              width={35}
-                              height={35}
-                              className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                            />
-
-                            <span className="text-lg font-semibold text-gray-200">
-                              {swapPoolKCTBalance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} KCT
-                            </span>
-                          </div>
-                          <div className="text-sm text-gray-400">
-                            스왑 풀 잔액
-                          </div>
-                        </div>
-                      ) : (
-                        <div className='w-full flex flex-row gap-5 items-center justify-between'>
-                          <div className='flex flex-row gap-2 items-center justify-start'>
-                            <Image
-                              src="/token-usdt-icon.png"
-                              alt="token"
-                              width={35}
-                              height={35}
-                              className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
-                            />
-
-                            <span className="text-lg font-semibold text-gray-200">
-                              {swapPoolUsdtBalance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} USDT
-                            </span>
-                          </div>
-                          <div className="text-sm text-gray-400">
-                            스왑 풀 잔액
-                          </div>
-                        </div>
-                      )}
-
-
-                      {/* swapAmountTo */}
-                      {/* 받게될 수량 */}
-                      <div className='w-full flex flex-col gap-5 items-start justify-between'>
-                        <div className='flex flex-row gap-2 items-center justify-start'>
-                          {/* dot icon */}
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <div className="text-sm
-                            text-white
-                          ">
-                            {token === "USDT" ? "받게될 KCT 수량"
-                            : "받게될 USDT 수량"
-                            }
-                          </div>
-                        </div>
-                        <div className="text-2xl font-semibold text-gray-200">
-                          {swapAmountTo.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                          {token === "USDT" ? " KCT"
-                          : " USDT"
-                          }
-                        </div>
-                      </div>
-        
-
-                    </div>
-
-                    <button
-                      disabled={!address || !swapAmount || loadingSwap}
-
-                      onClick={swap}
-
-                      className={`w-full p-2 rounded-lg text-xl font-semibold
-                          ${
-                          !address || !swapAmount || loadingSwap
-                          ?'bg-gray-300 text-gray-400'
-                          : 'bg-green-500 text-white'
-                          }
-                        
-                        `}
-                    >
-                      {loadingSwap ? (
-                        <div className="w-full flex flex-row items-center justify-center gap-2">
-                          {/* sending rotate animation with white color*/}
-                          <div className="
-                            w-6 h-6
-                            border-2 border-zinc-800
-                            rounded-full
-                            animate-spin
-                          ">
-                            <Image
-                              src="/loading.png"
-                              alt="loading"
-                              width={24}
-                              height={24}
-                            />
-                          </div>
-                          <div className="text-white">
-                            {token} 스왑 중...
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="w-full flex flex-row items-center justify-center gap-2">
-                          {token} 스왑
-                        </div>
-                      )}
-                    </button>
-
-                  </div>
-
-                </div>
-
-              )
-            }
-
-                
-
-
-
-       
-
-
-
-
-
-
-
-
-            {/* transaction history table */}
-            {/*
-            <div className="w-full flex flex-col gap-5 items-start justify-start
-              border border-gray-300 rounded-lg p-4
-            ">
-              <table className="w-full border border-gray-300 rounded-lg">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="p-2 border border-gray-300">Date</th>
-                    <th className="p-2 border border-gray-300">Amount</th>
-                    <th className="p-2 border border-gray-300">Recipient</th>
-                    <th className="p-2 border border-gray-300">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="p-2 border border-gray-300">2024-08-01</td>
-                    <td className="p-2 border border-gray-300">100.24</td>
-                    <td className="p-2 border border-gray-300">0x1234567890</td>
-                    <td className="p-2 border border-gray-300">Success</td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-gray-300">2024-08-01</td>
-                    <td className="p-2 border border-gray-300">100.24</td>
-                    <td className="p-2 border border-gray-300">0x1234567890</td>
-                    <td className="p-2 border border-gray-300">Success</td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-gray-300">2024-08-01</td>
-                    <td className="p-2 border border-gray-300">100.24</td>
-                    <td className="p-2 border border-gray-300">0x1234567890</td>
-                    <td className="p-2 border border-gray-300">Success</td>
-                  </tr>
-
-                </tbody>
-              </table>
-
-              <div className="w-full flex flex-row gap-2 items-center justify-center">
-                <button className="p-2 rounded-lg bg-gray-300 text-gray-400">Prev</button>
-                <button className="p-2 rounded-lg bg-gray-300 text-gray-400">Next</button>
-              </div>
-            </div>
-            */}
-
-
 
 
 
