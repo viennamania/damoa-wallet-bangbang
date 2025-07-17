@@ -12,7 +12,7 @@ import '@sendbird/uikit-react/dist/index.css';
 
 import { toast } from 'react-hot-toast';
 
-import { client } from "../../../client";
+import { client } from "../../../../client";
 
 import {
     getContract,
@@ -43,6 +43,8 @@ import { balanceOf, transfer } from "thirdweb/extensions/erc20";
 import { useSearchParams } from 'next/navigation'
 
 import Image from 'next/image';
+
+import Link from "next/link";
 
 
 // parameters for dynamic import
@@ -75,7 +77,7 @@ import React, { useEffect, useState, Suspense } from 'react';
 
 
 import AppBarComponent from "@/components/Appbar/AppBar";
-import { getDictionary } from "../../../dictionaries";
+import { getDictionary } from "../../../../dictionaries";
 
 import { useRouter }from "next//navigation";
 
@@ -110,28 +112,6 @@ const contract = getContract({
 
 
 
-// /chat?tradeId=
-// get parameter from url
-
-/*
-export default function ChatPage(
-*/
-
-
-//export default function ChatPage() {
-
-export default function ChatPage({ params }: any) {
-
-
-
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ChatPageContent
-        params={params}
-      />
-    </Suspense>
-  );
-}
 
 
 function ChatPageContent(
@@ -522,72 +502,67 @@ function ChatPageContent(
 
 
 
+                {!address && (
 
-                {address ? (
-                  <div className="flex flex-col items-center space-y-4 mb-4">
-                    {/* disconnect button */}
-                    {/*
-                    <button
-                      onClick={() => {
+                <div className="
+                    mt-16
+                    w-full flex flex-col justify-center items-center gap-2 p-2">
+                
+                    <ConnectButton
+                    client={client}
+                    wallets={wallets}
+                    accountAbstraction={{
+                        chain: bsc,
+                        sponsorGas: true
+                    }}
+                    
+                    theme={"light"}
 
-                        activeWallet?.disconnect();
+                    // button color is dark skyblue convert (49, 103, 180) to hex
+                    connectButton={{
+                        style: {
+                        backgroundColor: "#3167b4", // dark skyblue
+                        // font color is gray-300
+                        color: "#f3f4f6", // gray-300
+                        padding: "10px 20px",
+                        borderRadius: "10px",
+                        fontSize: "16px",
+                        // w-full
+                        width: "100%",
+                        },
+                        label: "로그인 및 회원가입",
+                    }}
 
-                          
-                          
-                        window.location.reload();
+                    connectModal={{
+                        size: "wide", 
+                        //size: "compact",
+                        titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
+                        showThirdwebBranding: false,
+                    }}
 
-                      }}
-                      className="text-lg bg-red-500 text-white px-4 py-2 rounded-md"
+                    locale={"ko_KR"}
+                    //locale={"en_US"}
+                    />
+
+
+
+
+                    <div className="mt-20
+                    flex flex-row gap-2 justify-center items-center">
+                    <span className="text-sm md:text-lg text-zinc-500">
+                        이용방법이 궁금하신가요?
+                    </span>
+                    <Link
+                        href="#"
+                        className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
                     >
-                      {Disconnect_Wallet}
-                    </button>
-                    */}
-                  </div>
-
-                ) : (
-                  <div className="flex flex-col items-center space-y-4 mb-4">
-                      <ConnectButton
-                          
-
-                          client={client}
-
-                          wallets={wallets}
-                          
-                          accountAbstraction={{        
-                          chain: bsc,
-                          //chain: arbitrum,
-                          factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                          sponsorGas: true
-                          }}
-                          
-                          theme={"light"}
-                          connectModal={{
-                          size: "wide",
-
-
-                          }}
-
-
-                          
-                          appMetadata={
-                          {
-                              logoUrl: "https://gold.goodtether.com/logo.png",
-                              name: "Next App",
-                              url: "https://gold.goodtether.com",
-                              description: "This is a Next App.",
-
-                          }
-                          }
-
-                      />
-
-                      <span className="text-lg text-zinc-400 xl:w-1/2 text-center">
-                        {Connect_Wallet_Description_For_Buyers}
-                      </span>
+                        이용가이드
+                    </Link>
+                    </div>
 
 
 
-                  </div>
+                </div>
 
                 )}
 
@@ -643,7 +618,7 @@ function ChatPageContent(
 
                 channel={channel}
 
-                userId={ nickname }
+                userId={ address }
 
                 nickname={  nickname }
 
@@ -681,5 +656,27 @@ function ChatPageContent(
     </main>
 
 
+  );
+}
+
+
+// /chat?tradeId=
+// get parameter from url
+
+/*
+export default function ChatPage(
+*/
+
+
+//export default function ChatPage() {
+
+export default function ChatPage({ params }: any) {
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ChatPageContent
+        params={params}
+      />
+    </Suspense>
   );
 }

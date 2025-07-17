@@ -2,7 +2,7 @@ import { App as SendbirdApp } from '@sendbird/uikit-react';
 
 import {router} from 'next/navigation';
 
-const APP_ID = "CC1B09FC-0FEF-4C9C-96D0-E5D464ADF155";
+const APP_ID = "CCD67D05-55A6-4CA2-A6B1-187A5B62EC9D";
 
 ///const USER_ID = "sendbirdian-200720";
 
@@ -68,19 +68,12 @@ const ChannelSettingsPage = () => {
 
 // /chat?channel=101168
 
-export default function Chat(
-    {
-
+export default function Chat({
     channel,
-
     userId,
     nickname,
-
     profileUrl,
-} 
-
-
-) {
+}) {
 
 
     ///const { tradeId } = router.query;
@@ -136,20 +129,23 @@ export default function Chat(
         <SendbirdProvider
             appId={APP_ID}
             userId={userId}
+            nickname={nickname}
             profileUrl={profileUrl}
         >
 
-            {/*
+            
             <GroupChannel
-                channelUrl={'sendbird_open_channel_18053_3b9b531f3d94bb5b03b72bb8b5684eb7586db969'}
+                channelUrl={channel}
             />
-            */}
+            
 
+            {/*
             <OpenChannel
                 //channelUrl={'sendbird_open_channel_18053_3b9b531f3d94bb5b03b72bb8b5684eb7586db969'}
 
                 channelUrl={channel}
             />
+            */}
 
 
 

@@ -1164,7 +1164,7 @@ function AgentPage(
 
 
 
-    // call api /api/sendbirds/getAllUsers
+    // call api /api/sendbird/getAllUsers
     const [loadingSendbirdUsers, setLoadingSendbirdUsers] = useState(false);
     const [sendbirdUsers, setSendbirdUsers] = useState([] as any[]);
     const [pageToken, setPageToken] = useState("");
@@ -1280,6 +1280,49 @@ function AgentPage(
     }
     */
 
+
+
+    // api /eendbird/createGroupChannel
+    const createGroupChannel = async (user_id1: string, user_id2: string) => {
+        try {
+
+            const response = await fetch("/api/sendbird/createGroupChannel", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    user_id1: user_id1,
+                    user_id2: user_id2,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create group channel');
+            }
+
+            const data = await response.json();
+
+            //console.log("createGroupChannel data", data);
+
+            if (data.result) {
+                // redirect to chat page
+                router.push(
+                    `/${lang}/${chain}/chat/${data.result.channel_url}`
+                );
+            } else {
+                alert('Failed to create group channel');
+            }
+
+        } catch (error) {
+            console.error("createGroupChannel error", error);
+            if (error instanceof Error) {
+                alert('Failed to create group channel:' + error.message);
+            } else {
+                alert('Failed to create group channel: ' + String(error));
+            }
+        }
+    }
 
 
 
@@ -1453,11 +1496,7 @@ function AgentPage(
                                         <Button
                                             onClick={() => {
                                                 
-                                                //router.push(
-                                                //</div>    "/" + params.lang + "/" + params.chain + "/chat/" + user.user_id
-                                                //);
-                                                // 준비중입니다.
-                                                alert("준비중입니다. 곧 업데이트됩니다.");
+                                                createGroupChannel(address as string, user.user_id);
 
                                             }}
                                             className="bg-blue-500 text-white px-4 py-2 rounded"
