@@ -1193,14 +1193,14 @@ export default function SendUsdt({ params }: any) {
 
                   <button
                     
-                    disabled={!address || !recipient?.walletAddress || !amount || sending || !verifiedOtp}
+                    disabled={!address || !amount || sending}
 
                     onClick={sendUsdt}
 
                     className={`mt-5 w-full p-2 rounded-lg text-xl font-semibold
 
                         ${
-                        !address || !recipient?.walletAddress || !amount || sending || !verifiedOtp
+                        !address || !amount || sending 
                         ?'bg-gray-300 text-gray-400'
                         : 'bg-green-500 text-white'
                         }
