@@ -1197,10 +1197,17 @@ function AgentPage(
 
             //setSendbirdUsers(data.result.users || []);
 
+
+
             setSendbirdUsers((prevUsers) => [
                 ...prevUsers,
                 ...(data.result.users || []),
             ]);
+
+            // if userid is address, then remove it
+            setSendbirdUsers((prevUsers) =>
+                prevUsers.filter((user) => user.user_id !== address)
+            );
 
 
 
