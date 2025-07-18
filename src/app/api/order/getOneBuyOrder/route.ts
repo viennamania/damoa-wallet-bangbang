@@ -1,8 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import {
-	getOneBuyOrder,
-} from '@lib/api/order';
 
 
 
@@ -11,18 +8,31 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
 
 
+  const [ orderId ] = body;
 
-  const result = await getOneBuyOrder({
-    orderId: body.orderId,
-    limit: 200,
-    page: 1,
+
+
+  const stableUrl = "https://www.cryptopay.beauty";
+
+  // call api
+  const response = await fetch(`${stableUrl}/api/order/getOneBuyOrder`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      orderId,
+    }),
   });
 
- 
+  if (!response.ok) {
+    console.error("Error fetching order details:", response.statusText);
+    return NextResponse.json({ error: "Failed to fetch order details" }, { status: 500 });
+  }
+
+  const data = await response.json();
+
   return NextResponse.json({
-
-    result,
-    
+    result: data,
   });
-  
 }
