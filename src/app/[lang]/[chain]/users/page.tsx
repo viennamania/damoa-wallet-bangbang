@@ -1496,7 +1496,8 @@ function AgentPage(
                                         <Button
                                             onClick={() => {
                                                 
-                                                createGroupChannel(address as string, user.user_id);
+                                                //createGroupChannel(address as string, user.user_id);
+                                                alert('준비중입니다."');
 
                                             }}
                                             className="bg-blue-500 text-white px-4 py-2 rounded"
@@ -1511,7 +1512,7 @@ function AgentPage(
                                             }}
                                             className="bg-green-500 text-white px-4 py-2 rounded"
                                         >
-                                            송금하기
+                                            테더 송금하기
                                         </Button>
                                     </div>
 

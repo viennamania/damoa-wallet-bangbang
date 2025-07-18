@@ -69,7 +69,8 @@ const DynamicAppWithNoSSR = dynamic(() => import("../../components/Chat"), {
 });
 */
 
-import Chat from "@/components/Chat";
+//import Chat from "@/components/Chat";
+
 
 
 
@@ -108,6 +109,12 @@ const contract = getContract({
   //abi: [...],
 });
 
+
+
+let Chat = dynamic(() => import('@/components/Chat'), {
+  ssr: false,
+  loading: () => <div className="w-full h-full flex items-center justify-center">Loading...</div>,
+});
 
 
 

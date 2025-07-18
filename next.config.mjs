@@ -25,6 +25,7 @@ const nextConfig = {
       "replicate.delivery",
       "replicate.com",
  
+      "t0gqytzvlsa2lapo.public.blob.vercel-storage.com",
 
     ],
   },
