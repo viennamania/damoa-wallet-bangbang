@@ -2436,7 +2436,7 @@ export default function Index({ params }: any) {
                       <div className="w-full flex flex-col gap-2 items-center justify-center">
 
                         {/* deposit bank name */}
-                        <div className='flex flex-row gap-2 items-center justify-center'>
+                        <div className='flex flex-col xl:flex-row gap-2 items-center justify-center'>
                           <span className="w-24 text-sm text-zinc-500">
                             입금자은행명
                           </span>
@@ -2453,7 +2453,7 @@ export default function Index({ params }: any) {
 
 
                         {/* deposit bank account number */}
-                        <div className='mt-2 flex flex-row gap-2 items-center justify-center'>
+                        <div className='mt-2 flex flex-col xl:flex-row gap-2 items-center justify-center'>
                           <span className=" w-24 text-sm text-zinc-500">
                             입금자계좌번호
                           </span>
@@ -2468,11 +2468,7 @@ export default function Index({ params }: any) {
                           />
                         </div>
 
-                        
-
-
-                        {/* input deposit name */}
-                        <div className='mt-2 flex flex-row gap-2 items-center justify-center'>
+                        <div className='mt-2 flex flex-col xl:flex-row gap-2 items-center justify-center'>
                           
                           <span className=" w-24 text-sm text-zinc-500">
                             입금자명
