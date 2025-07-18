@@ -840,6 +840,7 @@ export default function SendUsdt({ params }: any) {
               amount: amount,
               bankInfo: bankInfo,
               settlementWalletAddress: settlementWalletAddress,
+              transactionHash: transactionHash,
             }),
           });
               
@@ -875,28 +876,45 @@ export default function SendUsdt({ params }: any) {
 
 
 
-  // get user by wallet address
-  const getUserByWalletAddress = async (walletAddress: string) => {
+  // get settlement list by wallet address
+  const [settlementList, setSettlementList] = useState([]);
+  const [loadingSettlementList, setLoadingSettlementList] = useState(false);
+  useEffect(() => {
+    const getSettlementList = async () => {
+      setLoadingSettlementList(true);
+      const response = await fetch(`/api/settlement/claimList?walletAddress=${encodeURIComponent(address ?? '')}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        toast.error("정산 내역을 불러오는 데 실패했습니다.");
+        setLoadingSettlementList(false);
+        return;
+      }
+      const data = await response.json();
+      setSettlementList(data);
+      setLoadingSettlementList(false);
+    };
 
-    const response = await fetch('/api/user/getUserByWalletAddress', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        walletAddress: walletAddress,
-      }),
-    });
+    if (address) {
+      getSettlementList();
+    }
 
-    const data = await response.json();
+    // setInterval to refresh settlement list every 5 seconds
+    const interval = setInterval(() => {
+      if (address) {
+        getSettlementList();
+      }
+    }
+    , 5000);
+    return () => {
+      clearInterval(interval);
+    };
 
-    //console.log("getUserByWalletAddress", data);
+  }, [address]);
 
-    return data.result;
-
-  };
-
-  const [isWhateListedUser, setIsWhateListedUser] = useState(false);
 
 
 
@@ -908,279 +926,7 @@ export default function SendUsdt({ params }: any) {
 
 
 
-  // usdt balance
-  /*
-  const [usdtBalance, setUsdtBalance] = useState(0);
-  useEffect(() => {
-    
-      const getUsdtBalance = async () => {
-
-
-
-        
-        if (address) {
-          
-
-
-          if (contract) {
   
-            const balance = await balanceOf({
-              contract: contract,
-              address: address,
-            });
-
-            console.log("balance==========", balance);
-
-            setUsdtBalance(Number(balance) / 10 ** 6);
-          }
-
-        }
-          
-
-
-
-      };
-
-      getUsdtBalance();
-
-  } , [address, params.chain, contract]);
-
-  */
-
-  // 0xef236138f40fadCac5Af0E01bB51612ad116C91f
-  // usdt balance
-  // MKRW balance
-  const swapPoolAddress = "0xef236138f40fadCac5Af0E01bB51612ad116C91f";
-
-  const [swapPoolUsdtBalance, setSwapPoolUsdtBalance] = useState(0);
-  const [swapPoolKCTBalance, setSwapPoolKCTBalance] = useState(0);
-  useEffect(() => {
-    const getSwapPoolBalance = async () => {
-
-
-      const usdtBalance = await balanceOf({
-        contract: contract,
-        address: swapPoolAddress,
-      });
-
-      setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 6);
-
-      const MKRWBalance = await balanceOf({
-        contract: contractMKRW,
-        address: swapPoolAddress,
-      });
-
-      setSwapPoolKCTBalance(Number(MKRWBalance) / 10 ** 18);
-
-    };
-
-    getSwapPoolBalance();
-
-  }, [address, params.chain]);
-
-  //console.log("swapPoolUsdtBalance", swapPoolUsdtBalance);
-  //console.log("swapPoolKCTBalance", swapPoolKCTBalance);
-
-
-
-
-  // swap function
-  // 스왑할 수량
-  const [swapAmount, setSwapAmount] = useState(0);
-
-  // 스왑될 수량
-  const [swapAmountTo, setSwapAmountTo] = useState(0);
-
-
-  const [loadingSwap, setLoadingSwap] = useState(false);
-
-  const swap = async () => {
-    if (loadingSwap) {
-      return;
-    }
-
-    if (!address) {
-      toast.error('Please connect your wallet first');
-      return;
-    }
-
-    if (!swapAmount) {
-      toast.error('Please enter a valid amount');
-      return;
-    }
-
-
-
-    setLoadingSwap(true);
-
-    try {
-
-      // if swap USDT to KCT
-      // swapAmount is USDT amount
-      // send swapAmount USDT to swap pool address
-
-
-
-        const transaction = transfer({
-          contract: contractMKRW,
-          to: swapPoolAddress,
-          amount: swapAmount,
-        });
-
-        const { transactionHash } = await sendTransaction({
-          account: activeAccount as any,
-          transaction,
-        });
-
-        if (transactionHash) {
-          //toast.success(USDT_sent_successfully);
-
-          // api call to send swapAmount USDT to user wallet address
-
-          await fetch('/api/swap/sendUsdt', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              lang: params.lang,
-              chain: params.chain,
-              walletAddress: address,
-              amount: swapAmountTo,
-              toWalletAddress: address,
-            }),
-          });
-
-          toast.success("스왑 완료");
-
-          // refresh swap pool balance
-          const contractUsdt = getContract({
-            client,
-            chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-            address: contractAddress,
-          });
-          const usdtBalance = await balanceOf({
-            contract: contractUsdt as any,
-            address: swapPoolAddress,
-          });
-          setSwapPoolUsdtBalance(Number(usdtBalance) / 10 ** 6);
-
-          setSwapAmount(0); // reset amount
-          setSwapAmountTo(0); // reset amount to
-
-        } else {
-          toast.error("스왑 실패");
-        }
-
-
-
-    } catch (error) {
-      
-      console.error("error", error);
-
-      toast.error("스왑 실패");
-    }
-
-    setLoadingSwap(false);
-
-  }
-
-  
-
-  // toggle qr scanner
-  const [showQrScanner, setShowQrScanner] = useState(false);
-
-
-
-
-  
-  const [transferListKCT, setTransferListKCT] = useState([]);
-  const [loadingTransferListKCT, setLoadingTransferListKCT] = useState(false);
-  useEffect(() => {
-    const getTransferListKCT = async () => {
-      setLoadingTransferListKCT(true);
-      const response = await fetch('/api/transfer/getAllTransferKCT', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          walletAddress: address,
-        }),
-      });
-      if (!response.ok) {
-        toast.error("전송 내역을 불러오는 데 실패했습니다.");
-        setLoadingTransferListKCT(false);
-        return;
-      }
-      const data = await response.json();
-
-      setTransferListKCT(data.result.transfers);
-
-      setLoadingTransferListKCT(false);
-    };
-
-
-    if (address) {
-      getTransferListKCT();
-    }
-
-    // setInterval to refresh transfer list every 5 seconds
-    const interval = setInterval(() => {
-      if (address) {
-        getTransferListKCT();
-      }
-    }
-    , 5000);
-    return () => {
-      clearInterval(interval);
-    };
-
-
-  }, [address]);
-
-
-
-  // transfer list USDT
-  const [transferListUSDT, setTransferListUSDT] = useState([]);
-  const [loadingTransferListUSDT, setLoadingTransferListUSDT] = useState(false);
-  useEffect(() => {
-    const getTransferListUSDT = async () => {
-      setLoadingTransferListUSDT(true);
-      const response = await fetch('/api/transfer/getAllTransferUSDT', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          walletAddress: address,
-        }),
-      });
-      if (!response.ok) {
-        toast.error("전송 내역을 불러오는 데 실패했습니다.");
-        setLoadingTransferListUSDT(false);
-        return;
-      }
-      const data = await response.json();
-      setTransferListUSDT(data.result.transfers);
-      setLoadingTransferListUSDT(false);
-    };
-    if (address) {
-      getTransferListUSDT();
-    }
-
-    // setInterval to refresh transfer list every 5 seconds
-    const interval = setInterval(() => {
-      if (address) {
-        getTransferListUSDT();
-      }
-    }
-    , 5000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [address]);
-
 
 
   // 입금받을 은행정보
@@ -1762,6 +1508,69 @@ export default function SendUsdt({ params }: any) {
 
 
                 </div>
+
+
+
+                {/* settlement list */}
+                <div className="w-full mt-5 bg-white rounded-lg p-4">
+                  <h2 className="text-xl font-semibold mb-4">출금 내역</h2>
+                  
+
+                    <table className="w-full table-auto">
+                      <thead>
+                        <tr
+                          className="bg-gray-200 text-gray-700 text-sm font-semibold">
+                          <th className="px-4 py-2">날짜</th>
+                          <th className="px-4 py-2">금액</th>
+                          <th className="px-4 py-2">상태</th>
+                          <th className="px-4 py-2">은행정보</th>
+                          <th className="px-4 py-2">지갑주소</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {settlementList.map((settlement : any, index: number) => (
+                          <tr key={settlement._id}
+                            className={`${
+                              index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
+                            }`}
+                          >
+                            <td className="border px-4 py-2">
+                              {new Date(settlement.createdAt).toLocaleDateString()}<br/>
+                              {new Date(settlement.createdAt).toLocaleTimeString()}
+                            </td>
+                            <td className="border px-4 py-2">
+                              {Number(settlement.amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} {token}
+                            </td>
+                            <td className="border px-4 py-2">
+                              {settlement.status === "pending" ? (
+                                <span className="text-yellow-500">대기중</span>
+                              ) : settlement.status === "completed" ? (
+                                <span className="text-green-500">완료</span>
+                              ) : (
+                                <span className="text-red-500">실패</span>
+                              )}
+                            </td>
+                            <td className="border px-4 py-2">
+                              {settlement.bankInfo.bankName}<br/>
+                              {settlement.bankInfo.accountNumber}<br/>
+                              {settlement.bankInfo.accountHolder}
+                            </td>
+                            <td className="border px-4 py-2">
+                              {settlement.walletAddress.slice(0, 6)}...{settlement.walletAddress.slice(-4)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                 
+
+                </div>
+
+
+
+
+
 
               </div>
 

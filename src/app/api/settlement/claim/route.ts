@@ -4,10 +4,16 @@ import { NextResponse, type NextRequest } from "next/server";
 import { processSettlement } from "@/lib/api/settlement";
 
 export async function POST(request: NextRequest) {
-  const { walletAddress, amount, bankInfo, settlementWalletAddress } = await request.json();
+  const {
+    walletAddress,
+    amount,
+    bankInfo,
+    settlementWalletAddress,
+    transactionHash,
+  } = await request.json();
 
   // Validate input
-  if (!walletAddress || !amount || !bankInfo || !settlementWalletAddress) {
+  if (!walletAddress || !amount || !bankInfo || !settlementWalletAddress || !transactionHash) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
@@ -19,6 +25,7 @@ export async function POST(request: NextRequest) {
       amount,
       bankInfo,
       settlementWalletAddress,
+      transactionHash: transactionHash, // Optional field
     });
 
     return NextResponse.json(result, { status: 200 });
