@@ -1507,12 +1507,24 @@ function AgentPage(
                                         <Button
                                             onClick={() => {
                                                 router.push(
-                                                    "/" + params.lang + "/" + params.chain + "/sendToUser/" + user.user_id
+                                                    "/" + params.lang + "/" + params.chain + "/sendToUserUSDT/" + user.user_id
                                                 );
                                             }}
                                             className="bg-green-500 text-white px-4 py-2 rounded"
                                         >
                                             테더 송금하기
+                                        </Button>
+
+                                        {/* 포인트 송금하기 버튼 */}
+                                        <Button
+                                            onClick={() => {
+                                                router.push(
+                                                    "/" + params.lang + "/" + params.chain + "/sendToUserMKRW/" + user.user_id
+                                                );
+                                            }}
+                                            className="bg-yellow-500 text-white px-4 py-2 rounded"
+                                        >
+                                            포인트 송금하기
                                         </Button>
                                     </div>
 
