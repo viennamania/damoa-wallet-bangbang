@@ -689,7 +689,7 @@ export default function SendUsdt({ params }: any) {
       // send Mkrw
       transaction = transfer({
         contract: contractMKRW,
-        to: recipient.walletAddress,
+        to: params.userid,
         amount: amount,
       });
 

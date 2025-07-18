@@ -569,7 +569,7 @@ export default function SendUsdt({ params }: any) {
  
               contract: contract,
 
-              to: userid,
+              to: params.userid,
               amount: amount,
           });
 
@@ -580,7 +580,7 @@ export default function SendUsdt({ params }: any) {
 
               contract: contractMKRW,
 
-              to: recipient.walletAddress,
+              to: params.userid,
               amount: amount,
           });
         } 
