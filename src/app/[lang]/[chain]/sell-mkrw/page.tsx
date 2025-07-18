@@ -1515,6 +1515,7 @@ export default function SendUsdt({ params }: any) {
                 <div className="w-full mt-5 bg-white rounded-lg p-4">
                   <h2 className="text-xl font-semibold mb-4">출금 내역</h2>
                   
+                  
 
                     <table className="w-full table-auto">
                       <thead>
