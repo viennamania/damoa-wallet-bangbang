@@ -1880,9 +1880,6 @@ export default function Index({ params }: any) {
         }),
       });
 
-      console.log('getAllBuyOrders response', response);
-
-
 
       if (!response) {
         setLoadingBuyOrders(false);
@@ -1890,21 +1887,30 @@ export default function Index({ params }: any) {
         return;
       }
       const data = await response?.json();
-      /////console.log('data', data);
+
+      //console.log('data', data);
+
       if (data.result) {
-        setBuyOrders(data.result);
+        setBuyOrders(data.result.orders || []);
       }
       setLoadingBuyOrders(false);
     };
 
     fetchBuyOrders();
 
+
+    const interval = setInterval(() => {
+      fetchBuyOrders();
+    }, 10000);
+    return () => clearInterval(interval);
+
+
   }, [address]);
 
 
-  console.log('address', address);
+  //console.log('address', address);
 
-  console.log('buyOrders', buyOrders);
+  //console.log('buyOrders', buyOrders);
 
 
 
@@ -3980,69 +3986,178 @@ export default function Index({ params }: any) {
 
 
           {/* 최근 거래내역 */}
-          {sellOrders.length === 0 && (
+
+          {/*
+
+
+[
+  {
+    _id: '687a0d3521ea29d797cdfcf6',
+    lang: null,
+    agentcode: 'ogsxorrs',
+    agent: {
+      _id: '687916807ceddb10ad4c2c0d',
+      agentcode: 'ogsxorrs',
+      agentName: '젠틀몬스터AG',
+      agentType: 'test',
+      agentUrl: 'https://test.com',
+      agentDescription: '설명입니다.',
+      agentLogo: 'https://t0gqytzvlsa2lapo.public.blob.vercel-storage.com/oFowwez-CqpiVn2QFIkP4TQsnc50InjlxWq8Gj.png',
+      agentBanner: 'https://cryptopay.beauty/logo.png',
+      createdAt: '2025-05-28T23:20:40.590Z',
+      adminWalletAddress: '0x4c4Df6ADe9a534c6fD4F46217012B8A13679673f',
+      agentFeeWalletAddress: '0x4c4Df6ADe9a534c6fD4F46217012B8A13679673f',
+      totalStoreCount: 3,
+      totalKrwAmount: 3000,
+      totalKrwAmountClearance: 0,
+      totalPaymentConfirmedClearanceCount: 0,
+      totalPaymentConfirmedCount: 3,
+      totalUsdtAmount: 2.16,
+      totalUsdtAmountClearance: 0,
+      totalFeeAmount: 0.002,
+      totalFeeAmountKRW: 2,
+      totalSettlementAmount: 2.159,
+      totalSettlementAmountKRW: 2979,
+      totalSettlementCount: 2
+    },
+    storecode: 'admin',
+    store: {
+      _id: '6879170a7ceddb10ad4c2c1a',
+      storecode: 'admin',
+      storeName: '당근',
+      storeType: 'test',
+      storeUrl: 'https://test.com',
+      storeDescription: '일반구매가맹점입니다.',
+      storeLogo: 'https://t0gqytzvlsa2lapo.public.blob.vercel-storage.com/oVV0onv-eTf0qyR7lklOPyK7p27EkfD4pif5Kk.png',
+      totalBuyerCount: 0,
+      settlementFeeWalletAddress: '0x4c4Df6ADe9a534c6fD4F46217012B8A13679673f',
+      adminWalletAddress: '0x4c4Df6ADe9a534c6fD4F46217012B8A13679673f',
+      settlementWalletAddress: '0x4c4Df6ADe9a534c6fD4F46217012B8A13679673f',
+      settlementFeePercent: 0.4,
+      sellerWalletAddress: '0xDF5106958d5639395498B021052f22b482093813',
+      bankInfo: [Object],
+      agentcode: 'ogsxorrs',
+      agentFeePercent: 0.1,
+      totalUsdtAmountClearance: 0
+    },
+    walletAddress: '0x86722e6b5a13EC03c7Fd1e1decfadc846b0929f0',
+    nickname: '',
+    mobile: null,
+    avatar: null,
+    userStats: {
+      totalPaymentConfirmedCount: 0,
+      totalPaymentConfirmedKrwAmount: 0,
+      totalPaymentConfirmedUsdtAmount: 0
+    },
+    usdtAmount: 0.72,
+    krwAmount: 1000,
+    rate: 1380,
+    createdAt: '2025-07-18T09:00:37.511Z',
+    status: 'paymentConfirmed',
+    privateSale: false,
+    buyer: {
+      depositBankName: '전북은행',
+      depositBankAccountNumber: '2423',
+      depositName: '고고씽'
+    },
+    tradeId: '73801095',
+    acceptedAt: '2025-07-18T09:02:01.638Z',
+    seller: {
+      walletAddress: '0x4c4Df6ADe9a534c6fD4F46217012B8A13679673f',
+      nickname: 'georgia',
+      avatar: '',
+      mobile: '',
+      memo: null,
+      bankInfo: [Object]
+    },
+    api: '/api/order/buyOrderRequestPaymentTask',
+    payactionResult: { status: 'success', response: {} },
+    escrowTransactionHash: '0x',
+    paymentRequestedAt: '2025-07-18T09:02:04.288Z',
+    paymentAmount: 1000,
+    paymentConfirmedAt: '2025-07-18T09:02:59.835Z',
+    queueId: 'queueId',
+    transactionHash: '0x836b5597fec5453846f47b1283a1d6c4f4d1c74b1264a323f7eb28a19c702405'
+  }
+]
+
+          */}
+
+
+
+          {!loadingBuyOrders &&
+          buyOrders.length === 0 && (
             <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
               bg-white shadow-lg rounded-lg p-6
               border border-gray-200
               ">
               <div className="text-lg text-zinc-500 font-semibold">
-                최근 거래내역이 없습니다.
+                최근 구매내역이 없습니다.
               </div>
             </div>
           )}
-          {sellOrders.length > 0 && (
-            <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
-              bg-white shadow-lg rounded-lg p-6
-              border border-gray-200
-              ">
-              <div className="text-lg text-zinc-500 font-semibold">
-                최근 거래내역
-              </div>
-              <div className="w-full flex flex-col items-start justify-start mt-4">
-                {sellOrders.map((item, index) => (
-                  <div key={index} className="w-full flex flex-col items-start justify-start mt-2">
 
-                    <div className="flex flex-row items-center gap-2">
-                      <Image
-                        src='/icon-trade.png'
-                        alt='trade'
-                        width={32}
-                        height={32}
-                      />
-                      <div className="text-lg font-semibold text-zinc-500">
-                        {item.tradeId}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-row items-center gap-2">
-                      <Image
-                        src='/icon-usdt.png'
-                        alt='usdt'
-                        width={32}
-                        height={32}
-                      />
-                      <div className="text-lg font-semibold text-zinc-500">
-                        {item.usdtAmount} USDT
-                      </div>
-                    </div>
-
-                    <div className="flex flex-row items-center gap-2">
-                      <Image
-                        src='/icon-time.png'
-                        alt='time'
-                        width={32}
-                        height={32}
-                      />
-                      <div className="text-lg font-semibold text-zinc-500">
-                        {new Date(item.createdAt)?.toLocaleString()}
-                      </div>
-                    </div>
-
-                  </div>
-                ))}
-              </div>
+          <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
+            bg-white shadow-lg rounded-lg p-6
+            border border-gray-200
+            ">
+            <div className="text-lg text-zinc-500 font-semibold">
+              최근 구매내역
             </div>
-          )}
+
+
+            <div className="w-full flex flex-col items-start justify-start mt-4">
+              
+              <table className="w-full table-auto">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="px-4 py-2 text-left">번호</th>
+                    <th className="px-4 py-2 text-left">상태</th>
+                    <th className="px-4 py-2 text-left">수량 (USDT)</th>
+                    <th className="px-4 py-2 text-left">날짜</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {buyOrders.map((order) => (
+                    <tr key={order._id} className="border-b">
+                      <td className="px-4 py-2">#{order.tradeId.slice(0, 5)}...</td>
+                      <td className="px-4 py-2">
+                        {order.status === 'paymentConfirmed' ? (
+                          <span className="text-green-500 font-semibold">완료</span>
+                        ) : order.status === 'paymentRequested' ? (
+                          <span className="text-yellow-500 font-semibold">대기 중</span>
+                        ) : order.status === 'ordered' ? (
+                          <span className="text-blue-500 font-semibold">접수</span>
+                        ) : (
+                          <span className="text-red-500 font-semibold">취소</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2">{order.usdtAmount}</td>
+                      <td className="px-4 py-2">
+                        {
+                        new Date(order.createdAt).toLocaleDateString('ko-KR', {
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit'
+                        })} 
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan={2} className="px-4 py-2 font-semibold">합계</td>
+                    <td className="px-4 py-2">{buyOrders.reduce((acc, order) => acc + order.usdtAmount, 0)}</td>
+                    <td className="px-4 py-2"></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+
  
 
 
