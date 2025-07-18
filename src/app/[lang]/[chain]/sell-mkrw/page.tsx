@@ -198,59 +198,6 @@ export default function SendUsdt({ params }: any) {
     }
   }
 
-  const handleScan = async (data: string) => {
-    setPause(true);
-
-    /*
-    setRecipient({
-      _id: '',
-      id: 0,
-      email: '',
-      nickname: '',
-      avatar: '',
-      mobile: '',
-      walletAddress: data,
-      tronWalletAddress: '',
-      createdAt: '',
-      settlementAmountOfFee: '',
-    });
-    */
-    setRecipient({
-      ...recipient,
-      walletAddress: data,
-    })
-
-    // close scanner
-    setShowQrScanner(false);
-
-    /*
-    try {
-
-      const response = await fetch(
-        `your-api-url?code=${encodeURIComponent(data)}`
-      );
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        alert("Success! Welcome to the conference.");
-      } else {
-        alert(result.message);
-      }
-
-
-    } catch (error: unknown) {
-      console.log(error);
-    } finally {
-      setPause(false);
-    }
-    */
-
-  };
-
-
-
-
-
 
 
 
@@ -1225,93 +1172,6 @@ export default function SendUsdt({ params }: any) {
 
 
 
-
-
-                {String(token).toLowerCase() === "kct" && (
-                  <div className="w-full mt-5 bg-white rounded-lg p-4">
-                    <h2 className="text-xl font-semibold mb-4">전송 내역</h2>
-                    
-                    {loadingTransferListKCT ? (
-                      <div className="w-full flex items-center justify-center">
-                        <Image
-                          src="/loading.png"
-                          alt="loading"
-                          width={50}
-                          height={50}
-                          className='animate-spin'
-                        />
-                      </div>
-                    ) : (
-                      <table className="w-full table-auto">
-                        <thead>
-                          <tr
-                            className="bg-gray-200 text-gray-700 text-sm font-semibold">
-
-
-                            <th className="px-4 py-2">날짜<br/>보내기 / 받기</th>
-                            <th className="px-4 py-2">보낸 사람<br/>받는 사람</th>
-                            <th className="px-4 py-2">수량</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {transferListKCT.map((transfer : any, index: number) => (
-
-
-                            <tr key={transfer._id}
-
-                              className={`${
-                                index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
-                              }`}
-                            >
-                              <td className="border px-4 py-2">
-                                <div className='flex flex-col gap-1'>
-                                  <span className="text-sm">
-                                    {new Date(transfer.transferData.timestamp).toLocaleTimeString()}
-                                  </span>
-                                  <span className="text-xs text-gray-500">
-                                    {new Date(transfer.transferData.timestamp).toLocaleDateString()}
-                                  </span>
-                                </div>
-
-                                <span className="font-semibold text-lg">
-                                  {transfer.sendOrReceive === "send" ? (
-                                    <span className="text-red-500">보내기</span>
-                                  ) : (
-                                    <span className="text-green-500">받기</span>
-                                  )}
-                                </span>
-
-
-                              </td>
-
-                              <td className="border px-4 py-2">
-                                {transfer.transferData.fromAddress.slice(0, 6)}...{transfer.transferData.fromAddress.slice(-4)}<br/>
-                                {transfer.transferData.toAddress.slice(0, 6)}...{transfer.transferData.toAddress.slice(-4)}
-                              </td>
-                              <td className="border px-4 py-2">
-                                {
-                                  (Number(transfer.transferData.value) / 10 ** 18)
-                                  .toFixed(2)
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-
-
-
-
-
-                )}
-
-
-
-
-
               </div>
 
             ) }
@@ -1515,7 +1375,7 @@ export default function SendUsdt({ params }: any) {
                 <div className="w-full mt-5 bg-white rounded-lg p-4">
                   <h2 className="text-xl font-semibold mb-4">출금 내역</h2>
                   
-                  
+
 
                     <table className="w-full table-auto">
                       <thead>
