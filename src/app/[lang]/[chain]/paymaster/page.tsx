@@ -1692,7 +1692,7 @@ export default function Index({ params }: any) {
 
           const order = data.result;
 
-          router.push('/' + params.lang + '/home/pay-usdt-reverse/' + order._id);
+          router.push('/' + params.lang + '/' + params.chain + '/pay-usdt-reverse/' + order._id);
 
 
         } else {
@@ -1932,8 +1932,8 @@ export default function Index({ params }: any) {
 
   
   if (!loadingUser && (buyOrderStatus === 'ordered' || buyOrderStatus === 'accepted' || buyOrderStatus === 'paymentRequested')) {
-      
-      router.push('/' + params.lang + '/home/pay-usdt-reverse/' + latestBuyOrder?._id);
+
+      router.push('/' + params.lang + '/' + params.chain + '/pay-usdt-reverse/' + latestBuyOrder?._id);
 
       return (
         <div>
