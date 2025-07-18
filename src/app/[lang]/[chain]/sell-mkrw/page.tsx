@@ -1246,6 +1246,15 @@ export default function SendUsdt({ params }: any) {
 
 
 
+  // 입금받을 은행정보
+  const [bankInfo, setBankInfo] = useState({
+    bankName: '',
+    accountNumber: '',
+    accountHolder: '',
+  });
+
+
+
 
   return (
 
@@ -1636,23 +1645,27 @@ export default function SendUsdt({ params }: any) {
 
               <div className='mt-5 w-full flex flex-col gap-5'>
 
+                
                 <div className='
                   w-full  flex flex-col gap-5 border border-gray-300 rounded-lg p-4 bg-white
                   '>
 
 
-                  <div className='flex flex-row gap-2 items-center justify-start'>
-                    {/* dot icon */}
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <div className="text-sm
-                      text-gray-800
-                    ">
-                      {Enter_the_amount_and_recipient_address}
-                    </div>
-                  </div>
+
 
 
                   <div className='w-full mb-5 flex flex-col xl:flex-row gap-5 items-start justify-between'>
+
+                    <div className='flex flex-row gap-2 items-center justify-start'>
+                      {/* dot icon */}
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                      <div className="text-sm
+                        text-gray-800
+                      ">
+                        출금할 금액을 입력해주세요.
+                      </div>
+                    </div>
+
 
                     <div className='w-full flex flex-col gap-5 items-start justify-between'>
                       <input
@@ -1685,355 +1698,66 @@ export default function SendUsdt({ params }: any) {
                         )}
                       />
                 
-            
-
-                      {/* check box for want to receive wallet address */}
-                      {/*
-                      <div className="flex flex-row items-center gap-2">
-                        <input
-                          type="checkbox"
-                          className="w-6 h-6"
-                          checked={wantToReceiveWalletAddress}
-                          onChange={(e) => setWantToReceiveWalletAddress(e.target.checked)}
-                        />
-                        <div className="text-white">{Enter_Wallet_Address}</div>
-                      </div>
-                      */}
 
                     </div>
 
-
-                
-                
-                    {!wantToReceiveWalletAddress ? (
-                      <>
-                        <div className='w-full flex flex-col gap-5 items-start justify-between'>
-
-
-
-
-                          <select
-                            disabled={sending}
-
-                            className="
-                              
-                              w-56 p-2 border border-gray-300 rounded text-black text-2xl font-semibold "
-                              
-                            value={
-                              recipient?.nickname
-                            }
-
-
-                            onChange={(e) => {
-
-                              const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
-
-                              console.log("selectedUser", selectedUser);
-
-                              setRecipient(selectedUser);
-
-                            } } 
-
-                          >
-                            <option value="">{Select_a_user}</option>
-                            
-
-                            {users.map((user) => (
-                              <option key={user.id} value={user.nickname}>{user.nickname}</option>
-                            ))}
-                          </select>
-
-                          {/* select user profile image */}
-
-                          <div className=" w-full flex flex-row gap-2 items-center justify-center">
-                            <Image
-                              src={recipient?.avatar || '/profile-default.png'}
-                              alt="profile"
-                              width={38}
-                              height={38}
-                              className="rounded-full"
-                              style={{
-                                objectFit: 'cover',
-                                width: '38px',
-                                height: '38px',
-                              }}
-                            />
-
-                            {recipient?.walletAddress && (
-                              <Image
-                                src="/verified.png"
-                                alt="check"
-                                width={28}
-                                height={28}
-                              />
-                            )}
-
-                          </div>
-
-                        </div>
-
-                
-                        {/* input wallet address */}
-                        
-                        <input
-                          disabled={true}
-                          type="text"
-                          placeholder={User_wallet_address}
-                          className=" w-80  xl:w-full p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
-                          value={
-                            recipient?.walletAddress
-                          }
-                          onChange={(e) => {
-          
-                            setRecipient({
-                              ...recipient,
-                              walletAddress: e.target.value,
-                            });
-
-                          } }
-
-                        />
-
-                  
-
-
-              
-
-
-                      </>
-
-                    ) : (
-
-                      <div className='w-full flex flex-col gap-5 items-center justify-between'>
-                        <input
-                          disabled={sending}
-                          type="text"
-                          placeholder={User_wallet_address}
-                          className=" w-full p-2 border border-gray-300 rounded
-                          text-zinc-800 text-sm font-semibold"
-
-                          value={recipient.walletAddress}
-
-                          onChange={(e) => setRecipient({
-                            ...recipient,
-                            walletAddress: e.target.value,
-                          })}
-
-                        />
-
-                        {isWhateListedUser ? (
-                          <div className="flex flex-row gap-2 items-center justify-center">
-
-
-                            <Image
-                              src={recipient.avatar || '/profile-default.png'}
-                              alt="profile"
-                              width={30}
-                              height={30}
-                              className="rounded-full"
-                              style={{
-                                objectFit: 'cover',
-                                width: '38px',
-                                height: '38px',
-                              }}
-                            />
-                            <div className="text-white">{recipient?.nickname}</div>
-                            <Image
-                              src="/verified.png"
-                              alt="check"
-                              width={30}
-                              height={30}
-                            />
-                            
-                          </div>
-                        ) : (
-                          <>
-
-                          {/*
-                          {recipient?.walletAddress && (
-                            <div className='flex flex-row gap-2 items-center justify-center'>
-
-                              <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
-
-                              <div className="text-red-500">
-                                {This_address_is_not_white_listed}<br />
-                                {If_you_are_sure_please_click_the_send_button}
-                              </div>
-                            </div>
-
-                          )}
-                          */}
-
-                          </>
-                        )}
-
-
-
-                        {/* qr scanner button */}
-                        <div className="w-full flex flex-row gap-2 items-center justify-center">
-                          <button
-                            disabled={sending}
-                            onClick={() => setShowQrScanner(!showQrScanner)}
-                            className="w-full p-2 rounded-lg text-sm font-semibold bg-gray-300 text-gray-400"
-                          >
-                            {showQrScanner ? 'Close QR Scanner' : 'Open QR Scanner'}
-                          </button>
-                        </div>
-
-                        { showQrScanner && (
-
-
-                          <div className="w-full flex flex-col items-center justify-center gap-2">
-                            {/*
-                            <div style={styles.controls}>
-                              <select onChange={(e) => setDeviceId(e.target.value)}>
-                                <option value={undefined}>Select a device</option>
-                                {devices.map((device, index) => (
-                                  <option key={index} value={device.deviceId}>
-                                    {device.label}
-                                  </option>
-                                ))}
-                              </select>
-                              <select
-                                style={{ marginLeft: 5 }}
-                                onChange={(e) => setTracker(e.target.value)}
-                              >
-                                <option value="centerText">Center Text</option>
-                                <option value="outline">Outline</option>
-                                <option value="boundingBox">Bounding Box</option>
-                                <option value={undefined}>No Tracker</option>
-                              </select>
-                            </div>
-                            */}
-                            <Scanner
-                              formats={[
-                                "qr_code",
-                                "micro_qr_code",
-                                "rm_qr_code",
-                                "maxi_code",
-                                "pdf417",
-                                "aztec",
-                                "data_matrix",
-                                "matrix_codes",
-                                "dx_film_edge",
-                                "databar",
-                                "databar_expanded",
-                                "codabar",
-                                "code_39",
-                                "code_93",
-                                "code_128",
-                                "ean_8",
-                                "ean_13",
-                                "itf",
-                                "linear_codes",
-                                "upc_a",
-                                "upc_e",
-                              ]}
-                              constraints={{
-                                deviceId: deviceId,
-                              }}
-                              onScan={(detectedCodes) => {
-                                handleScan(detectedCodes[0].rawValue);
-                              }}
-                              onError={(error) => {
-                                console.log(`onError: ${error}'`);
-                              }}
-                              styles={{ container: { height: "400px", width: "350px" } }}
-                              components={{
-                                onOff: true,
-                                torch: true,
-                                zoom: true,
-                                finder: true,
-                                tracker: getTracker(),
-                              }}
-                              allowMultiple={true}
-                              scanDelay={2000}
-                              paused={pause}
-                            />
-                          </div>
-
-
-                        )}
-
-
-
-
-
-                      </div>
-
-                    )}
 
                     
-
-                  </div>
-
-                  {/* otp verification */}
-                  {/*
-                  {verifiedOtp ? (
-                    <div className="w-full flex flex-row gap-2 items-center justify-center">
-                      <Image
-                        src="/verified.png"
-                        alt="check"
-                        width={30}
-                        height={30}
-                      />
-                      <div className="text-white">OTP verified</div>
-                    </div>
-                  ) : (
                 
-            
-                    <div className="w-full flex flex-row gap-2 items-start">
 
-                      <button
-                        disabled={!address || !recipient?.walletAddress || !amount || isSendingOtp}
-                        onClick={sendOtp}
-                        className={`
-                          
-                          ${isSendedOtp && 'hidden'}
-
-                          w-32 p-2 rounded-lg text-sm font-semibold
-
-                            ${
-                            !address || !recipient?.walletAddress || !amount || isSendingOtp
-                            ?'bg-gray-300 text-gray-400'
-                            : 'bg-green-500 text-white'
-                            }
-                          
-                          `}
-                      >
-                          Send OTP
-                      </button>
-
-                      <div className={`flex flex-row gap-2 items-center justify-center ${!isSendedOtp && 'hidden'}`}>
-                        <input
-                          type="text"
-                          placeholder="Enter OTP"
-                          className=" w-40 p-2 border border-gray-300 rounded text-black text-sm font-semibold"
-                          value={otp}
-                          onChange={(e) => setOtp(e.target.value)}
-                        />
-
-                        <button
-                          disabled={!otp || isVerifingOtp}
-                          onClick={verifyOtp}
-                          className={`w-32 p-2 rounded-lg text-sm font-semibold
-
-                              ${
-                              !otp || isVerifingOtp
-                              ?'bg-gray-300 text-gray-400'
-                              : 'bg-green-500 text-white'
-                              }
-                            
-                            `}
-                        >
-                            Verify OTP
-                        </button>
+                    {/* 입금받을 은행정보 입력*/}
+                    {/* 은행명, 계좌번호, 예금주 */}
+                    <div className='flex flex-row gap-2 items-center justify-start'>
+                      {/* dot icon */}
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                      <div className="text-sm
+                        text-gray-800
+                      ">
+                        입금받을 은행정보를 입력해주세요.
                       </div>
+                    </div>
+
+
+                    <div className='w-full flex flex-col gap-5 items-start justify-between'>
+                      <input
+                        disabled={sending}
+                        type="text"
+                        className=" w-full p-2 border
+                        border-gray-300 rounded text-zinc-800 text-2xl font-semibold"
+
+
+                        placeholder="은행명"
+                        value={bankInfo.bankName}
+                        onChange={(e) => setBankInfo({ ...bankInfo, bankName: e.target.value })}
+                      />
+
+
+                      <input
+                        disabled={sending}
+                        type="text"
+                        className=" w-full p-2 border
+                        border-gray-300 rounded text-zinc-800 text-2xl font-semibold"
+
+
+                        placeholder="계좌번호"
+                        value={bankInfo.accountNumber}
+                        onChange={(e) => setBankInfo({ ...bankInfo, accountNumber: e.target.value })}
+                      />
+
+                      <input
+                        disabled={sending}
+                        type="text"
+                        className=" w-full p-2 border
+                        border-gray-300 rounded text-zinc-800 text-2xl font-semibold"
+
+
+                        placeholder="예금주"
+                        value={bankInfo.accountHolder}
+                        onChange={(e) => setBankInfo({ ...bankInfo, accountHolder: e.target.value })}
+                      />
 
                     </div>
 
-                  )}
-                  */}
                   
 
 
@@ -2081,260 +1805,25 @@ export default function SendUsdt({ params }: any) {
 
                   </div>
 
+
                 </div>
 
-                {/* transfer history */}
-                {/* table view */}
-                {/*
-
-                  [
-                    {
-                        "_id": "683a833a7a4edd08cb8716df",
-                        "user": {
-                            "_id": "67f46b566692fd42650470f0",
-                            "telegramId": "",
-                            "walletAddress": "0x534ea8bf168AEBf71ea37ba2Ae0fCEC8E09aA83A"
-                        },
-                        "sendOrReceive": "send",
-                        "transferData": {
-                            "transactionHash": "0x425678ff54ad22e524cb013e5e1472e5b081eade5ddf1ff98f6c6035e4d4b838",
-                            "transactionIndex": 17,
-                            "fromAddress": "0x534ea8bf168AEBf71ea37ba2Ae0fCEC8E09aA83A",
-                            "toAddress": "0x5FD40E75e88eb09AA2F4cC772E2263a140a34405",
-                            "value": "1000000000000000000000",
-                            "timestamp": 1748665142000,
-                            "_id": "683a833a7a4edd08cb8716de"
-                        }
-                    }
-                ]
-                  */}
-
-                {String(token).toLowerCase() === "kct" && (
-                  <div className="w-full mt-5 bg-white rounded-lg p-4">
-                    <h2 className="text-xl font-semibold mb-4">전송 내역</h2>
-                    
-                    {loadingTransferListKCT ? (
-                      <div className="w-full flex items-center justify-center">
-                        <Image
-                          src="/loading.png"
-                          alt="loading"
-                          width={50}
-                          height={50}
-                          className='animate-spin'
-                        />
-                      </div>
-                    ) : (
-                      <table className="w-full table-auto">
-                        <thead>
-                          <tr
-                            className="bg-gray-200 text-gray-700 text-sm font-semibold">
+              </div>
 
 
-                            <th className="px-4 py-2">날짜<br/>보내기 / 받기</th>
-                            <th className="px-4 py-2">보낸 사람<br/>받는 사람</th>
-                            <th className="px-4 py-2">수량</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {transferListKCT.map((transfer : any, index: number) => (
-
-
-                            <tr key={transfer._id}
-
-                              className={`${
-                                index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
-                              }`}
-                            >
-                              <td className="border px-4 py-2">
-                                <div className='flex flex-col gap-1'>
-                                  <span className="text-sm">
-                                    {new Date(transfer.transferData.timestamp).toLocaleTimeString()}
-                                  </span>
-                                  <span className="text-xs text-gray-500">
-                                    {new Date(transfer.transferData.timestamp).toLocaleDateString()}
-                                  </span>
-                                </div>
-
-                                <span className="font-semibold text-lg">
-                                  {transfer.sendOrReceive === "send" ? (
-                                    <span className="text-red-500">보내기</span>
-                                  ) : (
-                                    <span className="text-green-500">받기</span>
-                                  )}
-                                </span>
-
-
-                              </td>
-
-                              <td className="border px-4 py-2">
-                                {transfer.transferData.fromAddress.slice(0, 6)}...{transfer.transferData.fromAddress.slice(-4)}<br/>
-                                {transfer.transferData.toAddress.slice(0, 6)}...{transfer.transferData.toAddress.slice(-4)}
-                              </td>
-                              <td className="border px-4 py-2">
-                                {
-                                  (Number(transfer.transferData.value) / 10 ** 18)
-                                  .toFixed(2)
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-
-
-
-
-
-                )}
-
-
-
-
-
-
-
+              <div className="w-full flex flex-col gap-5 items-start justify-between">
 
               </div>
 
-            )}
-
-
-
-
-
-
-
-            {/* transaction history table */}
-            {/*
-            <div className="w-full flex flex-col gap-5 items-start justify-start
-              border border-gray-300 rounded-lg p-4
-            ">
-              <table className="w-full border border-gray-300 rounded-lg">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="p-2 border border-gray-300">Date</th>
-                    <th className="p-2 border border-gray-300">Amount</th>
-                    <th className="p-2 border border-gray-300">Recipient</th>
-                    <th className="p-2 border border-gray-300">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="p-2 border border-gray-300">2024-08-01</td>
-                    <td className="p-2 border border-gray-300">100.24</td>
-                    <td className="p-2 border border-gray-300">0x1234567890</td>
-                    <td className="p-2 border border-gray-300">Success</td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-gray-300">2024-08-01</td>
-                    <td className="p-2 border border-gray-300">100.24</td>
-                    <td className="p-2 border border-gray-300">0x1234567890</td>
-                    <td className="p-2 border border-gray-300">Success</td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-gray-300">2024-08-01</td>
-                    <td className="p-2 border border-gray-300">100.24</td>
-                    <td className="p-2 border border-gray-300">0x1234567890</td>
-                    <td className="p-2 border border-gray-300">Success</td>
-                  </tr>
-
-                </tbody>
-              </table>
-
-              <div className="w-full flex flex-row gap-2 items-center justify-center">
-                <button className="p-2 rounded-lg bg-gray-300 text-gray-400">Prev</button>
-                <button className="p-2 rounded-lg bg-gray-300 text-gray-400">Next</button>
               </div>
-            </div>
-            */}
 
-
-
-
+            ) }
 
         </div>
 
     </main>
 
-  );
-
-}
+)}
 
 
-
-
-
-function Header(
-  {
-      lang,
-      chain,
-      center,
-      agent,
-      tokenId,
-  } : {
-      lang: string
-      chain: string
-      center: string
-      agent: string
-      tokenId: string
-  }
-) {
-
-  const router = useRouter();
-
-
-  return (
-    <header className="flex flex-col items-center mb-5 md:mb-10">
-
-      {/* header menu */}
-      <div className="w-full flex flex-row justify-between items-center gap-2
-        bg-green-500 p-4 rounded-lg mb-5
-      ">
-          {/* logo */}
-          <button
-              onClick={() => {
-                  router.push(
-                    '/' + lang + '/' + chain + '/?agent=' + agent + '&tokenId=' + tokenId
-                  );
-              }}
-          >            
-              <div className="flex flex-row gap-2 items-center">
-                  <Image
-                  src="/logo.png"
-                  alt="Circle Logo"
-                  width={35}
-                  height={35}
-                  className="rounded-full w-10 h-10 xl:w-14 xl:h-14"
-                  />
-                  <span className="text-lg xl:text-3xl text-gray-800 font-semibold">
-                  MKRW
-                  </span>
-              </div>
-          </button>
-
-        {/* menu */}
-        {/*
-        <div className="flex flex-row gap-2 items-center">
-
-              <button
-                onClick={() => {
-                    router.push(
-                        '/ko/polygon/my-nft?agent=' + agent + '&tokenId=' + tokenId + '&center=' + center
-                    );
-                }}
-                className="text-gray-600 hover:underline text-xs xl:text-lg"
-              >
-                NFT
-              </button>
-
-        </div>
-        */}
-        
-      </div>
-      
-    </header>
-  );
-}
+ 
