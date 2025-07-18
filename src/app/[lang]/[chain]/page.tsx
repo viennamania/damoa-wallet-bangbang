@@ -1322,7 +1322,7 @@ function IndexPage(
                 <button
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/send-token/?token=MKRW"
+                      "/" + params.lang + "/" + params.chain + "/sell-mkrw"
                     );
                   }}
                   className="w-10 h-10"
