@@ -934,6 +934,7 @@ export default function Index({ params }: any) {
   
           if (data.result) {
 
+
             if (data.result.orders.length > 0) {
 
               setBuyOrders(data.result.orders);
@@ -1968,43 +1969,45 @@ export default function Index({ params }: any) {
           )}
 
 
-          {/* 가맹점으로 USDT 충전하기 */}
-          <div className="w-full flex flex-col items-center justify-center gap-2 mb-0">
-            <span className="text-lg text-zinc-500">
-              가맹점으로 USDT 충전하기
-            </span>
-            <div className='flex flex-col xl:flex-row gap-2 items-center justify-center'>
-              <span className="text-lg text-zinc-500">
-                충전금액
-              </span>
-              <input
-                type="number"
-                value={usdtAmount || 0}
-                onChange={(e) => {
-                  setUsdtAmount(
-                    e.target.value.replace(/[^0-9]/g, '')
-                      ? Number(e.target.value.replace(/[^0-9]/g, ''))
-                      : 0
-                  );
-                }}
-                placeholder="USDT"
-                className="text-lg bg-blue-100 text-zinc-500 px-4 py-2 rounded-md border border-zinc-100"
-              />
-              <button
-                onClick={() => {
-                  confirm(
-                    `충전금액 ${usdtAmount} USDT를 충전하시겠습니까?`
-                  ) && sendUsdtToStore()
-                }
-                }
+              {/* 가맹점으로 USDT 충전하기 */}
+              {/*
+              <div className="w-full flex flex-col items-center justify-center gap-2 mb-0">
+                <span className="text-lg text-zinc-500">
+                  가맹점으로 USDT 충전하기
+                </span>
+                <div className='flex flex-col xl:flex-row gap-2 items-center justify-center'>
+                  <span className="text-lg text-zinc-500">
+                    충전금액
+                  </span>
+                  <input
+                    type="number"
+                    value={usdtAmount || 0}
+                    onChange={(e) => {
+                      setUsdtAmount(
+                        e.target.value.replace(/[^0-9]/g, '')
+                          ? Number(e.target.value.replace(/[^0-9]/g, ''))
+                          : 0
+                      );
+                    }}
+                    placeholder="USDT"
+                    className="text-lg bg-blue-100 text-zinc-500 px-4 py-2 rounded-md border border-zinc-100"
+                  />
+                  <button
+                    onClick={() => {
+                      confirm(
+                        `충전금액 ${usdtAmount} USDT를 충전하시겠습니까?`
+                      ) && sendUsdtToStore()
+                    }
+                    }
 
 
-                className="text-lg bg-[#f472b6] text-zinc-50 px-4 py-2 rounded-md"
-              >
-                충전하기
-              </button>
-            </div>
-          </div>
+                    className="text-lg bg-[#f472b6] text-zinc-50 px-4 py-2 rounded-md"
+                  >
+                    충전하기
+                  </button>
+                </div>
+              </div>
+              */}
 
 
 

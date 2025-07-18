@@ -1,5 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+
+
+
+/*
+Response body: {"result":null,"error":"Failed to insert buy order"}
+*/
+
 export async function POST(request: NextRequest) {
 
   const body = await request.json();

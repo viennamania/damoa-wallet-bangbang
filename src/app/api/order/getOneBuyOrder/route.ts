@@ -8,7 +8,8 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
 
 
-  const [ orderId ] = body;
+  const { orderId } = body;
+
 
 
 
@@ -32,7 +33,12 @@ export async function POST(request: NextRequest) {
 
   const data = await response.json();
 
+  //console.log("Fetched order details:", data);
+  // Fetched order details: { result: { totalCount: 1, orders: [ [Object] ] } }
+
+
+
   return NextResponse.json({
-    result: data,
+    result: data.result,
   });
 }
