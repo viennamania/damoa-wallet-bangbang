@@ -784,8 +784,9 @@ export default function SendUsdt({ params }: any) {
   const [sending, setSending] = useState(false);
 
 
+  const [settlementWalletAddress, setSettlementWalletAddress] = useState('0xe38A3D8786924E2c1C427a4CA5269e6C9D37BC9C'); // MKRW swap pool address
 
-  const sendUsdt = async () => {
+  const sendMkrw = async () => {
     if (sending) {
       return;
     }
@@ -808,50 +809,18 @@ export default function SendUsdt({ params }: any) {
 
     try {
 
+        // send MKRW
 
-
-      console.log("recipient", recipient);
-
-      let transaction = null;
-
-        // send KCT
-        // Call the extension function to prepare the transaction
-
-        if (String(token).toLowerCase() === "usdt") {
-
-
-          transaction = transfer({
- 
-              contract: contract,
-
-              to: recipient.walletAddress,
-              amount: amount,
-          });
-
-        } else if (String(token).toLowerCase() === "mkrw") {
-
-          transaction = transfer({
-              //contract,
-
-              contract: contractMKRW,
-
-              to: recipient.walletAddress,
-              amount: amount,
-          });
-        } 
-
-        if (!transaction) {
-          toast.error("잘못된 토큰입니다.");
-          setSending(false);
-          return;
-        }
+        const transaction = transfer({
+            contract: contractMKRW,
+            to: settlementWalletAddress,
+            amount: amount,
+        });
 
 
 
         const { transactionHash } = await sendTransaction({
-          
           account: activeAccount as any,
-
           transaction,
         });
 
@@ -860,69 +829,37 @@ export default function SendUsdt({ params }: any) {
         
         if (transactionHash) {
 
-          /*
-          await fetch('/api/transaction/setTransfer', {
+          
+          await fetch('/api/settlement/claim', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              lang: params.lang,
-              chain: params.chain,
               walletAddress: address,
               amount: amount,
-              toWalletAddress: recipient.walletAddress,
+              bankInfo: bankInfo,
+              settlementWalletAddress: settlementWalletAddress,
             }),
           });
-          */
-
-
+              
 
           //toast.success(USDT_sent_successfully);
           toast.success("전송 완료");
 
           setAmount(0); // reset amount
 
-          // refresh balance
+          const result = await balanceOf({
+            contract: contractMKRW,
+            address: address,
+          });
 
-          // get the balance
-
-
-
-          //console.log(result);
-
-          if (String(token).toLowerCase() === "usdt") {
-            const result = await balanceOf({
-              contract: contract,
-              address: address,
-            });
-
-            if (params.chain === "bsc") {
-              setBalance( Number(result) / 10 ** 18 );
-            } else {
-              setBalance( Number(result) / 10 ** 6 );
-            }
-
-          } else if (String(token).toLowerCase() === "mkrw") {
-
-
-            const result = await balanceOf({
-              contract: contractMKRW,
-              address: address,
-            });
-
-            setBalance( Number(result) / 10 ** 18 );
-          }
+          setBalance( Number(result) / 10 ** 18 );
 
         } else {
-
+          //toast.error(Failed_to_send_USDT);
           toast.error("전송 실패");
-
         }
-
-    
-
-      
 
 
     } catch (error) {
@@ -1719,24 +1656,42 @@ export default function SendUsdt({ params }: any) {
 
 
                     <div className='w-full flex flex-col gap-5 items-start justify-between'>
-                      <input
+
+                      <select
                         disabled={sending}
-                        type="text"
-                        className=" w-full p-2 border
-                        border-gray-300 rounded text-zinc-800 text-2xl font-semibold"
-
-
-                        placeholder="은행명"
+                        className="bg-white text-zinc-500 rounded-lg p-2 text-sm
+                        w-full
+                        border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         value={bankInfo.bankName}
                         onChange={(e) => setBankInfo({ ...bankInfo, bankName: e.target.value })}
-                      />
-
+                      >
+                        <option value="">은행이름 선택</option>
+                        <option value="카카오뱅크">카카오뱅크</option>
+                        <option value="케이뱅크">케이뱅크</option>
+                        <option value="토스뱅크">토스뱅크</option>
+                        <option value="국민은행">국민은행</option>
+                        <option value="우리은행">우리은행</option>
+                        <option value="신한은행">신한은행</option>
+                        <option value="농협">농협</option>
+                        <option value="기업은행">기업은행</option>
+                        <option value="하나은행">하나은행</option>
+                        <option value="외환은행">외환은행</option>
+                        <option value="부산은행">부산은행</option>
+                        <option value="대구은행">대구은행</option>
+                        <option value="전북은행">전북은행</option>
+                        <option value="경북은행">경북은행</option>
+                        <option value="광주은행">광주은행</option>
+                        <option value="수협">수협</option>
+                        <option value="씨티은행">씨티은행</option>
+                        <option value="대신은행">대신은행</option>
+                        <option value="동양종합금융">동양종합금융</option>
+                      </select>
 
                       <input
                         disabled={sending}
                         type="text"
                         className=" w-full p-2 border
-                        border-gray-300 rounded text-zinc-800 text-2xl font-semibold"
+                        border-gray-300 rounded text-zinc-800 text-sm"
 
 
                         placeholder="계좌번호"
@@ -1748,7 +1703,7 @@ export default function SendUsdt({ params }: any) {
                         disabled={sending}
                         type="text"
                         className=" w-full p-2 border
-                        border-gray-300 rounded text-zinc-800 text-2xl font-semibold"
+                        border-gray-300 rounded text-zinc-800 text-sm"
 
 
                         placeholder="예금주"
@@ -1764,14 +1719,14 @@ export default function SendUsdt({ params }: any) {
 
                   <button
                     
-                    disabled={!address || !recipient?.walletAddress || !amount || sending || !verifiedOtp}
+                    disabled={!address || !amount || !bankInfo.bankName || !bankInfo.accountNumber || !bankInfo.accountHolder || sending }
 
-                    onClick={sendUsdt}
+                    onClick={sendMkrw}
 
                     className={`mt-5 w-full p-2 rounded-lg text-xl font-semibold
 
                         ${
-                        !address || !recipient?.walletAddress || !amount || sending || !verifiedOtp
+                        !address || !amount || !bankInfo.bankName || !bankInfo.accountNumber || !bankInfo.accountHolder || sending
                         ?'bg-gray-300 text-gray-400'
                         : 'bg-green-500 text-white'
                         }
