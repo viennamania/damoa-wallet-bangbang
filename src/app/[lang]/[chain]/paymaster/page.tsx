@@ -3590,40 +3590,6 @@ export default function Index({ params }: any) {
 
                                 <div className="mt-4 mb-10 flex flex-col items-start gap-2">
 
-                                  {/* escrow infomation */}
-                                  <div className='flex flex-row items-center gap-2'>
-
-                                    <Image
-                                      src='/smart-contract.png'
-                                      alt='Escrow'
-                                      width={32}
-                                      height={32}
-                                    />
-
-                                    <div className="text-lg font-semibold text-green-500">
-                                      {Escrow}: {item.usdtAmount} USDT
-                                    </div>
-
-                                    {/* polygon icon to go to polygon scan */}
-                                    <button
-                                      className="text-sm bg-green-500 text-zinc-500 px-2 py-1 rounded-md"
-                                      onClick={() => {
-                                        {
-                                          window.open(`https://arbiscan.io/token/${contractAddress}?a=${item.walletAddress}`, '_blank')
-                                        }
-                                      }}
-                                    >
-                                      <Image
-                                        src='/logo-arbitrum.png'
-                                        alt="Chain"
-                                        width={24}
-                                        height={24}
-                                      /> 
-                                    </button>
-
-
-                                  </div>
-
 
                                   <div className='flex flex-row items-center gap-2'>
                                     <Image
