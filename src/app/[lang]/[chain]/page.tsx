@@ -1545,7 +1545,7 @@ function IndexPage(
                       onClick={() => {
                           // redirect to nft detail page
                           router.push(
-                              "/" + params.lang + "/" + params.chain + "/paymster"
+                              "/" + params.lang + "/" + params.chain + "/paymaster"
                           );
                       }}
                       className="w-full
