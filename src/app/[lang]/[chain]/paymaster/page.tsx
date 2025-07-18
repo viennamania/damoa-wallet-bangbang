@@ -163,9 +163,6 @@ const wallets = [
 const recipientWalletAddress = "0x2111b6A49CbFf1C8Cc39d13250eF6bd4e1B59cF6";
 
 
-const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
-const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // USDT on Arbitrum
-
 
 
 
@@ -2018,7 +2015,7 @@ export default function Index({ params }: any) {
                 alt="Store Logo"
                 width={38}
                 height={38}
-                className='rounded-lg w-16 h-16 bg-zinc-200'
+                className='rounded-lg w-8 h-8 object-cover'
               />
               <span className="text-sm text-zinc-100 font-semibold">
                 {storeInfo?.storeName}

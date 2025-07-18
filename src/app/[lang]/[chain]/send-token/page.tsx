@@ -280,15 +280,7 @@ export default function SendUsdt({ params }: any) {
     client,
     // the chain the contract is deployed on
     
-    
     chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-  
-  
-  
-    // the contract's address
-    ///address: contractAddress,
-
-  
 
     address: params.chain === "bsc" ? contractAddressBsc : params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
 

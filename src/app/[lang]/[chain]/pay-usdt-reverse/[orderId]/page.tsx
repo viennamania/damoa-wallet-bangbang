@@ -20,11 +20,6 @@ import {
 
 
 import {
-    polygon,
-    arbitrum,
-} from "thirdweb/chains";
-
-import {
     ConnectButton,
     useActiveAccount,
     useActiveWallet,
@@ -66,7 +61,25 @@ import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 
 
 import { useSearchParams } from "next/navigation";
-import { send } from 'process';
+
+
+
+import {
+  ethereum,
+  polygon,
+  arbitrum,
+  bsc,
+} from "thirdweb/chains";
+
+import {
+  ethereumContractAddressUSDT,
+  polygonContractAddressUSDT,
+  arbitrumContractAddressUSDT,
+  bscContractAddressUSDT,
+} from "../../../../config/contractAddresses";
+
+
+
 
 
 
@@ -124,10 +137,6 @@ const wallets = [
 ];
 
 
-
-
-const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
-const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // USDT on Arbitrum
 
 
 
@@ -234,6 +243,7 @@ export default function Index({ params }: any) {
     //console.log('params', params);
 
     // get params
+    const { lang, chain, orderId } = params;
 
     const searchParams = useSearchParams();
 
@@ -258,23 +268,21 @@ export default function Index({ params }: any) {
     const contract = getContract({
       // the client you have created via `createThirdwebClient()`
       client,
-      // the chain the contract is deployed on
-      
-      
-      chain: arbitrum,
-    
-    
-    
-      // the contract's address
-      ///address: contractAddressArbitrum,
-  
-      address: contractAddressArbitrum,
+
+      chain: chain === "ethereum" ? ethereum :
+              chain === "polygon" ? polygon :
+              chain === "arbitrum" ? arbitrum :
+              chain === "bsc" ? bsc : arbitrum,
+   
+      address: chain === "ethereum" ? ethereumContractAddressUSDT :
+              chain === "polygon" ? polygonContractAddressUSDT :
+              chain === "arbitrum" ? arbitrumContractAddressUSDT :
+              chain === "bsc" ? bscContractAddressUSDT : arbitrumContractAddressUSDT,
   
   
       // OPTIONAL: the contract's abi
       //abi: [...],
     });
-  
 
 
     useEffect(() => {
@@ -591,10 +599,10 @@ export default function Index({ params }: any) {
   const router = useRouter();
     
 
-  const orderId = params.orderId as string;
+  //const orderId = params.orderId as string;
 
   
-  console.log('orderId', orderId);
+  //console.log('orderId', orderId);
 
 
  
@@ -617,35 +625,39 @@ export default function Index({ params }: any) {
 
 
 
-    const [balance, setBalance] = useState(0);
-    useEffect(() => {
+  const [balance, setBalance] = useState(0);
+  useEffect(() => {
 
-      if (!address) {
-        return;
-      }
+    if (!address) {
+      return;
+    }
+
+    // get the balance
+    const getBalance = async () => {
+      const result = await balanceOf({
+        contract,
+        address: address,
+      });
   
-      // get the balance
-      const getBalance = async () => {
-        const result = await balanceOf({
-          contract,
-          address: address,
-        });
-    
-        //console.log(result);
-    
+      //console.log(result);
+  
+      if (chain === "bsc") {
+        setBalance( Number(result) / 10 ** 18 );
+      } else {
         setBalance( Number(result) / 10 ** 6 );
-  
-      };
-  
-      if (address) getBalance();
-  
-      const interval = setInterval(() => {
-        if (address) getBalance();
-      } , 1000);
+      }
 
-      return () => clearInterval(interval);
-  
-    } , [address, contract]);
+    };
+
+    if (address) getBalance();
+
+    const interval = setInterval(() => {
+      if (address) getBalance();
+    } , 1000);
+
+    return () => clearInterval(interval);
+
+  } , [address, contract]);
 
 
 
@@ -653,43 +665,43 @@ export default function Index({ params }: any) {
 
     // get User by wallet address
 
-    const [user, setUser] = useState<any>(null);
-    const [loadingUser, setLoadingUser] = useState(false);
-    useEffect(() => {
+  const [user, setUser] = useState<any>(null);
+  const [loadingUser, setLoadingUser] = useState(false);
+  useEffect(() => {
 
-        if (!address) {
-            return;
-        }
+      if (!address) {
+          return;
+      }
 
-        setLoadingUser(true);
+      setLoadingUser(true);
 
-        fetch('/api/user/getUser', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                storecode: "admin",
-                walletAddress: address,
-            }),
-        })
-        .then(response => response?.json())
-        .then(data => {
-            
-          //console.log('getUser data', data);
+      fetch('/api/user/getUser', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              storecode: "admin",
+              walletAddress: address,
+          }),
+      })
+      .then(response => response?.json())
+      .then(data => {
+          
+        //console.log('getUser data', data);
 
 
 
-          setUser(data.result);
+        setUser(data.result);
 
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+      })
+      .catch((error) => {
+          console.error('Error:', error);
+      });
 
-        setLoadingUser(false);
+      setLoadingUser(false);
 
-    } , [address, "admin"]);
+  } , [address]);
 
 
 
@@ -1656,10 +1668,9 @@ export default function Index({ params }: any) {
           <div className="w-full flex flex-row items-center justify-between gap-2">
 
 
-
             <button
               onClick={() => {
-                router.push('/' + params.lang + '/home');
+                router.push('/' + params.lang + '/' + params.chain);
               }}
               className="flex items-center justify-center gap-2
                 bg-[#f472b6] text-sm text-[#f3f4f6] px-4 py-2 rounded-lg hover:bg-[#f472b6]/80"
@@ -1681,16 +1692,13 @@ export default function Index({ params }: any) {
               </span>
             </button>
 
-
-
-
             <div className='flex flex-col xl:flex-row gap-2 items-center justify-start'>
               <Image
                 src={storeInfo?.storeLogo || '/logo.png'}
                 alt="Store Logo"
                 width={38}
                 height={38}
-                className='rounded-lg w-16 h-16 bg-zinc-200'
+                className='rounded-lg w-8 h-8 object-cover'
               />
               <span className="text-sm text-zinc-100 font-semibold">
                 {storeInfo?.storeName}
@@ -1712,29 +1720,18 @@ export default function Index({ params }: any) {
               </div>
             )}
 
-            {!loadingUser && user && (
+            
+
+      
+
+            {/* user info */}
+
+            {address && (
 
               <div className="flex flex-col items-start justify-center gap-2">
 
-                <div className='flex flex-row gap-2 items-center justify-center'>
-                  <span className="text-sm text-zinc-100">
-
-                    아이디:{' '}{
-                      user?.nickname ? (
-                        user?.nickname
-                      ) : (
-                        <span className="text-sm text-zinc-500">
-                          회원아이디가 없습니다.
-                        </span>
-                      )
-                    }
-                  </span>
-                </div>
 
                 <div className='flex flex-row gap-2 items-center justify-center'>
-                  <span className="text-sm text-zinc-100">
-                    USDT통장:{' '}
-                  </span>
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText(address);
@@ -1776,6 +1773,7 @@ export default function Index({ params }: any) {
 
 
       </div>
+
 
 
 
