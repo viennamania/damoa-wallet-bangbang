@@ -629,7 +629,7 @@ function ChatPageContent(
 
                 nickname={  nickname }
 
-                profileUrl={ avatar }
+                profileUrl='https://wallet.cryptopay.beauty/profile-default.png'
               />
             )}
 

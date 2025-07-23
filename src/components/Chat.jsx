@@ -96,6 +96,12 @@ export default function Chat({
             className='w-full h-[calc(80vh-4rem)]'
         >
 
+            <h1 className='text-2xl font-bold text-center mb-4'>Chat</h1>
+            <p className='text-center mb-4'>Channel: {channel}</p>
+            <p className='text-center mb-4'>User ID: {userId}</p>
+            <p className='text-center mb-4'>Nickname: {nickname}</p>
+            <p className='text-center mb-4'>Profile URL: {profileUrl}</p>
+
         {/*
         <SendbirdProvider
             // Your Sendbird application ID can be found on Sendbird dashboard. 
@@ -129,6 +135,7 @@ export default function Chat({
         <SendbirdProvider
             appId={APP_ID}
             userId={userId}
+
             nickname={nickname}
             profileUrl={profileUrl}
         >
@@ -136,6 +143,7 @@ export default function Chat({
             
             <GroupChannel
                 channelUrl={channel}
+
             />
             
 
