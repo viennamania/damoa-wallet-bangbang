@@ -1456,28 +1456,55 @@ function IndexPage(
 
                       </div>
 
+                      <div className="w-full flex flex-row gap-2 items-center justify-between p-5
+                      ">
+                        <button
+                            onClick={() => {
+                                // redirect to nft detail page
+                                
+                                router.push(
+                                    "/" + params.lang + "/" + params.chain + "/buy-mpoint"
+                                );
+                                
+                              {/* 준비중입니다. */}
+                                //alert("준비중입니다.");
+                            }}
+                            className="w-full
+                              rounded-b-lg
+                              bg-gray-100
+                              p-2
+                              text-sm md:text-lg font-semibold text-zinc-800
+                              hover:bg-gray-200
+                              "
+                        >
+                          테더로 구매하기
+                        </button>
 
-                      <button
-                          onClick={() => {
-                              // redirect to nft detail page
-                              
-                              router.push(
-                                  "/" + params.lang + "/" + params.chain + "/buy-mpoint"
-                              );
-                              
-                             {/* 준비중입니다. */}
-                              //alert("준비중입니다.");
-                          }}
-                          className="w-full
-                            rounded-b-lg
-                            bg-gray-100
-                            p-2
-                            text-sm md:text-lg font-semibold text-zinc-800
-                            hover:bg-gray-200
-                            "
-                      >
-                        포인트 구매하기
-                      </button>
+
+                        <button
+                            onClick={() => {
+                                // redirect to nft detail page
+                                
+                                router.push(
+                                    "/" + params.lang + "/" + params.chain + "/buy-mpoint-winpay"
+                                );
+                                
+                              {/* 준비중입니다. */}
+                                //alert("준비중입니다.");
+                            }}
+                            className="w-full
+                              rounded-b-lg
+                              bg-gray-100
+                              p-2
+                              text-sm md:text-lg font-semibold text-zinc-800
+                              hover:bg-gray-200
+                              "
+                        >
+                          원화로 구매하기
+                        </button>
+
+                      </div>
+
 
 
                   </div>
@@ -1541,23 +1568,26 @@ function IndexPage(
                     </div>
 
                   </div>
-                  <button
-                      onClick={() => {
-                          // redirect to nft detail page
-                          router.push(
-                              "/" + params.lang + "/" + params.chain + "/paymaster"
-                          );
-                      }}
-                      className="w-full
-                        rounded-b-lg
-                        bg-gray-100
-                        p-2
-                        text-sm md:text-lg font-semibold text-zinc-800
-                        hover:bg-gray-200
-                        "
-                  >
-                    테더 구매하기
-                  </button>
+                  <div className="w-full flex flex-row gap-2 items-center justify-between p-5
+                  ">
+                    <button
+                        onClick={() => {
+                            // redirect to nft detail page
+                            router.push(
+                                "/" + params.lang + "/" + params.chain + "/paymaster"
+                            );
+                        }}
+                        className="w-full
+                          rounded-b-lg
+                          bg-gray-100
+                          p-2
+                          text-sm md:text-lg font-semibold text-zinc-800
+                          hover:bg-gray-200
+                          "
+                    >
+                      원화로 구매하기
+                    </button>
+                  </div>
               </div>
           </div>
         )}
