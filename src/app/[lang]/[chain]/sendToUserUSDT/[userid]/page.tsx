@@ -98,7 +98,7 @@ const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; //
 const contractAddressEthereum = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT on Ethereum
 const contractAddressBsc = "0x55d398326f99059fF775485246999027B3197955"; // USDT on BSC
 
-const contractAddressMKRW = "0xEb0a5ea0001Aa9f419BbaF8ceDad265A60f0B10f"; // MKRW on BSC
+const contractAddressSHKRW = "0x49F1C2A283E284BAD06fc20fa88fbfcdEa5ce314"; // MKRW on BSC
 
 
 
@@ -297,7 +297,7 @@ export default function SendUsdt({ params }: any) {
     // the chain the contract is deployed on
     chain: bsc,
     // the contract's address
-    address: contractAddressMKRW,
+    address: contractAddressSHKRW,
   });
 
 
