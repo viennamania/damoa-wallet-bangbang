@@ -818,8 +818,8 @@ function AgentPage(
                                         <Button
                                             onClick={() => {
                                                 
-                                                createGroupChannel(address as string, user.user_id);
-                                                //alert('준비중입니다."');
+                                                //createGroupChannel(address as string, user.user_id);
+                                                alert('준비중입니다."');
 
                                             }}
                                             className="text-sm bg-blue-500 text-white px-4 py-2 rounded"
