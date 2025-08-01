@@ -2283,43 +2283,41 @@ export default function Index({ params }: any) {
                   
                   <div className='w-full flex flex-col xl:flex-row gap-2 items-center justify-between'>
 
-                    <div className='w-full flex flex-col xl:flex-row gap-5 items-center justify-center'>
+                    <div className='w-full flex flex-col gap-5 items-center justify-center'>
+                      
                       <div className="flex flex-row gap-2 items-center justify-center">
-                          <span className="text-sm text-zinc-500">
-                            구매금액
-                          </span>
-                          <div className="text-2xl font-semibold text-zinc-500">
-                            {
-                              selectedKrwAmount?.toLocaleString('ko-KR')
-                            } 원
-                          </div>
-
-
-                          {/* reset button */}
-                          <button
-                            onClick={() => setSelectedKrwAmount(0)}
-                            className={`${loadingStoreInfo ? 'bg-zinc-800' : 'bg-black'
-                            }
-                              text-sm text-zinc-100
-                              px-4 py-2 rounded-md border border-zinc-100
-                              hover:bg-[#f472b6] hover:text-zinc-50
-                              `}
-                          >
-                            초기화
-                          </button>
-
+                        <span className="text-sm text-zinc-500">
+                          구매금액
+                        </span>
+                        <div className="text-2xl font-semibold text-zinc-500">
+                          {
+                            selectedKrwAmount?.toLocaleString('ko-KR')
+                          } 원
+                        </div>
+                        {/* reset button */}
+                        <button
+                          onClick={() => setSelectedKrwAmount(0)}
+                          className={`${loadingStoreInfo ? 'bg-zinc-800' : 'bg-black'
+                          }
+                            text-sm text-zinc-100
+                            px-4 py-2 rounded-md border border-zinc-100
+                            hover:bg-[#f472b6] hover:text-zinc-50
+                            `}
+                        >
+                          초기화
+                        </button>
                       </div>
 
                       {/* 시세 */}
                       <div className="flex flex-row gap-2 items-center justify-center">
-                          <span className="text-sm text-zinc-500">
-                            시세
-                          </span>
-                          <div className="text-2xl font-semibold text-zinc-500">
-                            {
-                              rate?.toLocaleString('ko-KR')
-                            } 원
-                          </div>
+                        <span className="text-sm text-zinc-500">
+                          시세
+                        </span>
+                        <div className="text-2xl font-semibold text-zinc-500">
+                          {
+                            rate?.toLocaleString('ko-KR')
+                          } 원
+                        </div>
                       </div>
 
                       {/* usdtAmount */}
@@ -2335,6 +2333,7 @@ export default function Index({ params }: any) {
                             } USDT
                           </div>
                       </div>
+                      
                     </div>
 
                     {/* krw amount buttons */}
