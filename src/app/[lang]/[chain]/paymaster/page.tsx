@@ -880,24 +880,9 @@ export default function Index({ params }: any) {
 
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
 
-
-
-
-
     useEffect(() => {
 
-        /*
-        if (!orderId) {
-          return;
-        }
-        */
-
-
-
         const fetchSellOrders = async () => {
-
-
-
 
 
           // api call
@@ -934,8 +919,6 @@ export default function Index({ params }: any) {
         fetchSellOrders();
 
 
-
-        
         const interval = setInterval(() => {
 
           fetchSellOrders();
@@ -1557,14 +1540,15 @@ export default function Index({ params }: any) {
 
   const acceptSellOrderRandom = async (
     krwAmount: number,
-    depositName: string,
-    depositBankName: string,
-    depositBankAccountNumber: string,
+    //depositName: string,
+    //depositBankName: string,
+    //depositBankAccountNumber: string,
   ) => {
 
+    const depositName = paramDepositName || '구매자';
+    const depositBankName = paramDepositBankName || '카카오뱅크';
+    const depositBankAccountNumber = paramDepositBankAccountNumber || '123-456-7890';
     
-    console.log('acceptSellOrderRandom depositName', depositName);
-    console.log('acceptSellOrderRandom depositBankName', depositBankName);
 
     if (acceptingSellOrderRandom) {
       return;
@@ -1665,7 +1649,7 @@ export default function Index({ params }: any) {
             lang: params.lang,
             storecode: storecode,
             walletAddress: address,
-            nickname: nickname,
+            nickname: user.nickname,
             usdtAmount: usdtAmount,
             krwAmount: krwAmount,
             rate: rate,
@@ -1674,7 +1658,11 @@ export default function Index({ params }: any) {
               depositBankName: depositBankName,
               depositBankAccountNumber: depositBankAccountNumber,
               depositName: depositName,
-            }
+            },
+            //paymentMethod: 'bank',
+            //paymentMethod: 'usdt',
+            paymentMethod: 'mkrw',
+            
           })
         });
 
@@ -1866,14 +1854,14 @@ export default function Index({ params }: any) {
             */
 
           storecode: "admin",
-          limit: 5,
+          limit: 10,
           page: 1,
           walletAddress: address,
           searchMyOrders: true,
 
 
           searchOrderStatusCancelled: false,
-          searchOrderStatusCompleted: false,
+          searchOrderStatusCompleted: true,
 
 
 
@@ -2015,6 +2003,7 @@ export default function Index({ params }: any) {
               </span>
             </button>
 
+            {/*
             <div className='flex flex-col xl:flex-row gap-2 items-center justify-start'>
               <Image
                 src={storeInfo?.storeLogo || '/logo.png'}
@@ -2027,8 +2016,9 @@ export default function Index({ params }: any) {
                 {storeInfo?.storeName}
               </span>
             </div>
+            */}
 
-            {loadingUser && (
+            {loadingUser ? (
               <div className="flex flex-row items-center justify-center gap-2">
                 <Image
                   src="/loading.png"
@@ -2041,13 +2031,27 @@ export default function Index({ params }: any) {
                   회원정보를 불러오는 중입니다.
                 </div>
               </div>
+            ) : (
+
+              <div className="flex flex-row items-center justify-center gap-2">
+                <Image
+                  src={user?.avatar || "/profile-default.png"}
+                  alt="Avatar"
+                  width={24}
+                  height={24}
+                  className="rounded-full"
+                  style={{
+                    objectFit: 'cover',
+                    width: '24px',
+                    height: '24px',
+                  }}
+                />
+                <span className="text-sm text-zinc-50 font-semibold">
+                  {user?.nickname ? user.nickname : Anonymous}
+                </span>
+              </div>
             )}
-
-            
-
-      
-
-            {/* user info */}
+ 
 
             {address && (
 
@@ -2436,25 +2440,14 @@ export default function Index({ params }: any) {
 
                     <div className='mt-5 flex flex-col xl:flex-row gap-2 items-center justify-center'>
 
+                      {/*
                       <div className="w-full flex flex-col gap-2 items-center justify-center">
 
-                        {/* deposit bank name */}
                         <div className='flex flex-col xl:flex-row gap-2 items-center justify-center'>
                           <span className="w-24 text-sm text-zinc-500">
                             입금자은행명
                           </span>
 
-                          {/*
-                          <input
-                            //disabled={!address || !selectedKrwAmount || acceptingSellOrderRandom}
-                            disabled={false}
-                            type="text"
-                            value={depositBankName || ''}
-                            onChange={(e) => setDepositBankName(e.target.value)}
-                            placeholder="입금자은행명"
-                            className=" text-sm font-semibold bg-zinc-200 text-zinc-600 px-4 py-2 rounded-md border border-zinc-100"
-                          />
-                          */}
                           <select
                             disabled={false}
                             value={depositBankName || ''}
@@ -2483,13 +2476,8 @@ export default function Index({ params }: any) {
                             <option value="동양종합금융">동양종합금융</option>
                           </select>
 
-
-
-
                         </div>
 
-
-                        {/* deposit bank account number */}
                         <div className='mt-2 flex flex-col xl:flex-row gap-2 items-center justify-center'>
                           <span className=" w-24 text-sm text-zinc-500">
                             입금자계좌번호
@@ -2522,9 +2510,8 @@ export default function Index({ params }: any) {
                           />
                         </div>
 
-
                       </div>
-                      
+                      */}
 
 
 
@@ -2551,6 +2538,7 @@ export default function Index({ params }: any) {
                             }
 
                             // check deposit name is empty
+                            /*
                             if (!depositName) {
                               toast.error(Please_enter_deposit_name);
                               return;
@@ -2563,15 +2551,16 @@ export default function Index({ params }: any) {
                               toast.error("입금자 계좌번호를 입력해주세요");
                               return;
                             }
+                            */
 
 
                             confirm("구매주문을 하시겠습니까?") &&
 
                               acceptSellOrderRandom(
                                 selectedKrwAmount,
-                                depositName,
-                                depositBankName || '',
-                                depositBankAccountNumber || ''
+                                //depositName,
+                                //depositBankName || '',
+                                //depositBankAccountNumber || ''
                               );
 
                             
@@ -4088,7 +4077,7 @@ export default function Index({ params }: any) {
           {!loadingBuyOrders &&
           buyOrders.length === 0 && (
             <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
-              bg-white shadow-lg rounded-lg p-6
+              bg-white shadow-lg rounded-lg p-4
               border border-gray-200
               ">
               <div className="text-lg text-zinc-500 font-semibold">
@@ -4111,49 +4100,62 @@ export default function Index({ params }: any) {
               <table className="w-full table-auto">
                 <thead>
                   <tr className="bg-gray-100">
-                    <th className="px-4 py-2 text-left">번호</th>
-                    <th className="px-4 py-2 text-left">상태</th>
-                    <th className="px-4 py-2 text-left">수량 (USDT)</th>
-                    <th className="px-4 py-2 text-left">날짜</th>
+                    <th className="px-4 py-2 text-sm text-left">수량 (USDT)</th>
+                    <th className="px-4 py-2 text-sm text-left">결제 금액</th>
+                    <th className="px-4 py-2 text-sm text-left">날짜</th>
                   </tr>
                 </thead>
                 <tbody>
                   {buyOrders.map((order) => (
                     <tr key={order._id} className="border-b">
-                      <td className="px-4 py-2">#{order.tradeId.slice(0, 5)}...</td>
                       <td className="px-4 py-2">
-                        {order.status === 'paymentConfirmed' ? (
-                          <span className="text-green-500 font-semibold">완료</span>
-                        ) : order.status === 'paymentRequested' ? (
-                          <span className="text-yellow-500 font-semibold">대기 중</span>
-                        ) : order.status === 'ordered' ? (
-                          <span className="text-blue-500 font-semibold">접수</span>
-                        ) : (
-                          <span className="text-red-500 font-semibold">취소</span>
-                        )}
+                        <div className="
+                          w-18 
+                          2xl:w-32
+                          flex items-center justify-end
+                          text-lg text-green-600 font-semibold
+                          "
+                          style={{ fontFamily: 'monospace' }}
+                          >
+                          {order.usdtAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        </div>
                       </td>
-                      <td className="px-4 py-2">{order.usdtAmount}</td>
                       <td className="px-4 py-2">
-                        {
-                        new Date(order.createdAt).toLocaleDateString('ko-KR', {
-                          year: 'numeric',
-                          month: '2-digit',
-                          day: '2-digit',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          second: '2-digit'
-                        })} 
+                        <div className="
+                          w-20
+                          2xl:w-32
+                          flex items-center justify-end
+                          text-sm text-zinc-500 font-semibold
+                          "
+                          style={{ fontFamily: 'monospace' }}
+                          >
+                          {order.krwAmount.toLocaleString('ko-KR', {
+                            style: 'currency',
+                            currency: 'KRW'
+                          })}
+                        </div>
+                      </td>
+                      <td className="px-4 py-2">
+                        <div className='flex flex-col xl:flex-row items-start xl:items-center gap-1'>
+                          <span className="text-sm text-zinc-500">
+                            {new Date(order.createdAt).toLocaleDateString('ko-KR', {
+                              year: 'numeric',
+                              month: '2-digit',
+                              day: '2-digit',
+                            })}
+                          </span>
+                          <span className="text-xs text-zinc-400">
+                            {new Date(order.createdAt).toLocaleTimeString('ko-KR', {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              second: '2-digit'
+                            })}
+                          </span>
+                        </div>
                       </td>
                     </tr>
                   ))}
                 </tbody>
-                <tfoot>
-                  <tr>
-                    <td colSpan={2} className="px-4 py-2 font-semibold">합계</td>
-                    <td className="px-4 py-2">{buyOrders.reduce((acc, order) => acc + order.usdtAmount, 0)}</td>
-                    <td className="px-4 py-2"></td>
-                  </tr>
-                </tfoot>
               </table>
             </div>
           </div>

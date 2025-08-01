@@ -1668,6 +1668,7 @@ export default function Index({ params }: any) {
           <div className="w-full flex flex-row items-center justify-between gap-2">
 
 
+            {/*
             <button
               onClick={() => {
                 router.push('/' + params.lang + '/' + params.chain);
@@ -1704,8 +1705,9 @@ export default function Index({ params }: any) {
                 {storeInfo?.storeName}
               </span>
             </div>
+            */}
 
-            {loadingUser && (
+            {loadingUser ? (
               <div className="flex flex-row items-center justify-center gap-2">
                 <Image
                   src="/loading.png"
@@ -1718,14 +1720,23 @@ export default function Index({ params }: any) {
                   회원정보를 불러오는 중입니다.
                 </div>
               </div>
+            ) : (
+
+              <div className="flex flex-row items-center justify-center gap-2">
+                <Image
+                  src={user?.avatar || "/profile-default.png"}
+                  alt="Avatar"
+                  width={24}
+                  height={24}
+                  className="rounded-full"
+                />
+                <span className="text-sm text-zinc-50 font-semibold">
+                  {user?.nickname ? user.nickname : Anonymous}
+                </span>
+              </div>
             )}
 
             
-
-      
-
-            {/* user info */}
-
             {address && (
 
               <div className="flex flex-col items-start justify-center gap-2">

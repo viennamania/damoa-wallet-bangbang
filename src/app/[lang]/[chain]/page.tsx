@@ -1552,7 +1552,7 @@ function IndexPage(
                           현재 환율
                         </div>
                         <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                          1 USDT = { usdtRate } 원
+                          1 USDT = { usdtRate } 포인트(MKRW)
                         </div>
                       </div>
 
@@ -1586,7 +1586,7 @@ function IndexPage(
                           hover:bg-gray-200
                           "
                     >
-                      원화로 구매하기
+                      포인트(MKRW)로 구매하기
                     </button>
                   </div>
               </div>
