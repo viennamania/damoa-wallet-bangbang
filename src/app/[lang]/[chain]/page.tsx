@@ -1525,7 +1525,7 @@ function IndexPage(
                   p-2
               ">
                   <div className="text-sm md:text-lg text-white">
-                      테더 구매
+                      테더 P2P 거래
                   </div>
               </div>
 
@@ -1586,7 +1586,7 @@ function IndexPage(
                           hover:bg-gray-200
                           "
                     >
-                      포인트(MKRW)로 구매하기
+                      구매하기 신청하기
                     </button>
                   </div>
               </div>
