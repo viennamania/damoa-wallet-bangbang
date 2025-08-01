@@ -122,6 +122,8 @@ interface SellOrder {
   transactionHash: string;
 
   store: any;
+
+  paymentMethod: string;
 }
 
 
@@ -234,8 +236,9 @@ const koreanBankName = [
 ];
 
 */
-  
- 
+
+const contractAddressMKRW = "0xEb0a5ea0001Aa9f419BbaF8ceDad265A60f0B10f"; // MKRW on BSC
+
 
 
 export default function Index({ params }: any) {
@@ -1626,8 +1629,48 @@ export default function Index({ params }: any) {
 
 
 
+  // MKRW balance
+  const [MKRWBalance, setMKRWBalance] = useState(0);
+  useEffect(() => {
     
-    return (
+      const getMKRWBalance = async () => {
+
+        const contract = getContract({
+          // the client you have created via `createThirdwebClient()`
+          client,
+          // the chain the contract is deployed on
+          chain: bsc,
+          // the contract's address
+          address: contractAddressMKRW,
+        });
+
+
+        const balance = await balanceOf({
+          contract: contract,
+          address: address,
+        });
+
+        setMKRWBalance(Number(balance) / 10 ** 18);
+
+      };
+
+      address && getMKRWBalance();
+
+      // timer
+      
+      const interval = setInterval(() => {
+        address && getMKRWBalance();
+      }, 10000);
+
+      return () => clearInterval(interval);
+
+  } , [address]);
+
+
+
+
+    
+return (
 
   <main className="
       pl-2 pr-2
@@ -3311,129 +3354,252 @@ export default function Index({ params }: any) {
                                     address && (item.walletAddress === address || item.buyer?.walletAddress === address ) && (
                                       <>
 
+                                      {item?.paymentMethod === 'bank' ? (
+                                        <div className='flex flex-col items-center gap-2'>
+        
+                                            <div className='flex flex-row items-center gap-2'>
+                                              <Image
+                                                src='/icon-bank.png'
+                                                alt='Bank'
+                                                width={24}
+                                                height={24}
+                                              />
+                                              <div className="text-lg font-semibold text-green-500">
+                                                입금은행
+                                              </div>
+                                            </div>
 
-                                        <div className='flex flex-row items-center gap-2'>
-                                          <Image
-                                            src='/icon-bank.png'
-                                            alt='Bank'
-                                            width={24}
-                                            height={24}
-                                          />
-                                          <div className="text-lg font-semibold text-green-500">
-                                            입금은행
+                                          
+                                            <div className='flex flex-row items-center gap-2'>
+                                              <Image
+                                                src='/icon-info.png'
+                                                alt='Info'
+                                                width={24}
+                                                height={24}
+                                              />
+                                              <span className="text-sm text-zinc-500">
+                                                판매자가 입금은행을 선택했습니다.
+                                                {' '}
+                                                입금이 완료되면 USDT가 구매자 USDT통장으로 이체됩니다.
+                                                {' '}
+                                                입금자명을 정확하게 입력하고 입금을 완료해주세요.
+                                              </span>
+                                            </div>
+
+
+
+                                            <div className='flex flex-row items-center justify-center gap-2'>
+                                              <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                              <div className="text-sm ">
+                                              {item?.store?.bankInfo.bankName}
+                                              {' '}
+                                              <button
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(item?.store?.bankInfo.accountNumber);
+                                                    toast.success("계좌번호가 복사되었습니다.");
+                                                } }
+                                                className='text-lg font-semibold'
+                                              >
+                                                {item?.store?.bankInfo.accountNumber}
+                                              </button>
+                                              {' '}
+                                              <button
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(item?.store?.bankInfo.accountNumber);
+                                                    toast.success("계좌번호가 복사되었습니다.");
+                                                } }
+                                                className="text-sm xl:text-lg text-zinc-500 bg-zinc-200 px-2 py-1 rounded-md
+                                                hover:bg-zinc-300 transition duration-200 ease-in-out"
+                                              >
+                                                복사
+                                              </button>
+                                              {' '}
+                                              {item?.store?.bankInfo.accountHolder}
+                                              </div>
+                                            </div>
+
+
+                                            <div className='flex flex-row items-center gap-2'>
+                                              <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                              <div className="text-sm">
+                                                입금자명:{' '}
+                                                <button
+                                                  onClick={() => {
+                                                      navigator.clipboard.writeText(item.buyer?.depositName ? item.buyer?.depositName : item.tradeId);
+                                                      toast.success("입금자명이 복사되었습니다.");
+                                                  } }
+                                                  className="text-lg font-semibold"
+                                                >
+                                                  {item.buyer?.depositName ? item.buyer?.depositName : item.tradeId}
+                                                </button>
+                                                {' '}
+                                                <button
+                                                  onClick={() => {
+                                                      navigator.clipboard.writeText(item.buyer?.depositName ? item.buyer?.depositName : item.tradeId);
+                                                      toast.success("입금자명이 복사되었습니다.");
+                                                  } }
+                                                  className="hidden text-xs bg-green-500 text-zinc-500 px-2 py-1 rounded-md"
+                                                >
+                                                  복사
+                                                </button>
+
+                                              </div>
+                                            </div>
+
+                                            <div className='flex flex-row items-center gap-2'>
+                                              <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                              <div className="text-sm">
+                                                입금액:{' '}
+
+                                                <button
+                                                  onClick={() => {
+                                                      navigator.clipboard.writeText(item.krwAmount.toString());
+                                                      toast.success("입금액이 복사되었습니다.");
+                                                  } }
+                                                  className="text-lg font-semibold"
+                                                >
+                                                  {item.krwAmount?.toLocaleString('ko-KR', {
+                                                      style: 'currency',
+                                                      currency: 'KRW'
+                                                    })
+                                                  }
+                                                </button>
+                                                {' '}
+                                                <button
+                                                  onClick={() => {
+                                                      navigator.clipboard.writeText(item.krwAmount.toString());
+                                                      toast.success("입금액이 복사되었습니다.");
+                                                  } }
+                                                  className="hidden text-xs bg-green-500 text-zinc-500 px-2 py-1 rounded-md"
+                                                >
+                                                  복사
+                                                </button>
+                                              </div>
+                                            </div>
+
+
                                           </div>
-                                        </div>
 
-                                       
-                                        <div className='flex flex-row items-center gap-2'>
-                                          <Image
-                                            src='/icon-info.png'
-                                            alt='Info'
-                                            width={24}
-                                            height={24}
-                                          />
-                                          <span className="text-sm text-zinc-500">
-                                            판매자가 입금은행을 선택했습니다.
-                                            {' '}
-                                            입금이 완료되면 USDT가 구매자 USDT통장으로 이체됩니다.
-                                            {' '}
-                                            입금자명을 정확하게 입력하고 입금을 완료해주세요.
-                                          </span>
-                                        </div>
+                                        ) : item?.paymentMethod === 'mkrw' ? (
+                                          <div className='flex flex-col items-center gap-2'>
+
+                                            <div className='flex flex-row items-center gap-2'>
+                                              <Image
+                                                src='/token-mkrw-icon.png'
+                                                alt='MKRW'
+                                                width={24}
+                                                height={24}
+                                              />
+                                              <div className="text-lg font-semibold text-green-500">
+                                                MKRW 결제
+                                              </div>
+                                            </div>
+
+                                            <div className='flex flex-row items-center gap-2'>
+                                              <Image
+                                                src='/icon-info.png'
+                                                alt='Info'
+                                                width={24}
+                                                height={24}
+                                              />
+                                              <span className="text-sm text-zinc-500">
+                                                판매자가 MKRW 결제를 선택했습니다.
+                                                {' '}
+                                                MKRW로 결제 후, USDT가 구매자 USDT통장으로 이체됩니다.
+                                              </span>
+                                            </div>
+
+                                            {/* 판매자 지갑주소 */}
+                                            <div className='hidden flex-row items-center gap-2'>
+                                              <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                              <div className="text-sm">
+                                                판매자 지갑주소: {' '}
+                                                <button
+                                                  onClick={() => {
+                                                    navigator.clipboard.writeText(item.seller.walletAddress);
+                                                    toast.success("판매자 지갑주소가 복사되었습니다.");
+                                                  }}
+                                                  className="text-lg font-semibold"
+                                                >
+                                                  {item.seller.walletAddress.slice(0, 6)}...{item.seller.walletAddress.slice(-4)}
+                                                </button>
+                                                {' '}
+                                                <button
+                                                  onClick={() => {
+                                                    navigator.clipboard.writeText(item.seller.walletAddress);
+                                                    toast.success("판매자 지갑주소가 복사되었습니다.");
+                                                  }}
+                                                  className="text-xs bg-green-500 text-zinc-100 px-2 py-1 rounded-md"
+                                                >
+                                                  복사
+                                                </button>
+                                              </div>
+                                            </div>
+
+                                            {/* MKRW 잔고 */}
+                                            <div className='flex flex-row items-center gap-2'>
+                                              <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                              <div className="text-sm">
+                                                MKRW 잔고: {' '}
+                                                <span className="text-lg font-semibold">
+                                                  {
+                                                    MKRWBalance ? Number(MKRWBalance).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '0'
+                                                  }
+                                                </span>
+                                              </div>
+                                            </div>
+
+
+                                            {/* MKRW 보내기 버튼 */}
+                                            <button
+                                              onClick={() => {
+                                                // Handle MKRW sending logic
+                                              }}
+                                              className="text-sm bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200 ease-in-out"
+                                            >
+                                              판매자에게 {item.krwAmount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} MKRW 보내기
+                                            </button>
+
+                                          </div>
+                                        ) : (
+                                          <div className='flex flex-col items-center gap-2'>
+
+                                            <div className='flex flex-row items-center gap-2'>
+                                              <Image
+                                                src='/icon-usdt.png'
+                                                alt='USDT'
+                                                width={24}
+                                                height={24}
+                                              />
+                                              <div className="text-lg font-semibold text-green-500">
+                                                USDT 결제
+                                              </div>
+                                            </div>
+
+                                            <div className='flex flex-row items-center gap-2'>
+                                              <Image
+                                                src='/icon-info.png'
+                                                alt='Info'
+                                                width={24}
+                                                height={24}
+                                              />
+                                              <span className="text-sm text-zinc-500">
+                                                판매자가 USDT 결제를 선택했습니다.
+                                                {' '}
+                                                USDT로 결제 후, USDT가 구매자 USDT통장으로 이체됩니다.
+                                              </span>
+                                            </div>
+
+                                          </div>
+                                        )}
                                           
                                    
 
 
 
 
-                                        <div className='flex flex-row items-center justify-center gap-2'>
-                                          <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                          <div className="text-sm ">
-                                          {item?.store?.bankInfo.bankName}
-                                          {' '}
-                                          <button
-                                            onClick={() => {
-                                                navigator.clipboard.writeText(item?.store?.bankInfo.accountNumber);
-                                                toast.success("계좌번호가 복사되었습니다.");
-                                            } }
-                                            className='text-lg font-semibold'
-                                          >
-                                            {item?.store?.bankInfo.accountNumber}
-                                          </button>
-                                          {' '}
-                                          <button
-                                            onClick={() => {
-                                                navigator.clipboard.writeText(item?.store?.bankInfo.accountNumber);
-                                                toast.success("계좌번호가 복사되었습니다.");
-                                            } }
-                                            className="text-sm xl:text-lg text-zinc-500 bg-zinc-200 px-2 py-1 rounded-md
-                                            hover:bg-zinc-300 transition duration-200 ease-in-out"
-                                          >
-                                            복사
-                                          </button>
-                                          {' '}
-                                          {item?.store?.bankInfo.accountHolder}
-                                          </div>
-                                        </div>
 
 
-                                        <div className='flex flex-row items-center gap-2'>
-                                          <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                          <div className="text-sm">
-                                            입금자명:{' '}
-                                            <button
-                                              onClick={() => {
-                                                  navigator.clipboard.writeText(item.buyer?.depositName ? item.buyer?.depositName : item.tradeId);
-                                                  toast.success("입금자명이 복사되었습니다.");
-                                              } }
-                                              className="text-lg font-semibold"
-                                            >
-                                              {item.buyer?.depositName ? item.buyer?.depositName : item.tradeId}
-                                            </button>
-                                            {' '}
-                                            <button
-                                              onClick={() => {
-                                                  navigator.clipboard.writeText(item.buyer?.depositName ? item.buyer?.depositName : item.tradeId);
-                                                  toast.success("입금자명이 복사되었습니다.");
-                                              } }
-                                              className="hidden text-xs bg-green-500 text-zinc-500 px-2 py-1 rounded-md"
-                                            >
-                                              복사
-                                            </button>
-
-                                          </div>
-                                        </div>
-
-                                        <div className='flex flex-row items-center gap-2'>
-                                          <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                          <div className="text-sm">
-                                            입금액:{' '}
-
-                                            <button
-                                              onClick={() => {
-                                                  navigator.clipboard.writeText(item.krwAmount.toString());
-                                                  toast.success("입금액이 복사되었습니다.");
-                                              } }
-                                              className="text-lg font-semibold"
-                                            >
-                                              {item.krwAmount?.toLocaleString('ko-KR', {
-                                                  style: 'currency',
-                                                  currency: 'KRW'
-                                                })
-                                              }
-                                            </button>
-                                            {' '}
-                                            <button
-                                              onClick={() => {
-                                                  navigator.clipboard.writeText(item.krwAmount.toString());
-                                                  toast.success("입금액이 복사되었습니다.");
-                                              } }
-                                              className="hidden text-xs bg-green-500 text-zinc-500 px-2 py-1 rounded-md"
-                                            >
-                                              복사
-                                            </button>
-                                          </div>
-                                        </div>
 
                                       </>
 
