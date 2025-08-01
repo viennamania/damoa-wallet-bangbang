@@ -1500,7 +1500,7 @@ function IndexPage(
                               hover:bg-gray-200
                               "
                         >
-                          원화로 구매하기
+                          페이로 구매하기
                         </button>
 
                       </div>
