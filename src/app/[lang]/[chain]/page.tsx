@@ -1586,7 +1586,7 @@ function IndexPage(
                           hover:bg-gray-200
                           "
                     >
-                      구매하기 신청하기
+                      구매 신청하기
                     </button>
                   </div>
               </div>
