@@ -1675,7 +1675,7 @@ return (
   <main className="
       pl-2 pr-2
       pb-10 min-h-[100vh] flex flex-col items-center justify-start container
-      max-w-screen-2xl
+      max-w-screen-lg
       mx-auto
       bg-zinc-50
       text-zinc-500
