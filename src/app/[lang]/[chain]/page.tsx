@@ -1157,7 +1157,7 @@ function IndexPage(
             
 
 
-        <div className="mt-5 w-full flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-5 mb-10">
+        <div className="mt-5 w-full flex flex-col items-center xl:items-stretch justify-center gap-5 mb-10">
           
 
 
