@@ -1733,63 +1733,79 @@ function IndexPage(
                         </thead>
                         <tbody>
                           {buyOrders.map((order) => (
-                            <tr key={order._id} className="border-b hover:bg-gray-50">
-                              <td className="px-4 py-2">
-                                <div className="flex flex-col items-start">
-                                  <span className="text-sm font-semibold text-zinc-800">
-                                    {order.nickname}
-                                  </span>
+
+                            // if order.status is cancelled, skip this order
+                            order.status !== "cancelled" && (
+
+                              <tr key={order._id} className="border-b hover:bg-gray-50">
+                                <td className="px-4 py-2">
+                                  <div className="flex flex-col items-start">
                                   {/* time ago */}
-                                  <span className="text-xs text-zinc-500">
-                                    {
-                                      new Date(order.createdAt).toLocaleTimeString([], {
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                      })
-                                    }
-                                  </span>
-                                </div>
-                              </td>
-                              <td className="px-4 py-2">
-                                <div className="flex flex-col items-end">
-                                  <span className="text-sm font-semibold text-zinc-800">
-                                    {
-                                      Number(order.krwAmount).toFixed(0)
-                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                    }
-                                  </span>
-                                  <span className="text-lg text-zinc-600 font-bold">
-                                    {
-                                      Number(order.usdtAmount).toFixed(2)
-                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                    }
-                                  </span>
-                                  <span className="text-xs text-zinc-500">
-                                    {order.rate}
-                                  </span>
-                                </div>
-                              </td>
+                                    <span className="text-xs text-zinc-500">
+                                      {
+                                        new Date(order.createdAt).toLocaleTimeString([], {
+                                          hour: '2-digit',
+                                          minute: '2-digit',
+                                        })
+                                      }
+                                    </span>
 
-                              <td className="px-4 py-2">
+                                    <span className="text-sm font-semibold text-zinc-800">
+                                      {order.nickname}
+                                    </span>
+  
+                                  </div>
+                                </td>
+                                <td className="px-4 py-2">
+                                  <div className="flex flex-col items-end">
+                                    <span className="text-sm font-semibold text-zinc-800">
+                                      {
+                                        Number(order.krwAmount).toFixed(0)
+                                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                      }
+                                    </span>
+                                    <span className="text-lg text-zinc-600 font-bold">
+                                      {
+                                        Number(order.usdtAmount).toFixed(2)
+                                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                      }
+                                    </span>
+                                    <span className="text-xs text-zinc-500">
+                                      {order.rate}
+                                    </span>
+                                  </div>
+                                </td>
 
-                                <button
-                                  onClick={() => {
-                                    //
-                                  }}
-                                  className="
-                                  border border-blue-500 text-blue-500 px-4 py-2 rounded-lg
-                                  hover:bg-blue-500 hover:text-white
-                                  transition duration-300 ease-in-out
-                                  "
-                                >
-                                  판매하기
-                                </button>
+                                <td className="px-4 py-2">
+
+                                  {order.walletAddress === address ? (
+                                    <span className="text-sm text-zinc-500 font-semibold">
+                                      나의 주문
+                                    </span>
+                                  ) : (
+                                    <button
+                                      onClick={() => {
+                                        //
+                                      }}
+                                      className="
+                                      border border-blue-500 text-blue-500 px-4 py-2 rounded-lg
+                                      hover:bg-blue-500 hover:text-white
+                                      transition duration-300 ease-in-out
+                                      "
+                                    >
+                                      판매하기
+                                    </button>
+                                  )}
 
 
-                              </td>
-                            </tr>
+                                </td>
+                              </tr>
+
+                            )
+
                           ))}
                         </tbody>
+ 
                       </table>
                     </div>
                     
