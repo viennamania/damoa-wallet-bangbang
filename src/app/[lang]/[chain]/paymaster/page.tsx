@@ -4065,8 +4065,7 @@ export default function Index({ params }: any) {
 
 
 
-          {!loadingBuyOrders &&
-          buyOrders.length === 0 && (
+          {buyOrders.length === 0 && (
             <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
               bg-white shadow-lg rounded-lg p-4
               border border-gray-200
@@ -4081,8 +4080,19 @@ export default function Index({ params }: any) {
             bg-white shadow-lg rounded-lg p-6
             border border-gray-200
             ">
-            <div className="text-lg text-zinc-500 font-semibold">
-              최근 구매내역
+            <div className='flex flex-row items-center justify-between w-full'>
+              <div className="text-lg text-zinc-500 font-semibold">
+                최근 구매내역
+              </div>
+              {loadingBuyOrders && (
+                <Image
+                  src="/loading.png"
+                  alt="Loading"
+                  width={32}
+                  height={32}
+                  className="animate-spin"
+                />
+              )}
             </div>
 
 
