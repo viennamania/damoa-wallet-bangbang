@@ -301,24 +301,6 @@ export default function Index({ params }: any) {
     const paramDepositBankAccountNumber = searchParams.get('depositBankAccountNumber');
     
 
-    
-
-    useEffect(() => {
-      // Dynamically load the Binance widget script
-      const script = document.createElement("script");
-      script.src = "https://public.bnbstatic.com/unpkg/growth-widget/cryptoCurrencyWidget@0.0.20.min.js";
-      script.async = true;
-      document.body.appendChild(script);
-  
-      return () => {
-        // Cleanup the script when the component unmounts
-        document.body.removeChild(script);
-      };
-    }, []);
-
-
-
-
 
 
 
@@ -1957,8 +1939,8 @@ export default function Index({ params }: any) {
         bg-gradient-to-r from-[#f9a8d4] to-[#f472b6]
         rounded-b-2xl
         shadow-lg
-        shadow-[#f472b6]
-        border-b-2 border-[#f472b6]
+        shadow-[#f472b6]/50
+        border-b-2 border-zinc-200
         border-opacity-50
         ">
 
@@ -1984,7 +1966,7 @@ export default function Index({ params }: any) {
                 router.push('/' + params.lang + '/' + params.chain);
               }}
               className="flex items-center justify-center gap-2
-                bg-[#f472b6] text-sm text-[#f3f4f6] px-4 py-2 rounded-lg hover:bg-[#f472b6]/80"
+                bg-[#a855f7] text-sm text-[#f3f4f6] px-4 py-2 rounded-lg hover:bg-[#f472b6]/80"
             >
               <Image
                 src="/icon-home.png"
@@ -2100,28 +2082,6 @@ export default function Index({ params }: any) {
 
 
       </div>
-
-
-
-
-      {/* USDT 가격 binance market price */}
-      <div
-        className="binance-widget-marquee
-        w-full flex flex-row items-center justify-center gap-2
-        p-2
-        "
-
-
-        data-cmc-ids="1,1027,52,5426,3408,74,20947,5994,24478,13502,35336,825"
-        data-theme="dark"
-        data-transparent="true"
-        data-locale="ko"
-        data-fiat="KRW"
-        //data-powered-by="Powered by OneClick USDT"
-        //data-disclaimer="Disclaimer"
-      ></div>
-
-
 
 
       <div className="
