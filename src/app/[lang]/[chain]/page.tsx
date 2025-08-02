@@ -830,29 +830,99 @@ function IndexPage(
 
 
 
-  // chainBalance
-  /*
-  const [chainBalance, setChainBalance] = useState(0);
+  // api getAllBuyOrders
+  const [buyOrders, setBuyOrders] = useState([] as any[]);
+  const [loadingBuyOrders, setLoadingBuyOrders] = useState(false);
+  const [storecode, setStorecode] = useState("admin");
+  const [totalBuyOrders, setTotalBuyOrders] = useState(0);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [searchMyOrders, setSearchMyOrders] = useState(false);
+  const [searchOrderStatusCancelled, setSearchOrderStatusCancelled] = useState(false);
+  const [searchOrderStatusCompleted, setSearchOrderStatusCompleted] = useState(false);
+  const [searchStoreName, setSearchStoreName] = useState("");
+  const [privateSale, setPrivateSale] = useState(false);
+  const [searchBuyer, setSearchBuyer] = useState("");
+  const [searchDepositName, setSearchDepositName] = useState("");
+  const [searchStoreBankAccountNumber, setSearchStoreBankAccountNumber] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+
   useEffect(() => {
-    if (params.chain === "tron") {
-      setChainBalance(tronBalance);
-    } else if (params.chain === "polygon") {
-      //setChainBalance(balance);
-    } else if (params.chain === "arbitrum") {
-      //setChainBalance(balance);
-    } else if (params.chain === "ethereum") {
-      //setChainBalance(balance);
-    } else {
-      setChainBalance(0);
-    }
-  }
+    const fetchBuyOrders = async () => {
 
-  , [tronBalance, params.chain]);
-  */
+      setLoadingBuyOrders(true);
+
+      const response = await fetch("/api/order/getAllBuyOrders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          storecode: storecode,
+          limit,
+          page,
+          walletAddress: address,
+          searchMyOrders,
+          searchOrderStatusCancelled,
+          searchOrderStatusCompleted,
+          searchStoreName,
+          privateSale,
+          searchBuyer,
+          searchDepositName,
+          searchStoreBankAccountNumber,
+          fromDate,
+          toDate,
+        }),
+      });
+
+      const data = await response.json();
+
+      //console.log("getAllBuyOrders data", data);
+
+      if (data.result) {
+        setBuyOrders(data.result.orders);
+        setTotalBuyOrders(data.result.totalCount);
+      } else {
+        setBuyOrders([]);
+        setTotalBuyOrders(0);
+      }
+
+      setLoadingBuyOrders(false);
+
+    };
+
+    fetchBuyOrders();
+
+    // interval to refresh buy orders every 10 seconds
+    const interval = setInterval(() => {
+      fetchBuyOrders();
+    }, 10000);
+
+    return () => clearInterval(interval);
+
+  }, [
+    storecode,
+    address,
+    limit,
+    page,
+    searchMyOrders,
+    searchOrderStatusCancelled,
+    searchOrderStatusCompleted,
+    searchStoreName,
+    privateSale,
+    searchBuyer,
+    searchDepositName,
+    searchStoreBankAccountNumber,
+    fromDate,
+    toDate,
+  ]);
 
 
 
-  {/* bg R:231, G:237, B:241 */}
+
+
 
   return (
 
@@ -1569,8 +1639,24 @@ function IndexPage(
 
                   </div>
                   
-                  <div className="w-full flex flex-row gap-2 items-center justify-between p-5
+                  <div className="w-full flex flex-col gap-2 items-center justify-start p-5
+                    bg-gray-50  rounded-b-lg
                   ">
+                    {/* 구매 신청하기 버튼 */}
+                    {/* 테더를 구매하기 위해서는 구매 신청을 해야 합니다. */}
+                    {/* 구매 신청을 하면 판매자와 연결됩니다. */}
+                    <div className="w-full flex flex-row gap-2 items-center justify-start text-sm md:text-lg text-zinc-800 font-semibold mb-2">
+                      <Image
+                        src="/icon-info.png"
+                        alt="Info"
+                        width={35}
+                        height={35}
+                        className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                      />
+                      <span className="text-sm md:text-lg text-zinc-800 font-semibold">
+                        테더를 구매하기 위해서는 구매 신청을 해야 합니다. 구매 신청을 하면 판매자와 연결됩니다.
+                      </span>
+                    </div>
                     <button
                         onClick={() => {
                             // redirect to nft detail page
@@ -1589,194 +1675,153 @@ function IndexPage(
                       구매 신청하기
                     </button>
                   </div>
-              </div>
-          </div>
-        )}
 
 
+                  {/* 구매주문 목록 */}
+                  <div className="w-full flex flex-col gap-2 items-center justify-start p-5">
 
-
-
-
-
-
-
-
-
-
-
-
-        {/* nft collection */}
-        {/* owned nfts */}
-        {address && false && (
-
-
-          <div className="mt-5 w-full flex flex-col gap-0 items-center justify-between">
-
-              <div className="w-full flex flex-row gap-2 items-center justify-start
-                  rounded-t-lg
-                  bg-[#3167b4]
-                  p-2
-              ">
-                  <div className="text-sm md:text-lg text-white">
-                      나의 NFT 자산
-                  </div>
-              </div>
-
-              {loadingOwnedNfts && (
-                  <div className="w-full flex flex-row gap-2 items-center justify-center
-                      rounded-b-lg
-                      bg-white p-5
-                  ">
+                    {/* 테더를 판매하기 위해서는 구매주문 목록에서 판매를 해야 합니다. */}
+                    <div className="w-full flex flex-row gap-2 items-center justify-start text-sm md:text-lg text-zinc-800 font-semibold mb-2">
                       <Image
-                          src="/loading.png"
-                          alt="loding"
-                          width={30}
-                          height={30}
-                          className="animate-spin"
+                        src="/icon-info.png"
+                        alt="Info"
+                        width={35}
+                        height={35}
+                        className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
                       />
-                      <span className="text-lg font-semibold text-zinc-400">
-                          불러오는 중...
+                      <span className="text-sm md:text-lg text-zinc-800 font-semibold">
+                        테더를 판매하기 위해서는 구매주문 목록에서 판매를 해야 합니다.
                       </span>
-                  </div>
-              )}
+                    </div>
 
-
-              {ownedNfts.length === 0 && !loadingOwnedNfts && (
-                  <div className="w-full flex flex-row gap-2 items-center justify-center
-                      bg-white p-5
-                  ">
-                      <span className="text-lg font-semibold text-zinc-400">
-                          소유한 NFT 자산이 없습니다.
+                    <div className="w-full flex flex-row gap-2 items-center justify-between
+                      border-b border-black-200 pb-2 mb-2
+                      text-zinc-800 font-semibold
+                      text-lg md:text-xl
+                    ">
+                      <Image
+                        src="/icon-buyorder.png"
+                        alt="Buy Order"
+                        width={35}
+                        height={35}
+                        className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                      />
+                      <span className="text-sm md:text-lg text-zinc-800 font-semibold">
+                        구매주문 목록
                       </span>
-                  </div>
-              )}
+                      <span className="text-sm md:text-lg text-zinc-500">
+                        총 {totalBuyOrders}건
+                      </span>
+                    </div>
 
+                    {/* 주문 목록 테이블 */}
+                    <div className="w-full flex flex-col gap-2 items-start justify-start">
 
- 
-                  <div className="w-full flex flex-col gap-5 items-center justify-between
-                      rounded-b-lg
-                      bg-white p-0
-                  ">
-
-                      {/* nft list */}
-                      {!loadingOwnedNfts && ownedNfts.map((nft, index) => (
-
-                          <div key={index} className="w-full flex flex-col gap-2 items-center justify-between
-                          bg-white
-                              p-5
-                              border-b border-gray-200
-                          ">
-
-                              <div className="w-full flex flex-row gap-2 items-start justify-between">
-
-
-                                  <div className="w-1/4 flex flex-row gap-2 items-center justify-start">
-                                      {nft.tokenId === "0" ? (
-                                          <Image
-                                              src="/logo-snowbot300.png"
-                                              alt="NFT"
-                                              width={300}
-                                              height={300}
-                                              className="rounded-lg"
-                                          />
-                                      ) : (
-                                          <Image
-                                              src="/logo-snowbot3000.png"
-                                              alt="NFT"
-                                              width={300}
-                                              height={300}
-                                              className="rounded-lg"
-                                          />
-                                      )}
-                                  </div>
-
-                                  <div className="w-3/4 flex flex-col gap-1 items-center justify-center">
-
-                                    <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                      <div className="w-1/2 text-sm text-zinc-800">
-                                          이름
-                                      </div>
-                                      <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                                          {nft.name}
-                                      </div>
-                                    </div>
-
-                                    <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                      <div className="w-1/2 text-sm text-zinc-800">
-                                          계약번호
-                                      </div>
-                                      <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                                          #{nft.tokenId}
-                                      </div>
-                                    </div>
-
-                                    <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                      <div className="w-1/2 text-sm text-zinc-800">
-                                          수량
-                                      </div>
-                                      <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                                          {nft.balance} 개
-                                      </div>
-                                    </div>
-
-                                    <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                      <div className="w-1/2 text-sm text-zinc-800">
-                                          누적 리워드
-                                      </div>
-                                      <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                                          0.00 USDT
-                                      </div>
-                                    </div>
-
-                                    <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                      <div className="w-1/2 text-sm text-zinc-800">
-                                          누적 수익률
-                                      </div>
-                                      <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                                          0.00%
-                                      </div>
-                                    </div>
-
-                                  </div>
-
-
+                      <table className="w-full table-auto">
+                        <thead>
+                          <tr className="bg-gray-100">
+                            <th className="px-4 py-2 text-left text-sm font-semibold text-zinc-800">구매자</th>
+                            <th className="px-4 py-2 text-left text-sm font-semibold text-zinc-800">
+                              <div className="flex flex-col items-start">
+                                <span className="text-sm text-zinc-500">금액(MKRW)</span>
+                                <span className="text-sm text-zinc-500">수량(USDT)</span>
+                                <span className="text-xs text-zinc-500">환율</span>
                               </div>
+                            </th>
+                            <th className="px-4 py-2 text-left text-sm font-semibold text-zinc-800">판매</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {buyOrders.map((order) => (
+                            <tr key={order._id} className="border-b hover:bg-gray-50">
+                              <td className="px-4 py-2">
+                                <div className="flex flex-col items-start">
+                                  <span className="text-sm font-semibold text-zinc-800">
+                                    {order.nickname}
+                                  </span>
+                                  {/* time ago */}
+                                  <span className="text-xs text-zinc-500">
+                                    {
+                                      new Date(order.createdAt).toLocaleTimeString([], {
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                      })
+                                    }
+                                  </span>
+                                </div>
+                              </td>
+                              <td className="px-4 py-2">
+                                <div className="flex flex-col items-end">
+                                  <span className="text-sm font-semibold text-zinc-800">
+                                    {
+                                      Number(order.krwAmount).toFixed(0)
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    }
+                                  </span>
+                                  <span className="text-lg text-zinc-600 font-bold">
+                                    {
+                                      Number(order.usdtAmount).toFixed(2)
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    }
+                                  </span>
+                                  <span className="text-xs text-zinc-500">
+                                    {order.rate}
+                                  </span>
+                                </div>
+                              </td>
+
+                              <td className="px-4 py-2">
+
+                                <button
+                                  onClick={() => {
+                                    //
+                                  }}
+                                  className="
+                                  border border-blue-500 text-blue-500 px-4 py-2 rounded-lg
+                                  hover:bg-blue-500 hover:text-white
+                                  transition duration-300 ease-in-out
+                                  "
+                                >
+                                  판매하기
+                                </button>
 
 
-
-
-
-                          </div>
-                      ))}
-
-
-                      {/* 더보기 버튼 */}
-                      <button
-                          onClick={() => {
-                              // redirect to nft detail page
-                              router.push(
-                                  "/" + params.lang + "/" + params.chain + "/my-nft-snowball/" + erc1155ContractAddress + "?start=" + start
-                              );
-                          }}
-                          className="w-full
-                            rounded-b-lg
-                            bg-gray-100
-                            p-2
-                            text-sm md:text-lg font-semibold text-zinc-800
-                            hover:bg-gray-200
-                            "
-                      >
-                        더보기
-                      </button>
-
-
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    
+                    {/* 로딩 중일 때 */}
+                    {loadingBuyOrders && (
+                      <div className="mt-4 flex flex-row justify-center items-center">
+                        <Image
+                          src="/loading.png"
+                          alt="Loading"
+                          width={35}
+                          height={35}
+                          className="animate-spin"
+                        />
+                      </div>
+                    )}
                   </div>
 
+              </div>
           </div>
-
-
         )}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

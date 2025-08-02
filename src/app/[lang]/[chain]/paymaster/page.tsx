@@ -2333,7 +2333,7 @@ export default function Index({ params }: any) {
                             } USDT
                           </div>
                       </div>
-                      
+
                     </div>
 
                     {/* krw amount buttons */}
@@ -2645,18 +2645,10 @@ export default function Index({ params }: any) {
 
                     {sellOrders.map((item, index) => (
 
-
-
-
                       <div
                         key={index}
                         className="relative flex flex-col items-center justify-center"
                       >
-
-  
-
-
-
 
                         {item.status === 'ordered' && (new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24) && (
                           <div className="absolute inset-0 flex justify-center items-center z-10
