@@ -15,6 +15,7 @@ import { client } from "../../../client";
 import {
     getContract,
     sendAndConfirmTransaction,
+    sendTransaction,
 } from "thirdweb";
 
 
@@ -1709,8 +1710,21 @@ export default function Index({ params }: any) {
 
           console.log('escrowWalletAddress', escrowWalletAddress);
 
-          alert('구매 주문이 생성되었습니다. 거래소 지갑 주소로 USDT를 보내주세요. 거래소 지갑 주소: ' + escrowWalletAddress);
+          ///alert('구매 주문이 생성되었습니다. 거래소 지갑 주소로 USDT를 보내주세요. 거래소 지갑 주소: ' + escrowWalletAddress);
 
+          // transfer MKRW to escrow wallet address
+          const transaction = transfer({
+            contract: contractMKRW,
+            to: escrowWalletAddress,
+            amount: usdtAmount,
+          });
+
+          const transactionResult = await sendTransaction({
+            transaction: transaction,
+            account: activeAccount as any,
+          });
+
+          console.log("transactionResult===", transactionResult);
 
 
 
