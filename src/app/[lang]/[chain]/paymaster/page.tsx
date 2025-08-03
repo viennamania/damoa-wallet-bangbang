@@ -1716,7 +1716,7 @@ export default function Index({ params }: any) {
           const transaction = transfer({
             contract: contractMKRW,
             to: escrowWalletAddress,
-            amount: usdtAmount,
+            amount: krwAmount,
           });
 
           const transactionResult = await sendTransaction({
