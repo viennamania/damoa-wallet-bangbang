@@ -1661,7 +1661,7 @@ export default function Index({ params }: any) {
 
         // if sell order not found, create buy order
 
-        const usdtAmount =  parseFloat((krwAmount / rate).toFixed(2));
+        const usdtAmount =  parseFloat((krwAmount / rate).toFixed(3));
 
         console.log('usdtAmount', usdtAmount);
 
@@ -1702,6 +1702,18 @@ export default function Index({ params }: any) {
           toast.success('구매 주문이 생성되었습니다');
 
           const order = data.result;
+
+          //console.log('order', order);
+
+          const escrowWalletAddress = order?.escrowWalletAddress;
+
+          console.log('escrowWalletAddress', escrowWalletAddress);
+
+          alert('구매 주문이 생성되었습니다. 거래소 지갑 주소로 USDT를 보내주세요. 거래소 지갑 주소: ' + escrowWalletAddress);
+
+
+
+
 
           router.push('/' + params.lang + '/' + params.chain + '/pay-usdt-reverse/' + order._id);
 
@@ -2535,6 +2547,13 @@ export default function Index({ params }: any) {
                               return;
                             }
                             */
+
+                            // if mkrwBalance is less than selectedKrwAmount / rate, show error
+                            if (mkrwBalance < selectedKrwAmount / rate) {
+                              toast.error('포인트 잔액이 부족합니다');
+                              return;
+                            }
+
 
 
                             confirm("구매주문을 하시겠습니까?") &&

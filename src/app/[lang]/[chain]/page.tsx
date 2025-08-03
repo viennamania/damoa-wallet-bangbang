@@ -1375,8 +1375,13 @@ function IndexPage(
                 </div>
                 <button
                   onClick={() => {
+                    /*
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/sell-mkrw"
+                    );
+                    */
+                    router.push(
+                      "/" + params.lang + "/" + params.chain + "/send-token/?token=MKRW"
                     );
                   }}
                   className="w-10 h-10"
