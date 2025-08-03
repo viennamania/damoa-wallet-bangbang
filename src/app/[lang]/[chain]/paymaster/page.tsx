@@ -75,7 +75,11 @@ import {
   polygonContractAddressUSDT,
   arbitrumContractAddressUSDT,
   bscContractAddressUSDT,
+
+  bscContractAddressMKRW,
 } from "../../../config/contractAddresses";
+
+
 
 
 
@@ -323,6 +327,21 @@ export default function Index({ params }: any) {
       //abi: [...],
     });
   
+
+
+    const contractMKRW = getContract({
+      // the client you have created via `createThirdwebClient()`
+      client,
+
+      // the chain the contract is deployed on
+      chain: bsc,
+
+      // the contract's address
+      address: bscContractAddressMKRW,
+
+      // OPTIONAL: the contract's abi
+      //abi: [...],
+    });
 
 
   
@@ -653,37 +672,62 @@ export default function Index({ params }: any) {
 
 
 
-    const [balance, setBalance] = useState(0);
-    useEffect(() => {
+  const [balance, setBalance] = useState(0);
+  useEffect(() => {
 
-      if (!address) {
-        return;
+    if (!address) {
+      return;
+    }
+
+    // get the balance
+    const getBalance = async () => {
+      const result = await balanceOf({
+        contract,
+        address: address,
+      });
+  
+      if (chain === 'bsc') {
+        setBalance( Number(result) / 10 ** 18 );
+      } else {
+        setBalance( Number(result) / 10 ** 6 );
       }
   
-      // get the balance
-      const getBalance = async () => {
-        const result = await balanceOf({
-          contract,
-          address: address,
-        });
-    
-        if (chain === 'bsc') {
-          setBalance( Number(result) / 10 ** 18 );
-        } else {
-          setBalance( Number(result) / 10 ** 6 );
-        }
-    
-      };
-  
-      if (address) getBalance();
-  
-      const interval = setInterval(() => {
-        if (address) getBalance();
-      } , 1000);
+    };
 
-      return () => clearInterval(interval);
+    if (address) getBalance();
+
+    const interval = setInterval(() => {
+      if (address) getBalance();
+    } , 5000);
+
+    return () => clearInterval(interval);
+
+  } , [address, contract, chain]);
+
+
+  // balance of MKRW
+  const [mkrwBalance, setMkrwBalance] = useState(0);
+  useEffect(() => {
+    if (!address) {
+      return;
+    }
+    // get the balance
+    const getMkrwBalance = async () => {
+      const result = await balanceOf({
+        contract: contractMKRW,
+        address: address,
+      });
   
-    } , [address, contract]);
+      setMkrwBalance( Number(result) / 10 ** 18 );
+
+  
+    };
+    if (address) getMkrwBalance();
+    const interval = setInterval(() => {
+      if (address) getMkrwBalance();
+    } , 5000);
+    return () => clearInterval(interval);
+  }, [address, contractMKRW]);
 
 
 
@@ -1936,12 +1980,9 @@ export default function Index({ params }: any) {
 
         w-full flex flex-col gap-2 justify-center items-center
         p-4
-        bg-gradient-to-r from-[#f9a8d4] to-[#f472b6]
-        rounded-b-2xl
-        shadow-lg
-        shadow-[#f472b6]/50
-        border-b-2 border-zinc-200
-        border-opacity-50
+        bg-gradient-to-r from-blue-500 to-blue-600
+        shadow-lg rounded-lg
+        text-zinc-50
         ">
 
         {loadingStoreInfo ? (
@@ -1966,7 +2007,13 @@ export default function Index({ params }: any) {
                 router.push('/' + params.lang + '/' + params.chain);
               }}
               className="flex items-center justify-center gap-2
-                bg-[#a855f7] text-sm text-[#f3f4f6] px-4 py-2 rounded-lg hover:bg-[#f472b6]/80"
+                bg-blue-600 hover:bg-blue-700
+                text-white font-semibold py-2 px-4 rounded-lg
+                transition-colors duration-200
+                shadow-lg hover:shadow-xl
+                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
+                active:bg-blue-800 active:shadow-none
+                "
             >
               <Image
                 src="/icon-home.png"
@@ -2097,52 +2144,29 @@ export default function Index({ params }: any) {
           {!loadingUser && (
             <div className="w-full flex flex-col items-start justify-between gap-2">
 
-              {/* my usdt balance */}
-              <div className='hidden w-full  flex-row items-between justify-start gap-5'>
+              {/* my mkrw balance */}
+              <div className='w-full  flex-row items-between justify-start gap-5'>
 
-                <div className=" flex flex-col gap-2 items-start">
-                  <div className="text-5xl font-semibold text-zinc-500">
-                    {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                <div className="flex flex-row items-center justify-start">
+                  <Image
+                    src="/token-mkrw-icon.png"
+                    alt="MKRW Icon"
+                    width={20}
+                    height={20}
+                    className="inline-block mr-1"
+                  />
+                  <span className="text-sm font-semibold">
+                    내 포인트 잔액
+                  </span>
+                </div>
+                <div className=" flex flex-row items-start justify-start gap-2">
+                  <div className="text-2xl font-semibold text-zinc-500">
+                    {
+                    Number(mkrwBalance).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                    }{' '}MKRW
                   </div>
                 </div>
 
-                <div className="hidden flex-row gap-2 items-center justify-center">
-                  
-                    <Image
-                      src={user?.avatar || "/profile-default.png"}
-                      alt="Avatar"
-                      width={20}
-                      height={20}
-                      priority={true} // Added priority property
-                      className="rounded-full"
-                      style={{
-                          objectFit: 'cover',
-                          width: '20px',
-                          height: '20px',
-                      }}
-                    />
-                    <div className="text-lg font-semibold text-zinc-500 ">{
-                      user?.nickname ? user.nickname : Anonymous
-                    }</div>
-
-                    {user?.seller && (
-                      <div className="flex flex-row items-center gap-2">
-                        <Image
-                          src="/verified.png"
-                          alt="Verified"
-                          width={24}
-                          height={24}
-                        />
-                        <Image
-                          src="/best-seller.png"
-                          alt="Best Seller"
-                          width={24}
-                          height={24}
-                        />
-                      </div>
-                    )}
-                  
-                </div>
               </div>
 
 

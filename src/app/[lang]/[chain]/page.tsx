@@ -101,6 +101,15 @@ import Link from "next/link";
 
 
 
+import {
+  ethereumContractAddressUSDT,
+  polygonContractAddressUSDT,
+  arbitrumContractAddressUSDT,
+  bscContractAddressUSDT,
+
+  bscContractAddressMKRW,
+} from "../../config/contractAddresses";
+
 
 
 /*
@@ -147,31 +156,6 @@ const wallets = [
   createWallet("com.okex.wallet"),
   */
 ];
-
-
-const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
-
-const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // USDT on Arbitrum
-
-const contractAddressEthereum = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT on Ethereum
-
-const contractAddressBsc = "0x55d398326f99059fF775485246999027B3197955"; // USDT on BSC
-
-
-const contractAddressMKRW = "0xEb0a5ea0001Aa9f419BbaF8ceDad265A60f0B10f"; // MKRW on BSC
-
-
-const erc1155ContractAddress = "0x796f8867E6D474C1d63e4D7ea5f52B48E4bA83D6";
-
-
-
-/*
-const client = createThirdwebClient({
-  clientId: "dfb94ef692c2f754a60d35aeb8604f3d",
-});
-*/
-
-
 
 
 
@@ -232,7 +216,7 @@ function IndexPage(
 
   
 
-    address: params.chain === "bsc" ? contractAddressBsc : params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
+    address: params.chain === "bsc" ? bscContractAddressUSDT : params.chain === "arbitrum" ? arbitrumContractAddressUSDT : params.chain === "polygon" ? polygonContractAddressUSDT : params.chain === "ethereum" ? ethereumContractAddressUSDT : polygonContractAddressUSDT,
 
 
     // OPTIONAL: the contract's abi
@@ -248,7 +232,7 @@ function IndexPage(
     // the chain the contract is deployed on
     chain: bsc,
     // the contract's address
-    address: contractAddressMKRW,
+    address: bscContractAddressMKRW,
   });
 
 
