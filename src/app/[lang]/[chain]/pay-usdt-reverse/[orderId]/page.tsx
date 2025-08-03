@@ -76,6 +76,8 @@ import {
   polygonContractAddressUSDT,
   arbitrumContractAddressUSDT,
   bscContractAddressUSDT,
+
+  bscContractAddressMKRW,
 } from "../../../../config/contractAddresses";
 
 
@@ -283,6 +285,22 @@ export default function Index({ params }: any) {
               chain === "bsc" ? bscContractAddressUSDT : arbitrumContractAddressUSDT,
   
   
+      // OPTIONAL: the contract's abi
+      //abi: [...],
+    });
+
+
+
+    const contractMKRW = getContract({
+      // the client you have created via `createThirdwebClient()`
+      client,
+
+      // the chain the contract is deployed on
+      chain: bsc,
+
+      // the contract's address
+      address: bscContractAddressMKRW,
+
       // OPTIONAL: the contract's abi
       //abi: [...],
     });
@@ -1630,6 +1648,7 @@ export default function Index({ params }: any) {
 
 
   // MKRW balance
+  /*
   const [MKRWBalance, setMKRWBalance] = useState(0);
   useEffect(() => {
     
@@ -1665,7 +1684,34 @@ export default function Index({ params }: any) {
       return () => clearInterval(interval);
 
   } , [address]);
+   */
 
+
+
+
+    // balance of MKRW
+  const [mkrwBalance, setMkrwBalance] = useState(0);
+  useEffect(() => {
+    if (!address) {
+      return;
+    }
+    // get the balance
+    const getMkrwBalance = async () => {
+      const result = await balanceOf({
+        contract: contractMKRW,
+        address: address,
+      });
+  
+      setMkrwBalance( Number(result) / 10 ** 18 );
+
+  
+    };
+    if (address) getMkrwBalance();
+    const interval = setInterval(() => {
+      if (address) getMkrwBalance();
+    } , 5000);
+    return () => clearInterval(interval);
+  }, [address, contractMKRW]);
 
 
 
@@ -1686,12 +1732,10 @@ return (
 
         w-full flex flex-col gap-2 justify-center items-center
         p-4
-        bg-gradient-to-r from-[#f9a8d4] to-[#f472b6]
-        rounded-b-2xl
-        shadow-lg
-        shadow-[#f472b6]
-        border-b-2 border-[#f472b6]
-        border-opacity-50
+        bg-gradient-to-r from-blue-500 to-blue-600
+        shadow-lg rounded-lg
+        text-white font-semibold
+        text-center
         ">
 
         {loadingStoreInfo ? (
@@ -1709,6 +1753,38 @@ return (
           </div>
         ) : (
           <div className="w-full flex flex-row items-center justify-between gap-2">
+
+
+
+            <button
+              onClick={() => {
+                router.push('/' + params.lang + '/' + params.chain);
+              }}
+              className="flex items-center justify-center gap-2
+                bg-blue-600 hover:bg-blue-700
+                text-white font-semibold py-2 px-4 rounded-lg
+                transition-colors duration-200
+                shadow-lg hover:shadow-xl
+                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
+                active:bg-blue-800 active:shadow-none
+                "
+            >
+              <Image
+                src="/icon-home.png"
+                alt="Home"
+                width={20}
+                height={20}
+                className="rounded-lg w-5 h-5"
+              />
+              <span className="text-sm text-[#f3f4f6]">
+                <span className="hidden xl:inline">
+                  홈으로
+                </span>
+                <span className="xl:hidden">
+                  홈
+                </span>
+              </span>
+            </button>
 
 
             {/*
@@ -1831,24 +1907,6 @@ return (
 
 
 
-            {/* USDT 가격 binance market price */}
-      <div
-        className="binance-widget-marquee
-        w-full flex flex-row items-center justify-center gap-2
-        p-2
-        "
-
-
-        data-cmc-ids="1,1027,52,5426,3408,74,20947,5994,24478,13502,35336,825"
-        data-theme="dark"
-        data-transparent="true"
-        data-locale="ko"
-        data-fiat="KRW"
-        //data-powered-by="Powered by OneClick USDT"
-        //data-disclaimer="Disclaimer"
-      ></div>
-
-
       <div className="
         mt-5
         p-4  w-full
@@ -1861,18 +1919,40 @@ return (
         border-opacity-50
         ">
 
-        {/*
-        <AppBarComponent />
-        */}
-
-
-
 
 
           {!loadingUser && address ? (
             <div className="mt-5 flex flex-col items-center gap-2 mb-4">
 
              
+
+
+              {/* my mkrw balance */}
+              <div className='w-full  flex-row items-between justify-start gap-5'>
+
+                <div className="flex flex-row items-center justify-start">
+                  <Image
+                    src="/token-mkrw-icon.png"
+                    alt="MKRW Icon"
+                    width={20}
+                    height={20}
+                    className="inline-block mr-1"
+                  />
+                  <span className="text-sm font-semibold">
+                    내 포인트 잔액
+                  </span>
+                </div>
+                <div className=" flex flex-row items-start justify-start gap-2">
+                  <div className="text-2xl font-semibold text-zinc-500">
+                    {
+                    Number(mkrwBalance).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                    }{' '}MKRW
+                  </div>
+                </div>
+
+              </div>
+
+
 
               {/*
               {orderId && buyOrders.length > 0 && buyOrders[0].status === 'paymentConfirmed' && balance > 0 && (
@@ -3481,7 +3561,9 @@ return (
                                           </div>
 
                                         ) : item?.paymentMethod === 'mkrw' ? (
+
                                           <div className='flex flex-col items-center gap-2'>
+                                            {/*
 
                                             <div className='flex flex-row items-center gap-2'>
                                               <Image
@@ -3509,7 +3591,7 @@ return (
                                               </span>
                                             </div>
 
-                                            {/* 판매자 지갑주소 */}
+      
                                             <div className='hidden flex-row items-center gap-2'>
                                               <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                               <div className="text-sm">
@@ -3536,7 +3618,6 @@ return (
                                               </div>
                                             </div>
 
-                                            {/* MKRW 잔고 */}
                                             <div className='flex flex-row items-center gap-2'>
                                               <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                               <div className="text-sm">
@@ -3550,7 +3631,6 @@ return (
                                             </div>
 
 
-                                            {/* MKRW 보내기 버튼 */}
                                             <button
                                               onClick={() => {
                                                 // Handle MKRW sending logic
@@ -3559,6 +3639,7 @@ return (
                                             >
                                               판매자에게 {item.krwAmount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} MKRW 보내기
                                             </button>
+                                            */}
 
                                           </div>
                                         ) : (
