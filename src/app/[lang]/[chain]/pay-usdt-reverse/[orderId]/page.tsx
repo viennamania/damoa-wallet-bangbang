@@ -1872,6 +1872,56 @@ return (
               )}
             </div>
 
+
+
+            {!address && (
+
+              <div className="
+                flex flex-col justify-center items-center gap-2 p-2">
+
+                <ConnectButton
+                  client={client}
+                  wallets={wallets}
+                  accountAbstraction={{
+                    chain: bsc,
+                    sponsorGas: true
+                  }}
+
+                  theme={"light"}
+
+                  // button color is dark skyblue convert (49, 103, 180) to hex
+                  connectButton={{
+                    style: {
+                      backgroundColor: "#3167b4", // dark skyblue
+                      // font color is gray-300
+                      color: "#f3f4f6", // gray-300
+                      padding: "10px 20px",
+                      borderRadius: "10px",
+                      fontSize: "16px",
+                      // w-full
+                      width: "100%",
+                    },
+                    label: "로그인 및 회원가입",
+                  }}
+
+                  connectModal={{
+                    size: "wide",
+                    //size: "compact",
+                    titleIcon: "https://wallet.cryptopay.beauty/logo.png",
+                    showThirdwebBranding: false,
+                  }}
+
+                  locale={"ko_KR"}
+                  //locale={"en_US"}
+                />
+
+
+              </div>
+
+            )}
+
+
+
             
             {address && (
 
@@ -3701,13 +3751,6 @@ return (
                                           </div>
                                         )}
                                           
-                                   
-
-
-
-
-
-
 
                                       </>
 
@@ -3715,7 +3758,7 @@ return (
 
 
 
-
+                                    {/*
                                     <div className='flex flex-row items-center gap-2'>
                                       <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                       <div className="text-sm">
@@ -3727,9 +3770,7 @@ return (
                                         
                                         }
                                       </div>
-
                                     </div>
-                                    {/* 입금 기한까지 입금하지 않으면 거래가 취소됩니다. */}
                                     <div className="mt-4 flex flex-row items-center gap-2">
                                       <Image
                                         src="/icon-info.png"
@@ -3741,6 +3782,7 @@ return (
                                         입금 기한까지 입금하지 않으면 거래가 취소됩니다.
                                       </span>
                                     </div>
+                                    */}
 
 
 
