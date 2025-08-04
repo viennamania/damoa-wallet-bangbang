@@ -1295,7 +1295,7 @@ export default function SendUsdt({ params }: any) {
 
                             // check if the value is a number
                             // check if start 0, if so remove it
-                            e.target.value = e.target.value.replace(/^0+/, ''),
+                            //e.target.value = e.target.value.replace(/^0+/, ''),
                             // check balance
 
                             setSwapAmount(e.target.value as any),
