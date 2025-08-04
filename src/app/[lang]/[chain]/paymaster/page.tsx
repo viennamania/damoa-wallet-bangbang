@@ -858,7 +858,7 @@ export default function Index({ params }: any) {
 
     setLoadingUser(true);
 
-    fetch('/api/user/getUser', {
+    fetch('/api/singal/getUser', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -2215,10 +2215,10 @@ export default function Index({ params }: any) {
               P2P 거래소 회원가입 후 이용해주세요.
             </div>
 
-            {/* https://www.cryptopay.beauty/ko/home/profile-settings */}
+            {/* https://www.cryptopay.beauty/ko/admin/profile-settings */}
             <button
               onClick={() => {
-                router.push('https://www.cryptopay.beauty/ko/home/profile-settings');
+                router.push('https://www.cryptopay.beauty/ko/admin/profile-settings');
               }}
               className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 active:bg-blue-800 active:shadow-none"
             >
