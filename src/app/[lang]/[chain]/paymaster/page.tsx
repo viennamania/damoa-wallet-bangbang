@@ -2121,10 +2121,20 @@ export default function Index({ params }: any) {
                 </div>
 
                 {/* balance */}
-                <div className="flex flex-row gap-2 items-center justify-center">
-                  <span className="text-sm text-zinc-100">
-                    잔액:{' '}
-                  </span>
+                <div className="flex flex-col gap-2 items-center justify-center">
+
+                  <div className="flex flex-row items-center justify-center gap-2">
+                    <Image
+                      src="/token-usdt-icon.png"
+                      alt="USDT Icon"
+                      width={20}
+                      height={20}
+                      className="inline-block mr-1"
+                    />
+                    <span className="text-sm text-zinc-100">
+                      내 테더 잔액
+                    </span>
+                  </div>
 
                   <div className="flex flex-row items-center justify-center gap-2">
                     <span className="text-xl font-semibold text-zinc-100">
@@ -2160,35 +2170,68 @@ export default function Index({ params }: any) {
         ">
 
  
+        {address && (
+          <div className='w-full  flex-row items-between justify-start gap-5'>
 
-
-          {!loadingUser && (
-            <div className="w-full flex flex-col items-start justify-between gap-2">
-
-              {/* my mkrw balance */}
-              <div className='w-full  flex-row items-between justify-start gap-5'>
-
-                <div className="flex flex-row items-center justify-start">
-                  <Image
-                    src="/token-mkrw-icon.png"
-                    alt="MKRW Icon"
-                    width={20}
-                    height={20}
-                    className="inline-block mr-1"
-                  />
-                  <span className="text-sm font-semibold">
-                    내 포인트 잔액
-                  </span>
-                </div>
-                <div className=" flex flex-row items-start justify-start gap-2">
-                  <div className="text-2xl font-semibold text-zinc-500">
-                    {
-                    Number(mkrwBalance).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                    }{' '}MKRW
-                  </div>
-                </div>
-
+            <div className="flex flex-row items-center justify-start">
+              <Image
+                src="/token-mkrw-icon.png"
+                alt="MKRW Icon"
+                width={20}
+                height={20}
+                className="inline-block mr-1"
+              />
+              <span className="text-sm font-semibold">
+                내 포인트 잔액
+              </span>
+            </div>
+            <div className=" flex flex-row items-start justify-start gap-2">
+              <div className="text-2xl font-semibold text-zinc-500">
+                {
+                Number(mkrwBalance).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                }{' '}MKRW
               </div>
+            </div>
+
+          </div>
+        )}
+
+
+        {!loadingUser && !user?.nickname && (
+          <div className="w-full flex flex-col items-center justify-center gap-2 mt-10">
+            <div className='flex flex-row items-center justify-center gap-2'>
+              <Image
+                src="/icon-info.png"
+                alt="Info Icon"
+                width={24}
+                height={24}
+                className="rounded-full w-8 h-8 object-cover"
+              />
+              <div className="text-lg font-semibold text-zinc-500">
+                회원가입이 필요합니다.
+              </div>
+            </div>
+            <div className="text-sm text-zinc-500">
+              P2P 거래소 회원가입 후 이용해주세요.
+            </div>
+
+            {/* https://www.cryptopay.beauty/ko/home/profile-settings */}
+            <button
+              onClick={() => {
+                router.push('https://www.cryptopay.beauty/ko/home/profile-settings');
+              }}
+              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 active:bg-blue-800 active:shadow-none"
+            >
+              P2P 거래소 회원가입하기
+            </button>
+
+          </div>
+        )}
+
+
+
+          {!loadingUser && user?.nickname && (
+            <div className="w-full flex flex-col items-start justify-between gap-2">
 
 
               {/* select one of krw amounts combo box */}
@@ -3975,205 +4018,114 @@ export default function Index({ params }: any) {
             )}
 
 
-
-
-          {/* 최근 거래내역 */}
-
-          {/*
-
-
-[
-  {
-    _id: '687a0d3521ea29d797cdfcf6',
-    lang: null,
-    agentcode: 'ogsxorrs',
-    agent: {
-      _id: '687916807ceddb10ad4c2c0d',
-      agentcode: 'ogsxorrs',
-      agentName: '젠틀몬스터AG',
-      agentType: 'test',
-      agentUrl: 'https://test.com',
-      agentDescription: '설명입니다.',
-      agentLogo: 'https://t0gqytzvlsa2lapo.public.blob.vercel-storage.com/oFowwez-CqpiVn2QFIkP4TQsnc50InjlxWq8Gj.png',
-      agentBanner: 'https://cryptopay.beauty/logo.png',
-      createdAt: '2025-05-28T23:20:40.590Z',
-      adminWalletAddress: '0x4c4Df6ADe9a534c6fD4F46217012B8A13679673f',
-      agentFeeWalletAddress: '0x4c4Df6ADe9a534c6fD4F46217012B8A13679673f',
-      totalStoreCount: 3,
-      totalKrwAmount: 3000,
-      totalKrwAmountClearance: 0,
-      totalPaymentConfirmedClearanceCount: 0,
-      totalPaymentConfirmedCount: 3,
-      totalUsdtAmount: 2.16,
-      totalUsdtAmountClearance: 0,
-      totalFeeAmount: 0.002,
-      totalFeeAmountKRW: 2,
-      totalSettlementAmount: 2.159,
-      totalSettlementAmountKRW: 2979,
-      totalSettlementCount: 2
-    },
-    storecode: 'admin',
-    store: {
-      _id: '6879170a7ceddb10ad4c2c1a',
-      storecode: 'admin',
-      storeName: '당근',
-      storeType: 'test',
-      storeUrl: 'https://test.com',
-      storeDescription: '일반구매가맹점입니다.',
-      storeLogo: 'https://t0gqytzvlsa2lapo.public.blob.vercel-storage.com/oVV0onv-eTf0qyR7lklOPyK7p27EkfD4pif5Kk.png',
-      totalBuyerCount: 0,
-      settlementFeeWalletAddress: '0x4c4Df6ADe9a534c6fD4F46217012B8A13679673f',
-      adminWalletAddress: '0x4c4Df6ADe9a534c6fD4F46217012B8A13679673f',
-      settlementWalletAddress: '0x4c4Df6ADe9a534c6fD4F46217012B8A13679673f',
-      settlementFeePercent: 0.4,
-      sellerWalletAddress: '0xDF5106958d5639395498B021052f22b482093813',
-      bankInfo: [Object],
-      agentcode: 'ogsxorrs',
-      agentFeePercent: 0.1,
-      totalUsdtAmountClearance: 0
-    },
-    walletAddress: '0x86722e6b5a13EC03c7Fd1e1decfadc846b0929f0',
-    nickname: '',
-    mobile: null,
-    avatar: null,
-    userStats: {
-      totalPaymentConfirmedCount: 0,
-      totalPaymentConfirmedKrwAmount: 0,
-      totalPaymentConfirmedUsdtAmount: 0
-    },
-    usdtAmount: 0.72,
-    krwAmount: 1000,
-    rate: 1380,
-    createdAt: '2025-07-18T09:00:37.511Z',
-    status: 'paymentConfirmed',
-    privateSale: false,
-    buyer: {
-      depositBankName: '전북은행',
-      depositBankAccountNumber: '2423',
-      depositName: '고고씽'
-    },
-    tradeId: '73801095',
-    acceptedAt: '2025-07-18T09:02:01.638Z',
-    seller: {
-      walletAddress: '0x4c4Df6ADe9a534c6fD4F46217012B8A13679673f',
-      nickname: 'georgia',
-      avatar: '',
-      mobile: '',
-      memo: null,
-      bankInfo: [Object]
-    },
-    api: '/api/order/buyOrderRequestPaymentTask',
-    payactionResult: { status: 'success', response: {} },
-    escrowTransactionHash: '0x',
-    paymentRequestedAt: '2025-07-18T09:02:04.288Z',
-    paymentAmount: 1000,
-    paymentConfirmedAt: '2025-07-18T09:02:59.835Z',
-    queueId: 'queueId',
-    transactionHash: '0x836b5597fec5453846f47b1283a1d6c4f4d1c74b1264a323f7eb28a19c702405'
-  }
-]
-
-          */}
-
-
-
-          {buyOrders.length === 0 && (
+          {user?.nickname && (
             <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
               bg-white shadow-lg rounded-lg p-4
               border border-gray-200
               ">
-              <div className="text-lg text-zinc-500 font-semibold">
-                최근 구매내역이 없습니다.
-              </div>
-            </div>
-          )}
+                <div className="text-lg text-zinc-500 font-semibold">
+                  {user?.nickname}님의 구매내역
+                </div>
 
-          <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
-            bg-white shadow-lg rounded-lg p-6
-            border border-gray-200
-            ">
-            <div className='flex flex-row items-center justify-between w-full'>
-              <div className="text-lg text-zinc-500 font-semibold">
-                최근 구매내역
-              </div>
-              {loadingBuyOrders && (
-                <Image
-                  src="/loading.png"
-                  alt="Loading"
-                  width={32}
-                  height={32}
-                  className="animate-spin"
-                />
-              )}
-            </div>
+                {buyOrders.length === 0 && (
+                  <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
+                    bg-white shadow-lg rounded-lg p-4
+                    border border-gray-200
+                    ">
+                    <div className="text-lg text-zinc-500 font-semibold">
+                      최근 구매내역이 없습니다.
+                    </div>
+                  </div>
+                )}
+
+                <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
+                  bg-white shadow-lg rounded-lg p-6
+                  border border-gray-200
+                  ">
+                  <div className='flex flex-row items-center justify-between w-full'>
+                    <div className="text-lg text-zinc-500 font-semibold">
+                      최근 구매내역
+                    </div>
+                    {loadingBuyOrders && (
+                      <Image
+                        src="/loading.png"
+                        alt="Loading"
+                        width={32}
+                        height={32}
+                        className="animate-spin"
+                      />
+                    )}
+                  </div>
 
 
-            <div className="w-full flex flex-col items-start justify-start mt-4">
-              
-              <table className="w-full table-auto">
-                <thead>
-                  <tr className="bg-gray-100">
-                    <th className="px-4 py-2 text-sm text-left">수량 (USDT)</th>
-                    <th className="px-4 py-2 text-sm text-left">결제 금액</th>
-                    <th className="px-4 py-2 text-sm text-left">날짜</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {buyOrders.map((order) => (
-                    <tr key={order._id} className="border-b">
-                      <td className="px-4 py-2">
-                        <div className="
-                          w-18 
-                          2xl:w-32
-                          flex items-center justify-end
-                          text-lg text-green-600 font-semibold
-                          "
-                          style={{ fontFamily: 'monospace' }}
-                          >
-                          {order.usdtAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        </div>
-                      </td>
-                      <td className="px-4 py-2">
-                        <div className="
-                          w-20
-                          2xl:w-32
-                          flex items-center justify-end
-                          text-sm text-zinc-500 font-semibold
-                          "
-                          style={{ fontFamily: 'monospace' }}
-                          >
-                          {order.krwAmount.toLocaleString('ko-KR', {
-                            style: 'currency',
-                            currency: 'KRW'
-                          })}
-                        </div>
-                      </td>
-                      <td className="px-4 py-2">
-                        <div className='flex flex-col xl:flex-row items-start xl:items-center gap-1'>
-                          <span className="text-sm text-zinc-500">
-                            {new Date(order.createdAt).toLocaleDateString('ko-KR', {
-                              year: 'numeric',
-                              month: '2-digit',
-                              day: '2-digit',
-                            })}
-                          </span>
-                          <span className="text-xs text-zinc-400">
-                            {new Date(order.createdAt).toLocaleTimeString('ko-KR', {
-                              hour: '2-digit',
-                              minute: '2-digit',
-                              second: '2-digit'
-                            })}
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                  <div className="w-full flex flex-col items-start justify-start mt-4">
+                    
+                    <table className="w-full table-auto">
+                      <thead>
+                        <tr className="bg-gray-100">
+                          <th className="px-4 py-2 text-sm text-left">수량 (USDT)</th>
+                          <th className="px-4 py-2 text-sm text-left">결제 금액</th>
+                          <th className="px-4 py-2 text-sm text-left">날짜</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {buyOrders.map((order) => (
+                          <tr key={order._id} className="border-b">
+                            <td className="px-4 py-2">
+                              <div className="
+                                w-18 
+                                2xl:w-32
+                                flex items-center justify-end
+                                text-lg text-green-600 font-semibold
+                                "
+                                style={{ fontFamily: 'monospace' }}
+                                >
+                                {order.usdtAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                              </div>
+                            </td>
+                            <td className="px-4 py-2">
+                              <div className="
+                                w-20
+                                2xl:w-32
+                                flex items-center justify-end
+                                text-sm text-zinc-500 font-semibold
+                                "
+                                style={{ fontFamily: 'monospace' }}
+                                >
+                                {order.krwAmount.toLocaleString('ko-KR', {
+                                  style: 'currency',
+                                  currency: 'KRW'
+                                })}
+                              </div>
+                            </td>
+                            <td className="px-4 py-2">
+                              <div className='flex flex-col xl:flex-row items-start xl:items-center gap-1'>
+                                <span className="text-sm text-zinc-500">
+                                  {new Date(order.createdAt).toLocaleDateString('ko-KR', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                  })}
+                                </span>
+                                <span className="text-xs text-zinc-400">
+                                  {new Date(order.createdAt).toLocaleTimeString('ko-KR', {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    second: '2-digit'
+                                  })}
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
 
  
+              </div>
+          )}
 
 
 

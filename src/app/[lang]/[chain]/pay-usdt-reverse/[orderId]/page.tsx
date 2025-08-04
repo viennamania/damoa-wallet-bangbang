@@ -1787,73 +1787,49 @@ return (
             </button>
 
 
-            {/*
-            <button
-              onClick={() => {
-                router.push('/' + params.lang + '/' + params.chain);
-              }}
-              className="flex items-center justify-center gap-2
-                bg-[#f472b6] text-sm text-[#f3f4f6] px-4 py-2 rounded-lg hover:bg-[#f472b6]/80"
-            >
-              <Image
-                src="/icon-home.png"
-                alt="Home"
-                width={20}
-                height={20}
-                className="rounded-lg w-5 h-5"
-              />
-              <span className="text-sm text-[#f3f4f6]">
-                <span className="hidden xl:inline">
-                  홈으로
-                </span>
-                <span className="xl:hidden">
-                  홈
-                </span>
-              </span>
-            </button>
-
-            <div className='flex flex-col xl:flex-row gap-2 items-center justify-start'>
-              <Image
-                src={storeInfo?.storeLogo || '/logo.png'}
-                alt="Store Logo"
-                width={38}
-                height={38}
-                className='rounded-lg w-8 h-8 object-cover'
-              />
-              <span className="text-sm text-zinc-100 font-semibold">
-                {storeInfo?.storeName}
-              </span>
-            </div>
-            */}
-
-            {loadingUser ? (
-              <div className="flex flex-row items-center justify-center gap-2">
+            <div className='flex flex-col items-start justify-start gap-1'>
+              <div className='flex flex-row gap-2 items-center justify-start'>
                 <Image
-                  src="/loading.png"
-                  alt="Loading"
+                  src={storeInfo?.storeLogo || '/logo.png'}
+                  alt="Store Logo"
                   width={24}
                   height={24}
-                  className='animate-spin'
+                  className='rounded-lg w-6 h-6 object-cover'
                 />
-                <div className="text-sm text-zinc-50">
-                  회원정보를 불러오는 중입니다.
+                <span className="text-sm text-zinc-100 font-semibold">
+                  {storeInfo?.storeName}
+                </span>
+              </div>
+
+              {loadingUser ? (
+                <div className="flex flex-row items-center justify-center gap-2">
+                  <Image
+                    src="/loading.png"
+                    alt="Loading"
+                    width={24}
+                    height={24}
+                    className='animate-spin'
+                  />
+                  <div className="text-sm text-zinc-50">
+                    회원정보를 불러오는 중입니다.
+                  </div>
                 </div>
-              </div>
-            ) : (
+              ) : (
 
-              <div className="flex flex-row items-center justify-center gap-2">
-                <Image
-                  src={user?.avatar || "/profile-default.png"}
-                  alt="Avatar"
-                  width={24}
-                  height={24}
-                  className="rounded-full"
-                />
-                <span className="text-sm text-zinc-50 font-semibold">
-                  {user?.nickname ? user.nickname : Anonymous}
-                </span>
-              </div>
-            )}
+                <div className="flex flex-row items-center justify-center gap-2">
+                  <Image
+                    src={user?.avatar || "/profile-default.png"}
+                    alt="Avatar"
+                    width={24}
+                    height={24}
+                    className="rounded-full w-6 h-6 object-cover"
+                  />
+                  <span className="text-sm text-zinc-50 font-semibold">
+                    {user?.nickname ? user.nickname : Anonymous}
+                  </span>
+                </div>
+              )}
+            </div>
 
             
             {address && (
@@ -1874,10 +1850,20 @@ return (
                 </div>
 
                 {/* balance */}
-                <div className="flex flex-row gap-2 items-center justify-center">
-                  <span className="text-sm text-zinc-100">
-                    잔액:{' '}
-                  </span>
+                <div className="flex flex-col gap-2 items-center justify-center">
+
+                  <div className="flex flex-row items-center justify-center gap-2">
+                    <Image
+                      src="/token-usdt-icon.png"
+                      alt="USDT Icon"
+                      width={20}
+                      height={20}
+                      className="inline-block mr-1"
+                    />
+                    <span className="text-sm text-zinc-100">
+                      내 테더 잔액
+                    </span>
+                  </div>
 
                   <div className="flex flex-row items-center justify-center gap-2">
                     <span className="text-xl font-semibold text-zinc-100">
