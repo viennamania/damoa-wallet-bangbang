@@ -1586,6 +1586,18 @@ export default function Index({ params }: any) {
       return;
     }
 
+
+    if (!address) {
+      toast.error('지갑 주소가 없습니다. 지갑을 연결해주세요.');
+      return;
+    }
+
+    if (krwAmount > mkrwBalance) {
+      toast.error('MKRW 잔액이 부족합니다. 충전해주세요.');
+      return;
+    }
+
+
     setAcceptingSellOrderRandom(true);
 
 
@@ -1661,6 +1673,9 @@ export default function Index({ params }: any) {
 
         //setSellOrders([order]);
       } else {
+
+
+
 
         
         ///toast.error('Sell order not found');
