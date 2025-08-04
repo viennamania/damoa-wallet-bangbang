@@ -1622,7 +1622,7 @@ export default function Index({ params }: any) {
         console.log('usdtAmount', usdtAmount);
 
 
-        const response = await fetch('/api/order/setBuyOrder', {
+        const response = await fetch('/api/singal/setBuyOrder', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

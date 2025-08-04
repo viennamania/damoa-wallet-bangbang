@@ -745,7 +745,7 @@ export default function Index({ params }: any) {
         }
 
         setLoadingStoreInfo(true);
-        const response = await fetch('/api/store/getOneStore', {
+        const response = await fetch('/api/singal/getOneStore', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -1667,7 +1667,7 @@ export default function Index({ params }: any) {
         console.log('usdtAmount', usdtAmount);
 
 
-        const response = await fetch('/api/order/setBuyOrder', {
+        const response = await fetch('/api/singal/setBuyOrder', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -2058,54 +2058,49 @@ export default function Index({ params }: any) {
               </span>
             </button>
 
-            {/*
-            <div className='flex flex-col xl:flex-row gap-2 items-center justify-start'>
-              <Image
-                src={storeInfo?.storeLogo || '/logo.png'}
-                alt="Store Logo"
-                width={38}
-                height={38}
-                className='rounded-lg w-8 h-8 object-cover'
-              />
-              <span className="text-sm text-zinc-100 font-semibold">
-                {storeInfo?.storeName}
-              </span>
-            </div>
-            */}
-
-            {loadingUser ? (
-              <div className="flex flex-row items-center justify-center gap-2">
+            <div className='flex flex-col items-start justify-start gap-1'>
+              <div className='flex flex-row gap-2 items-center justify-start'>
                 <Image
-                  src="/loading.png"
-                  alt="Loading"
+                  src={storeInfo?.storeLogo || '/logo.png'}
+                  alt="Store Logo"
                   width={24}
                   height={24}
-                  className='animate-spin'
+                  className='rounded-lg w-6 h-6 object-cover'
                 />
-                <div className="text-sm text-zinc-50">
-                  회원정보를 불러오는 중입니다.
-                </div>
-              </div>
-            ) : (
-
-              <div className="flex flex-row items-center justify-center gap-2">
-                <Image
-                  src={user?.avatar || "/profile-default.png"}
-                  alt="Avatar"
-                  width={24}
-                  height={24}
-                  className="rounded-full"
-                  style={{
-                    objectFit: 'cover',
-                    width: '24px',
-                    height: '24px',
-                  }}
-                />
-                <span className="text-sm text-zinc-50 font-semibold">
-                  {user?.nickname ? user.nickname : Anonymous}
+                <span className="text-sm text-zinc-100 font-semibold">
+                  {storeInfo?.storeName}
                 </span>
               </div>
-            )}
+
+              {loadingUser ? (
+                <div className="flex flex-row items-center justify-center gap-2">
+                  <Image
+                    src="/loading.png"
+                    alt="Loading"
+                    width={24}
+                    height={24}
+                    className='animate-spin'
+                  />
+                  <div className="text-sm text-zinc-50">
+                    회원정보를 불러오는 중입니다.
+                  </div>
+                </div>
+              ) : (
+
+                <div className="flex flex-row items-center justify-center gap-2">
+                  <Image
+                    src={user?.avatar || "/profile-default.png"}
+                    alt="Avatar"
+                    width={24}
+                    height={24}
+                    className="rounded-full w-6 h-6 object-cover"
+                  />
+                  <span className="text-sm text-zinc-50 font-semibold">
+                    {user?.nickname ? user.nickname : Anonymous}
+                  </span>
+                </div>
+              )}
+            </div>
  
 
             {address && (

@@ -1493,7 +1493,7 @@ export default function Index({ params }: any) {
         // if sell order not found, create buy order
 
 
-        const response = await fetch('/api/order/setBuyOrder', {
+        const response = await fetch('/api/singal/setBuyOrder', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -1575,7 +1575,7 @@ export default function Index({ params }: any) {
 
 
         setLoadingStoreInfo(true);
-        const response = await fetch('/api/store/getOneStore', {
+        const response = await fetch('/api/singal/getOneStore', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
