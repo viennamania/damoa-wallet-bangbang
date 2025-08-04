@@ -839,7 +839,7 @@ export default function Index({ params }: any) {
 
 
 
-
+   /*
   const [user, setUser] = useState<any>(null);
   const [loadingUser, setLoadingUser] = useState(false);
 
@@ -877,6 +877,43 @@ export default function Index({ params }: any) {
     setLoadingUser(false);
 
   } , [address]);
+  */
+
+
+  // get sendbird user data
+  const [loadingUser, setLoadingUser] = useState(false);
+  const [sendbirdUser, setSendbirdUser] = useState(null) as any;
+  useEffect(() => {
+      const fetchData = async () => {
+          setLoadingUser(true);
+          const response = await fetch("/api/sendbird/getOneUser", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  walletAddress: address,
+              }),
+          });
+
+          const data = await response.json();
+
+          //console.log("sendbird user data", data);
+
+          if (data.error) {
+              setSendbirdUser(null);
+          } else {
+              setSendbirdUser(data.result.user);
+
+              setNickname(data.result.user.nickname);
+          }
+
+          setLoadingUser(false);
+      };
+
+      address && fetchData();
+  }, [address]);
+
 
 
 
@@ -896,11 +933,11 @@ export default function Index({ params }: any) {
 
     if (!address) {
 
-      setUser(null);
+      setP2PUser(null);
       return;
     }
 
-    setLoadingUser(true);
+    setLoadingP2PUser(true);
 
     fetch('/api/singal/getUser', {
         method: 'POST',
@@ -1134,84 +1171,6 @@ export default function Index({ params }: any) {
 
 
     const acceptSellOrder = (index: number, orderId: string) => {
-
-        if (!user) {
-            return;
-        }
-
-        setAcceptingSellOrder (
-            sellOrders.map((item, idx) => {
-                if (idx === index) {
-                    return true;
-                } else {
-                    return false;
-                }
-            })
-        );
-
-
-        fetch('/api/order/acceptSellOrder', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                lang: params.lang,
-                storecode: storecode,
-                orderId: orderId,
-                buyerWalletAddress: user.walletAddress,
-                buyerNickname: user.nickname,
-                buyerAvatar: user.avatar,
-                buyerMobile: user.mobile,
-            }),
-        })
-        .then(response => response?.json())
-        .then(data => {
-
-            console.log('data', data);
-
-            //setSellOrders(data.result.orders);
-            //openModal();
-
-            toast.success(Order_accepted_successfully);
-
-
-            /*
-            fetch('/api/order/getOneSellOrder', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  orderId: orderId,
-                }),
-            })
-            .then(response => response?.json())
-            .then(data => {
-                ///console.log('data', data);
-                setSellOrders(data.result.orders);
-            })
-            */
-
-
-            // reouter to
-
-            router.push('/' + params.lang + '/' + storecode + '/pay-usdt/' + orderId);
-
-
-
-
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        })
-        .finally(() => {
-            setAcceptingSellOrder (
-                sellOrders.map((item, idx) => {
-                    return false;
-                })
-            );
-        } );
 
 
     }
@@ -1718,7 +1677,7 @@ export default function Index({ params }: any) {
             lang: params.lang,
             storecode: storecode,
             walletAddress: address,
-            nickname: user.nickname,
+            nickname: nickname,
             usdtAmount: usdtAmount,
             krwAmount: krwAmount,
             rate: rate,
@@ -2006,7 +1965,7 @@ export default function Index({ params }: any) {
       return;
     }
 
-    if (user?.nickname) {
+    if (nickname) {
       toast.error('이미 회원가입이 되어 있습니다.');
       return;
     }
@@ -2053,7 +2012,7 @@ export default function Index({ params }: any) {
     .then(response => response.json())
     .then(data => {
       console.log('getUser data', data);
-      setUser(data.result);
+      setP2PUser(data.result);
       setIsAdmin(data.result?.role === "admin");
       setBuyOrderStatus(data.result?.buyOrderStatus || '');
       setLatestBuyOrder(data.result?.latestBuyOrder || null);
@@ -2198,14 +2157,14 @@ export default function Index({ params }: any) {
 
                 <div className="flex flex-row items-center justify-center gap-2">
                   <Image
-                    src={user?.avatar || "/profile-default.png"}
+                    src={"/profile-default.png"}
                     alt="Avatar"
                     width={24}
                     height={24}
                     className="rounded-full w-6 h-6 object-cover"
                   />
                   <span className="text-sm text-zinc-50 font-semibold">
-                    {user?.nickname ? user.nickname : Anonymous}
+                    {nickname ? nickname : Anonymous}
                   </span>
                 </div>
               )}
@@ -2306,7 +2265,7 @@ export default function Index({ params }: any) {
         )}
 
 
-        {!loadingUser && !user?.nickname && (
+        {!loadingUser && !nickname && (
           <div className="w-full flex flex-col items-center justify-center gap-2 mt-10">
             <div className='flex flex-row items-center justify-center gap-2'>
               <Image
@@ -2359,7 +2318,7 @@ export default function Index({ params }: any) {
 
 
 
-        {!loadingUser && user?.nickname && (
+        {!loadingUser && nickname && (
           <div className="w-full flex flex-col items-start justify-between gap-2">
 
 
@@ -2694,7 +2653,7 @@ export default function Index({ params }: any) {
                       disabled={!address || acceptingSellOrderRandom || !selectedKrwAmount}
                       
                       className={`
-                      ${!address || !user?.nickname || !selectedKrwAmount || acceptingSellOrderRandom
+                      ${!address || !nickname || !selectedKrwAmount || acceptingSellOrderRandom
                       ? 'bg-zinc-100' : 'bg-[#f472b6]'
                       }
                         mt-5 w-44 flex items-center justify-center gap-2
@@ -4144,13 +4103,13 @@ export default function Index({ params }: any) {
         )}
 
 
-        {user?.nickname && (
+        {nickname && (
           <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
             bg-white shadow-lg rounded-lg p-4
             border border-gray-200
             ">
               <div className="text-lg text-zinc-500 font-semibold">
-                {user?.nickname}님의 구매내역
+                {nickname}님의 구매내역
               </div>
 
               {buyOrders.length === 0 && (
