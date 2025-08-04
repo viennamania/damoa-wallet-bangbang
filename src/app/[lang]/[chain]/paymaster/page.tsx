@@ -79,6 +79,7 @@ import {
 
   bscContractAddressMKRW,
 } from "../../../config/contractAddresses";
+import { send } from 'process';
 
 
 
@@ -904,8 +905,6 @@ export default function Index({ params }: any) {
               setSendbirdUser(null);
           } else {
               setSendbirdUser(data.result.user);
-
-              setNickname(data.result.user.nickname);
           }
 
           setLoadingUser(false);
@@ -933,7 +932,7 @@ export default function Index({ params }: any) {
 
     if (!address) {
 
-      setP2PUser(null);
+      ///setP2PUser(null);
       return;
     }
 
@@ -955,7 +954,12 @@ export default function Index({ params }: any) {
         ///console.log('data.result', data.result);
 
 
-        setP2PUser(data.result);
+        ///////setP2PUser(data.result);
+
+
+        setNickname(data.result?.nickname || '');
+
+
 
         setIsAdmin(data.result?.role === "admin");
 
@@ -1956,7 +1960,6 @@ export default function Index({ params }: any) {
 
 
 
-  // /api/singal/setUser
   const [settingP2PUser, setSettingP2PUser] = useState(false);
 
   const setP2PUserWithWalletAddress = async () => {
@@ -1980,7 +1983,7 @@ export default function Index({ params }: any) {
       body: JSON.stringify({
         storecode: storecode,
         walletAddress: address,
-        nickname: nickname,
+        nickname: sendbirdUser?.nickname,
         mobile: '010-1234-5678',
       }),
     });

@@ -252,20 +252,9 @@ export default function Index({ params }: any) {
 
     const searchParams = useSearchParams();
 
-    //const storeUser = searchParams.get('storeUser');
+    const storecode = "admin";
 
-    //console.log('storeUser', storeUser);
-
-
-    //const storecode = storeUser?.split('@').slice(-1)[0];
-    //const memberid = storeUser?.split('@').slice(0, -1).join('@');
-
-  
-
-    //const paramDepositName = searchParams.get('depositName');
-    //const paramDepositBankName = searchParams.get('depositBankName');
-    
-
+    console.log("storecode", storecode);
 
 
 
@@ -684,7 +673,8 @@ export default function Index({ params }: any) {
 
 
 
-    // get User by wallet address
+  const [nickname, setNickname] = useState("");
+
 
   const [user, setUser] = useState<any>(null);
   const [loadingUser, setLoadingUser] = useState(false);
@@ -696,24 +686,26 @@ export default function Index({ params }: any) {
 
       setLoadingUser(true);
 
-      fetch('/api/user/getUser', {
+      fetch('/api/singal/getUser', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-              storecode: "admin",
+              storecode: storecode,
               walletAddress: address,
           }),
       })
       .then(response => response?.json())
       .then(data => {
           
-        //console.log('getUser data', data);
+        console.log('getUser data', data);
 
 
 
         setUser(data.result);
+
+        setNickname(data.result?.nickname || "");
 
       })
       .catch((error) => {
@@ -726,14 +718,60 @@ export default function Index({ params }: any) {
 
 
 
-    // nickname
 
 
 
 
-    const [nickname, setNickname] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
-    const [inputNickname, setInputNickname] = useState('');
+  const [p2pUser, setP2PUser] = useState<any>(null);
+  const [loadingP2PUser, setLoadingP2PUser] = useState(false);
+
+  const [buyOrderStatus, setBuyOrderStatus] = useState(''); // 'ordered', 'accepted', 'paymentRequested', 'paymentConfirmed'
+  const [latestBuyOrder, setLatestBuyOrder] = useState<any>(null);
+
+  useEffect(() => {
+
+    if (!address) {
+
+      setP2PUser(null);
+      return;
+    }
+
+    setLoadingP2PUser(true);
+
+    fetch('/api/singal/getUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            storecode: storecode,
+            walletAddress: address,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        
+        ///console.log('data.result', data.result);
+
+
+        setP2PUser(data.result);
+
+        setIsAdmin(data.result?.role === "admin");
+
+        setBuyOrderStatus(data.result?.buyOrderStatus || '');
+        setLatestBuyOrder(data.result?.latestBuyOrder || null);
+
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+
+
+    setLoadingP2PUser(false);
+
+  } , [address]);
 
 
 
@@ -743,11 +781,59 @@ export default function Index({ params }: any) {
 
 
 
-    const fetchWalletAddress = async (
-      paramNickname: string
-    ) => {
 
-      if (nickname) {
+
+  const fetchWalletAddress = async (
+    paramNickname: string
+  ) => {
+
+    if (nickname) {
+      return;
+    }
+
+
+    const mobile = '010-1234-5678';
+
+
+    const response = await fetch('/api/user/setUserWithoutWalletAddress', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        nickname: paramNickname,
+        mobile: mobile,
+      }),
+    });
+
+    const data = await response?.json();
+
+    console.log('setUserWithoutWalletAddress data', data);
+
+    if (!data.walletAddress) {
+
+      toast.error('User registration has been failed');
+      return;
+    }
+
+    const walletAddress = data.walletAddress;
+
+    setAddress(walletAddress);
+
+    setNickname(paramNickname);
+
+
+  }
+
+ 
+
+  useEffect(() => {
+
+
+
+    const fetchWalletAddress = async ( ) => {
+
+      if (!nickname) {
         return;
       }
 
@@ -761,7 +847,7 @@ export default function Index({ params }: any) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          nickname: paramNickname,
+          nickname: nickname,
           mobile: mobile,
         }),
       });
@@ -778,68 +864,22 @@ export default function Index({ params }: any) {
 
       const walletAddress = data.walletAddress;
 
-      setAddress(walletAddress);
+      console.log('walletAddress', walletAddress);
 
-      setNickname(paramNickname);
+
+
+      setAddress(walletAddress);
 
 
     }
 
- 
-
-    useEffect(() => {
 
 
 
-      const fetchWalletAddress = async ( ) => {
-  
-        if (!nickname) {
-          return;
-        }
-  
-  
-        const mobile = '010-1234-5678';
-  
-  
-        const response = await fetch('/api/user/setUserWithoutWalletAddress', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            nickname: nickname,
-            mobile: mobile,
-          }),
-        });
-    
-        const data = await response?.json();
-    
-        console.log('setUserWithoutWalletAddress data', data);
-  
-        if (!data.walletAddress) {
-  
-          toast.error('User registration has been failed');
-          return;
-        }
-  
-        const walletAddress = data.walletAddress;
-
-        console.log('walletAddress', walletAddress);
+    fetchWalletAddress();
 
 
-  
-        setAddress(walletAddress);
-  
-  
-      }
-  
-
-
-
-      fetchWalletAddress();
-
-
-    } , [nickname]);
+  } , [nickname]);
 
 
 
@@ -950,7 +990,7 @@ export default function Index({ params }: any) {
 
 
           // api call
-          const response = await fetch('/api/order/getOneBuyOrder', {
+          const response = await fetch('/api/singal/getOneBuyOrder', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -1256,10 +1296,10 @@ export default function Index({ params }: any) {
             },
             body: JSON.stringify({
                 lang: params.lang,
-                chain: "admin",
+                storecode: storecode,
                 orderId: orderId,
                 buyerWalletAddress: user.walletAddress,
-                buyerNickname: user.nickname,
+                buyerNickname: nickname,
                 buyerAvatar: user.avatar,
                 buyerMobile: user.mobile,
             }),
@@ -1429,7 +1469,7 @@ export default function Index({ params }: any) {
       },
       body: JSON.stringify({
         lang: params.lang,
-        chain: "admin",
+        storecode: storecode,
       })
     });
 
@@ -1460,7 +1500,7 @@ export default function Index({ params }: any) {
           },
           body: JSON.stringify({
             lang: params.lang,
-            chain: "admin",
+            storecode: storecode,
             orderId: order._id,
             buyerWalletAddress: address,
             buyerNickname: nickname,
@@ -1500,7 +1540,7 @@ export default function Index({ params }: any) {
           },
           body: JSON.stringify({
             lang: params.lang,
-            storecode: "admin",
+            storecode: storecode,
             walletAddress: address,
             usdtAmount: usdtAmount,
             krwAmount: krwAmount,
@@ -1581,7 +1621,7 @@ export default function Index({ params }: any) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            storecode: "admin",
+            storecode: storecode,
           }),
         });
 
@@ -1633,7 +1673,7 @@ export default function Index({ params }: any) {
         },
         body: JSON.stringify({
           walletAddress: address,
-          storecode: "admin",
+          storecode: storecode,
           amount: 0.1,
           privateSale: false,
         }),
@@ -1818,14 +1858,14 @@ return (
 
                 <div className="flex flex-row items-center justify-center gap-2">
                   <Image
-                    src={user?.avatar || "/profile-default.png"}
+                    src={"/profile-default.png"}
                     alt="Avatar"
                     width={24}
                     height={24}
                     className="rounded-full w-6 h-6 object-cover"
                   />
                   <span className="text-sm text-zinc-50 font-semibold">
-                    {user?.nickname ? user.nickname : Anonymous}
+                    {nickname ? nickname : Anonymous}
                   </span>
                 </div>
               )}
@@ -2160,7 +2200,7 @@ return (
                             }}
                           />
                           <div className="text-lg font-semibold text-zinc-500 ">{
-                            user?.nickname ? user.nickname : Anonymous
+                            nickname ? nickname : Anonymous
                           }</div>
 
                           {user?.seller && (
