@@ -1260,7 +1260,7 @@ function AgentPage(
                             onClick={() => {
 
                                 router.push(
-                                "/" + params.lang + "/" + params.chain + "/my-page" + "?start=" + start
+                                "/" + params.lang + "/" + params.chain + "/my-page"
                                 );
 
                             }}
@@ -1930,8 +1930,7 @@ function AgentPage(
                 <button
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/"
-                      + "?start=" + start
+                      "/" + params.lang + "/" + params.chain
                     );
                   }}
                   // selected state
@@ -2019,7 +2018,6 @@ function AgentPage(
                   onClick={() => {
                     router.push(
                       "/" + params.lang + "/" + params.chain + "/my-page"
-                        + "?start=" + start
                     );
                   }}
                   className="flex flex-col justify-center items-center gap-0

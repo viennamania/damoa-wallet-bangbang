@@ -2412,8 +2412,7 @@ function AgentPage(
                                 onClick={() => {
                                     confirm("로그아웃 하시겠습니까?") && activeWallet?.disconnect().then(() => {
                                         router.push(
-                                            "/" + params.lang + "/" + params.chain + "/"
-                                            + "?start=" + start
+                                            "/" + params.lang + "/" + params.chain
                                         );
                                     });
                                 } }
@@ -2454,8 +2453,7 @@ function AgentPage(
                 <button
                   onClick={() => {
                     router.push(
-                      "/" + params.lang + "/" + params.chain + "/"
-                      + "?start=" + start
+                      "/" + params.lang + "/" + params.chain
                     );
                   }}
                   // selected state
