@@ -839,11 +839,55 @@ export default function Index({ params }: any) {
 
 
 
-  // get User by wallet address
-  const [isAdmin, setIsAdmin] = useState(false);
 
   const [user, setUser] = useState<any>(null);
   const [loadingUser, setLoadingUser] = useState(false);
+
+
+  useEffect(() => {
+
+    if (!address) {
+
+      setUser(null);
+      return;
+    }
+
+    setLoadingUser(true);
+
+    fetch('/api/user/getUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            storecode: storecode,
+            walletAddress: address,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        
+        setUser(data.result);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+
+
+    setLoadingUser(false);
+
+  } , [address]);
+
+
+
+
+
+
+
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const [p2pUser, setP2PUser] = useState<any>(null);
+  const [loadingP2PUser, setLoadingP2PUser] = useState(false);
 
   const [buyOrderStatus, setBuyOrderStatus] = useState(''); // 'ordered', 'accepted', 'paymentRequested', 'paymentConfirmed'
   const [latestBuyOrder, setLatestBuyOrder] = useState<any>(null);
@@ -864,7 +908,7 @@ export default function Index({ params }: any) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            storecode: "admin",
+            storecode: storecode,
             walletAddress: address,
         }),
     })
@@ -874,7 +918,7 @@ export default function Index({ params }: any) {
         ///console.log('data.result', data.result);
 
 
-        setUser(data.result);
+        setP2PUser(data.result);
 
         setIsAdmin(data.result?.role === "admin");
 
@@ -887,11 +931,9 @@ export default function Index({ params }: any) {
     });
 
 
-    setLoadingUser(false);
+    setLoadingP2PUser(false);
 
   } , [address]);
-
-
 
 
 
@@ -1955,7 +1997,74 @@ export default function Index({ params }: any) {
 
 
 
+  // /api/singal/setUser
+  const [settingP2PUser, setSettingP2PUser] = useState(false);
 
+  const setP2PUserWithWalletAddress = async () => {
+    if (!address) {
+      toast.error('지갑 주소가 없습니다. 지갑을 연결해주세요.');
+      return;
+    }
+
+    if (user?.nickname) {
+      toast.error('이미 회원가입이 되어 있습니다.');
+      return;
+    }
+
+    setSettingP2PUser(true);
+
+    const response = await fetch('/api/singal/setUser', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        storecode: storecode,
+        walletAddress: address,
+        nickname: nickname,
+        mobile: '010-1234-5678',
+      }),
+    });
+
+    const data = await response?.json();
+
+    console.log('setP2PUserWithWalletAddress data', data);
+
+    if (data.result) {
+      toast.success('P2P 거래소 회원가입이 완료되었습니다.');
+    } else {
+      toast.error('P2P 거래소 회원가입에 실패했습니다.');
+    }
+
+    setSettingP2PUser(false);
+
+
+    // refresh user
+    fetch('/api/singal/getUser', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        storecode: storecode,
+        walletAddress: address,
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('getUser data', data);
+      setUser(data.result);
+      setIsAdmin(data.result?.role === "admin");
+      setBuyOrderStatus(data.result?.buyOrderStatus || '');
+      setLatestBuyOrder(data.result?.latestBuyOrder || null);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      toast.error('회원 정보를 가져오는 데 실패했습니다.');
+    }
+    );
+
+  }
 
 
 
@@ -2215,14 +2324,34 @@ export default function Index({ params }: any) {
               P2P 거래소 회원가입 후 이용해주세요.
             </div>
 
-            {/* https://www.cryptopay.beauty/ko/admin/profile-settings */}
+
             <button
+              disabled={settingP2PUser}
               onClick={() => {
-                router.push('https://www.cryptopay.beauty/ko/admin/profile-settings');
+                setP2PUserWithWalletAddress();
               }}
-              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 active:bg-blue-800 active:shadow-none"
+              className={`
+                ${settingP2PUser ? 'bg-zinc-800' : 'bg-black'}
+                text-sm text-zinc-100
+                px-4 py-2 rounded-md border border-zinc-100
+                hover:bg-[#f472b6] hover:text-zinc-50
+                transition-colors duration-200
+                w-full
+                flex items-center justify-center gap-2
+              `}
             >
-              P2P 거래소 회원가입하기
+              <div className="flex items-center justify-center">
+                {settingP2PUser ? (
+                  <span className="text-sm">
+                    P2P 거래소 회원가입 중...
+                  </span>
+                ) : (
+                  <span className="text-sm">
+                    P2P 거래소 회원가입하기
+                  </span>
+                )}
+              </div>
+
             </button>
 
           </div>
