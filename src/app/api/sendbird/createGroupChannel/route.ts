@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     );
   }
   const dataUser1 = await responseUser1.json();
-  console.log("Fetched user 1 data:", dataUser1);
+  //console.log("Fetched user 1 data:", dataUser1);
 
   const urlUser2 = `https://api-${process.env.SENDBIRD_APPLICATION_ID}.sendbird.com/v3/users/${user_id2}?include_unread_count=true`;
   const responseUser2 = await fetch(urlUser2, {
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
     );
   }
   const dataUser2 = await responseUser2.json();
-  console.log("Fetched user 2 data:", dataUser2);
+  //console.log("Fetched user 2 data:", dataUser2);
 
   // Safely get nicknames with fallbacks
   const nickname1 = dataUser1?.nickname || user_id1;

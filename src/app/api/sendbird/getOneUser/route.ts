@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
 
   const data = await response.json();
 
-  console.log("Fetched user:", data);
+  //console.log("Fetched user:", data);
 
 
   return NextResponse.json({
