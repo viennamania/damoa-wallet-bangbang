@@ -2015,6 +2015,7 @@ export default function Index({ params }: any) {
     .then(response => response.json())
     .then(data => {
       console.log('getUser data', data);
+      setNickname(data.result?.nickname || '');
       setP2PUser(data.result);
       setIsAdmin(data.result?.role === "admin");
       setBuyOrderStatus(data.result?.buyOrderStatus || '');
