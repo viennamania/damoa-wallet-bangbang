@@ -3676,7 +3676,7 @@ export default function Index({ params }: any) {
                                         <button
                                           disabled={!address || !agreementForTrade[index]}
                                           className={`text-lg text-zinc-500 px-4 py-2 rounded-md
-                                          ${!user || !agreementForTrade[index] ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
+                                          ${!agreementForTrade[index] ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
                                           `}
 
                                           onClick={() => {
