@@ -3180,6 +3180,7 @@ return (
                                   
                                   ">
 
+                                  {/*
                                     <p className="mt-4 text-sm text-zinc-500">
                                       계좌이체: {item?.store?.bankInfo.bankName} {item?.store?.bankInfo.accountNumber} {item?.store?.bankInfo.accountHolder}
                                     </p> 
@@ -3197,7 +3198,6 @@ return (
                                       }
                                     </p>                        
 
-                                    {/* 판매자가 입급을 확인였습니다. */}
                                     <div className="flex flex-row items-center gap-2">
                                       <Image
                                         src="/icon-info.png"
@@ -3209,6 +3209,7 @@ return (
                                         판매자가 입금을 확인하고 USDT를 전송했습니다.
                                       </p>
                                     </div>
+                                  */}
 
                                   </div>
                                 )}
