@@ -812,7 +812,7 @@ export default function Index({ params }: any) {
 
     if (!data.walletAddress) {
 
-      toast.error('User registration has been failed');
+      //toast.error('User registration has been failed');
       return;
     }
 
@@ -826,11 +826,11 @@ export default function Index({ params }: any) {
   }
 
  
-
+  /*
   useEffect(() => {
 
 
-
+    
     const fetchWalletAddress = async ( ) => {
 
       if (!nickname) {
@@ -858,7 +858,7 @@ export default function Index({ params }: any) {
 
       if (!data.walletAddress) {
 
-        toast.error('User registration has been failed');
+        ///toast.error('User registration has been failed');
         return;
       }
 
@@ -879,9 +879,10 @@ export default function Index({ params }: any) {
     fetchWalletAddress();
 
 
+
   } , [nickname]);
 
-
+  */
 
 
 

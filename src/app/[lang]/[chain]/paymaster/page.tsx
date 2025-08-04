@@ -662,11 +662,8 @@ export default function Index({ params }: any) {
 
 
 
-
   const activeAccount = useActiveAccount();
-
-  const address = activeAccount?.address;
-
+  const address = activeAccount?.address || "";
 
 
   console.log('address==============>', address);
@@ -2284,6 +2281,72 @@ export default function Index({ params }: any) {
         )}
 
 
+
+
+        {!address && (
+
+          <div className="
+            flex flex-col justify-center items-center gap-2 p-2">
+
+            <ConnectButton
+              client={client}
+              wallets={wallets}
+              accountAbstraction={{
+                chain: bsc,
+                sponsorGas: true
+              }}
+
+              theme={"light"}
+
+              // button color is dark skyblue convert (49, 103, 180) to hex
+              connectButton={{
+                style: {
+                  backgroundColor: "#3167b4", // dark skyblue
+                  // font color is gray-300
+                  color: "#f3f4f6", // gray-300
+                  padding: "10px 20px",
+                  borderRadius: "10px",
+                  fontSize: "16px",
+                  // w-full
+                  width: "100%",
+                },
+                label: "로그인 및 회원가입",
+              }}
+
+              connectModal={{
+                size: "wide",
+                //size: "compact",
+                titleIcon: "https://wallet.cryptopay.beauty/logo.png",
+                showThirdwebBranding: false,
+              }}
+
+              locale={"ko_KR"}
+              //locale={"en_US"}
+            />
+
+
+
+            <div className="mt-20
+              flex flex-row gap-2 justify-center items-center">
+              <span className="text-sm md:text-lg text-zinc-500">
+                이용방법이 궁금하신가요?
+              </span>
+              <Link
+                href="#"
+                className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+              >
+                이용가이드
+              </Link>
+            </div>
+
+
+          </div>
+
+        )}
+
+
+
+
         {!loadingUser && !nickname && (
           <div className="w-full flex flex-col items-center justify-center gap-2 mt-10">
             <div className='flex flex-row items-center justify-center gap-2'>
@@ -2350,71 +2413,7 @@ export default function Index({ params }: any) {
 
               <div className='w-full flex flex-col gap-2 items-center justify-start'>
 
-                {!address && (
 
-                  <div className="
-                    mt-16
-                    w-full flex flex-col justify-center items-center gap-2 p-2">
-                  
-                    <ConnectButton
-                      client={client}
-                      wallets={wallets}
-                      accountAbstraction={{
-                        chain: bsc,
-                        sponsorGas: true
-                      }}
-                      
-                      theme={"light"}
-
-                      // button color is dark skyblue convert (49, 103, 180) to hex
-                      connectButton={{
-                        style: {
-                          backgroundColor: "#3167b4", // dark skyblue
-                          // font color is gray-300
-                          color: "#f3f4f6", // gray-300
-                          padding: "10px 20px",
-                          borderRadius: "10px",
-                          fontSize: "16px",
-                          // w-full
-                          width: "100%",
-                        },
-                        label: "로그인 및 회원가입",
-                      }}
-
-                      connectModal={{
-                        size: "wide", 
-                        //size: "compact",
-                        titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
-                        showThirdwebBranding: false,
-                      }}
-
-                      locale={"ko_KR"}
-                      //locale={"en_US"}
-                    />
-
-
-
-
-                    <div className="mt-20
-                      flex flex-row gap-2 justify-center items-center">
-                      <span className="text-sm md:text-lg text-zinc-500">
-                        이용방법이 궁금하신가요?
-                      </span>
-                      <Link
-                        href="#"
-                        className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
-                      >
-                        이용가이드
-                      </Link>
-                    </div>
-
-
-                    
-                  
-
-                  </div>
-
-                )}
 
 
 
