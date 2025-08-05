@@ -1562,7 +1562,7 @@ export default function SendUsdt({ params }: any) {
 
 
             {address
-            && (selectDeposit || selectWithdraw || selectSwap)
+            && selectDeposit
             && (
 
               <div className='mt-5 w-full flex flex-col gap-5'>
@@ -1610,128 +1610,6 @@ export default function SendUsdt({ params }: any) {
 
                 </div>
 
-
-
-
-
-                {String(token).toLowerCase() === "mkrw" && (
-                  <div className="w-full mt-5 bg-white rounded-lg p-4">
-                    
-                      <div className='flex flex-row gap-2 items-center justify-start mb-4'>
-                        <Image
-                          src="/token-mkrw-icon.png"
-                          alt="MKRW"
-                          width={20}
-                          height={20}
-                          className='rounded-full w-6 h-6'
-                        />
-                        <h2 className="text-sm font-semibold">전송 내역</h2>
-                        {loadingTransferListMKRW && (
-                          <div className="flex items-center justify-center">
-                            <Image
-                              src="/loading.png"
-                              alt="loading"
-                              width={20}
-                              height={20}
-                              className="animate-spin"
-                            />
-                          </div>
-                        )}
-                      </div>
-
-                      <table className="w-full table-auto">
-                        <thead>
-                          <tr
-                            className="bg-gray-200 text-gray-700 text-sm font-semibold">
-
-
-                            <th className="px-4 py-2">날짜<br/>입금 / 출금</th>
-                            <th className="px-4 py-2">보낸 사람<br/>받은 사람</th>
-                            <th className="px-4 py-2">수량</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {transferListMKRW.map((transfer : any, index: number) => (
-
-
-                            <tr key={transfer._id}
-
-                              className={`${
-                                index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
-                              }`}
-                            >
-                              <td className="border px-4 py-2">
-                                <div className='flex flex-col gap-1'>
-                                  <span className="text-sm">
-                                    {new Date(transfer.transferData.timestamp).toLocaleTimeString()}
-                                  </span>
-                                  <span className="text-xs text-gray-500">
-                                    {new Date(transfer.transferData.timestamp).toLocaleDateString()}
-                                  </span>
-                                </div>
-
-                                <span className="font-semibold text-lg">
-                                  {transfer.sendOrReceive === "send" ? (
-                                    <span className="text-red-600">출금</span>
-                                  ) : (
-                                    <span className="text-green-600">입금</span>
-                                  )}
-                                </span>
-
-
-                              </td>
-
-                              <td className="border px-4 py-2">
-
-                                {transfer.sendOrReceive === "send" ? (
-                                  <div className='flex flex-col gap-1'>
-                                    <span className="text-red-600">
-                                      받은 사람
-                                    </span>
-                                    {transfer?.toUser?.nickname && (
-                                      <span className="text-red-600">
-                                        {transfer?.toUser.nickname}
-                                      </span>
-                                    )}
-
-                                    <span className="text-red-600">
-                                      {transfer.transferData.toAddress.slice(0, 6) + '...' + transfer.transferData.toAddress.slice(-4)}
-                                    </span>
-                                  </div>
-                                ) : (
-                                  <div className='flex flex-col gap-1'>
-                                    <span className="text-green-600">
-                                      보낸 사람
-                                    </span>
-                                    {transfer?.fromUser?.nickname && (
-                                      <span className="text-green-600">
-                                        {transfer?.fromUser.nickname}
-                                      </span>
-                                    )}
-
-                                    <span className="text-green-600">
-                                      {transfer.transferData.fromAddress.slice(0, 6) + '...' + transfer.transferData.fromAddress.slice(-4)}
-                                    </span>
-                                  </div>
-                                )}
-                              </td>
-                              <td className="border px-4 py-2">
-                                {
-                                  (Number(transfer.transferData.value) / 10 ** 18)
-                                  .toFixed(0)
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                  
-
-                  </div>
-
-
-                )}
 
 
               </div>
@@ -2522,6 +2400,124 @@ export default function SendUsdt({ params }: any) {
 
        
 
+                {String(token).toLowerCase() === "mkrw" && (
+                  <div className="w-full mt-5 bg-white rounded-lg p-4">
+                    
+                      <div className='flex flex-row gap-2 items-center justify-start mb-4'>
+                        <Image
+                          src="/token-mkrw-icon.png"
+                          alt="MKRW"
+                          width={20}
+                          height={20}
+                          className='rounded-full w-6 h-6'
+                        />
+                        <h2 className="text-sm font-semibold">전송 내역</h2>
+                        {loadingTransferListMKRW && (
+                          <div className="flex items-center justify-center">
+                            <Image
+                              src="/loading.png"
+                              alt="loading"
+                              width={20}
+                              height={20}
+                              className="animate-spin"
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      <table className="w-full table-auto">
+                        <thead>
+                          <tr
+                            className="bg-gray-200 text-gray-700 text-sm font-semibold">
+
+
+                            <th className="px-4 py-2">날짜<br/>입금 / 출금</th>
+                            <th className="px-4 py-2">보낸 사람<br/>받은 사람</th>
+                            <th className="px-4 py-2">수량</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {transferListMKRW.map((transfer : any, index: number) => (
+
+
+                            <tr key={transfer._id}
+
+                              className={`${
+                                index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
+                              }`}
+                            >
+                              <td className="border px-4 py-2">
+                                <div className='flex flex-col gap-1'>
+                                  <span className="text-sm">
+                                    {new Date(transfer.transferData.timestamp).toLocaleTimeString()}
+                                  </span>
+                                  <span className="text-xs text-gray-500">
+                                    {new Date(transfer.transferData.timestamp).toLocaleDateString()}
+                                  </span>
+                                </div>
+
+                                <span className="font-semibold text-lg">
+                                  {transfer.sendOrReceive === "send" ? (
+                                    <span className="text-red-600">출금</span>
+                                  ) : (
+                                    <span className="text-green-600">입금</span>
+                                  )}
+                                </span>
+
+
+                              </td>
+
+                              <td className="border px-4 py-2">
+
+                                {transfer.sendOrReceive === "send" ? (
+                                  <div className='flex flex-col gap-1'>
+                                    <span className="text-red-600">
+                                      받은 사람
+                                    </span>
+                                    {transfer?.toUser?.nickname && (
+                                      <span className="text-red-600">
+                                        {transfer?.toUser.nickname}
+                                      </span>
+                                    )}
+
+                                    <span className="text-red-600">
+                                      {transfer.transferData.toAddress.slice(0, 6) + '...' + transfer.transferData.toAddress.slice(-4)}
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <div className='flex flex-col gap-1'>
+                                    <span className="text-green-600">
+                                      보낸 사람
+                                    </span>
+                                    {transfer?.fromUser?.nickname && (
+                                      <span className="text-green-600">
+                                        {transfer?.fromUser.nickname}
+                                      </span>
+                                    )}
+
+                                    <span className="text-green-600">
+                                      {transfer.transferData.fromAddress.slice(0, 6) + '...' + transfer.transferData.fromAddress.slice(-4)}
+                                    </span>
+                                  </div>
+                                )}
+                              </td>
+                              <td className="border px-4 py-2">
+                                {
+                                  (Number(transfer.transferData.value) / 10 ** 18)
+                                  .toFixed(0)
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                  
+
+                  </div>
+
+
+                )}
 
 
 
