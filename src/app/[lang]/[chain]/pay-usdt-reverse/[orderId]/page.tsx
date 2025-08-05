@@ -1019,6 +1019,9 @@ export default function Index({ params }: any) {
               ////setNickname(data.result.orders[0].buyer.nickname);
 
               setEscrowWalletAddress(data.result.orders[0]?.escrowWallet.address || "");
+
+              data.result.orders[0].escrowWallet?.transactionHash ?
+              setEscrowBalance(0) :
               setEscrowBalance(data.result.orders[0]?.escrowWallet.balance || 0);
             }
 
@@ -2827,14 +2830,13 @@ return (
                             {address && item.walletAddress === address && item?.seller && (
                               <div className="w-full flex flex-col items-start justify-start gap-2">
 
-
                                 <div className='flex flex-row items-center gap-2'>
-
                                   <Image
                                       src="/best-seller.png"
                                       alt="Best Seller"
-                                      width={32}
-                                      height={32}
+                                      width={24}
+                                      height={24}
+                                      className='w-6 h-6 rounded-full'
                                   />
 
                                   <span className="text-lg font-semibold">
@@ -2848,13 +2850,24 @@ return (
                                       alt="Verified"
                                       width={24}
                                       height={24}
-
+                                      className='w-6 h-6 rounded-full'
                                   />
-
-
-
                                 </div>
-        
+
+                                {/* 판매자 지갑 주소 */}
+                                <div className='flex flex-row items-center gap-2'>
+                                  <Image
+                                      src="/icon-shield.png"
+                                      alt="Wallet"
+                                      width={24}
+                                      height={24}
+                                      className='w-6 h-6 rounded-full'
+                                  />
+                                  <span className="text-lg font-semibold">
+                                      지갑 주소: {item?.seller?.walletAddress.substring(0, 6)}...{item?.seller?.walletAddress.substring(item?.seller?.walletAddress.length - 4)}
+                                  </span>
+                                </div>
+
                               </div>
 
 
@@ -2874,6 +2887,22 @@ return (
                                 />
                                 <p className=" text-lg text-[#f472b6]">
                                   판매자가 테더를 전송중입니다.
+                                </p>
+                              </div>
+                            )}
+
+                            {item.status === 'paymentConfirmed' && (
+                              <div className="w-full flex flex-row items-start justify-start gap-2
+                                border-b border-zinc-200 pb-2 mb-2">
+                                {/* 판매자가 테더를 전송하고 거래가 완료되었습니다. */}
+                                <Image
+                                  src="/icon-approved.png"
+                                  alt="Approved"
+                                  width={32}
+                                  height={32}
+                                />
+                                <p className=" text-lg text-[#f472b6]">
+                                  판매자가 테더를 전송하고 거래가 완료되었습니다.
                                 </p>
                               </div>
                             )}
