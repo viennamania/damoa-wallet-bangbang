@@ -15,7 +15,13 @@ export interface TransferProps {
     toAddress: string;
     value: string;
     timestamp: string;
+
+    fromUser?: any; // Optional, can be user object
+    toUser?: any; // Optional, can be user object
 }
+
+
+
 
 export async function insertOne(data: any) {
 
@@ -23,127 +29,46 @@ export async function insertOne(data: any) {
         return null;
     }
 
-    const transferData = {
-        transactionHash: data.transactionHash,
-        transactionIndex: data.transactionIndex,
-        fromAddress: data.fromAddress,
-        toAddress: data.toAddress,
-        value: data.value,
-        timestamp: data.timestamp,
-    };
-
-    
 
     const client = await clientPromise;
 
-    // if fromAddress is user wallet address, then insert into userTransfers collection
-    // if toAddress is user wallet address, then insert into userTransfers collection
-
-
-    const collectionUsers = client.db('damoa').collection('users');
 
     const collectionUserTransfers = client.db('damoa').collection('userTransfers');
 
-    const collection = client.db('damoa').collection('transfers');
-
-
-    
-
-    const user = await collectionUsers.findOne(
-        { $or: [ { walletAddress: data.fromAddress }, { walletAddress: data.toAddress } ] },
-        { projection: { walletAddress: 1 } }
-    );
-
-    if (!user) {
-        return null;
-    }
-    
-
-    const result = await collection.insertOne(transferData);
-
-    // if error, then return
-    if (!result) {
-        return null;
-    }
-
-
-    ////const userFromAddress = await collectionUsers.findOne({ walletAddress: data.fromAddress });
-    /*
-    const userFromAddress = collectionUsers
-    .aggregate([
-        { $match: { walletAddress: data.fromAddress } },
-        { $project: { _id: 1, telegramId: 1, walletAddress: 1 } }
-    ])
-    */
-    const userFromAddress = await collectionUsers.findOne(
-        { walletAddress: data.fromAddress },
-        { projection: { telegramId: 1, walletAddress: 1 } }
-    )
-
-    if (userFromAddress && userFromAddress.walletAddress) {
-        
-        await collectionUserTransfers.insertOne(
-        {
-            user: userFromAddress,
-            sendOrReceive: "send",
-            transferData: transferData,
-        }
-        );
-
-
-    }
+  
+    await collectionUserTransfers.insertOne({
+        user: {
+            walletAddress: data.fromAddress,
+        },
+        sendOrReceive: "send", // or "receive" based on your logic
+        toUser: data.toUser, // Optional, can be user object
+        transferData: {
+            transactionHash: data.transactionHash,
+            transactionIndex: data.transactionIndex,
+            fromAddress: data.fromAddress,
+            toAddress: data.toAddress,
+            value: data.value,
+            timestamp: data.timestamp,
+        },
+    });
 
 
 
-    const userToAddress = await collectionUsers.findOne(
-        { walletAddress: data.toAddress },
-        { projection: { telegramId: 1, walletAddress: 1, center: 1 } }
-    )
-
-    if (userToAddress && userToAddress.walletAddress) {
-
-        await collectionUserTransfers.insertOne(
-        {
-            user: userToAddress,
-            sendOrReceive: "receive",
-            transferData: transferData,
-        }
-        );
-
-
-
-
-
-        const telegramId = userToAddress.telegramId;
-        const center = userToAddress.center;
-
-        if (telegramId) {
-
-            const amount = parseFloat(data.value) / 1000000.0;
-
-            
-            //const message = "You have received " + Number(amount).toFixed(6) + " USDT";
-
-     
-            const message = Number(amount).toFixed(6) + " USDT 가 입금되었습니다.";
-
-
-
-            const collectionTelegramMessages = client.db('damoa').collection('telegramMessages');
-
-            await collectionTelegramMessages.insertOne(
-            {
-                center: center,
-                category: "wallet",
-                telegramId: telegramId,
-                message: message,
-            }
-            );
-
-        }
-        
-    }
-
+    await collectionUserTransfers.insertOne({
+        user: {
+            walletAddress: data.toAddress,
+        },
+        sendOrReceive: "receive", // or "send" based on your logic
+        fromUser: data.fromUser, // Optional, can be user object
+        transferData: {
+            transactionHash: data.transactionHash,
+            transactionIndex: data.transactionIndex,
+            fromAddress: data.fromAddress,
+            toAddress: data.toAddress,
+            value: data.value,
+            timestamp: data.timestamp,
+        },
+    });
 
 
 

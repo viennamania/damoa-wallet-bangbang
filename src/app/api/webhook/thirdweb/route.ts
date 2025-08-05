@@ -9,7 +9,7 @@ import {
 */
 
 import {
-  getOneByWalletAddress
+  ///getOneByWalletAddress
 } from '@lib/api/user';
 
 import {
@@ -174,6 +174,72 @@ export async function POST(request: NextRequest) {
   }
   */
 
+  let user_id = fromAddress;
+
+  let url = `https://api-${process.env.SENDBIRD_APPLICATION_ID}.sendbird.com/v3/users/${user_id}?include_unread_count=true`;
+
+  //console.log("Fetching user from Sendbird:", url);
+
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Api-Token': process.env.SENDBIRD_API_TOKEN || '',
+    },
+  });
+
+  // check if the response  status 400
+  if (response.status === 400) {
+    const errorData = await response.json();
+    console.error("Error fetching user:", errorData);
+    //return NextResponse.json(
+    //  { error: errorData.message || 'Failed to fetch user' },
+    //  { status: response.status }
+    //);
+  } else if (!response.ok) {
+    console.error("Error fetching user:", response.statusText);
+   //return NextResponse.json(
+   //   { error: 'Failed to fetch user' },
+   //   { status: response.status }
+   // );
+  }
+
+  const fromUser = await response.json();
+
+
+
+  user_id = toAddress;
+  url = `https://api-${process.env.SENDBIRD_APPLICATION_ID}.sendbird.com/v3/users/${user_id}?include_unread_count=true`;
+  //console.log("Fetching user from Sendbird:", url);
+  const toResponse = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Api-Token': process.env.SENDBIRD_API_TOKEN || '',
+    },
+  });
+  // check if the response  status 400
+  if (toResponse.status === 400) {
+    const errorData = await toResponse.json();
+    console.error("Error fetching user:", errorData);
+    //return NextResponse.json(
+    //  { error: errorData.message || 'Failed to fetch user' },
+    //  { status: toResponse.status }
+    //);
+  } else if (!toResponse.ok) {
+    console.error("Error fetching user:", toResponse.statusText);
+    //return NextResponse.json(
+    //  { error: 'Failed to fetch user' },
+    //  { status: toResponse.status }
+    //);
+  }
+
+  const toUser = await toResponse.json();
+
+
+
+
+
   const result = insertOne({
     transactionHash,
     transactionIndex,
@@ -181,6 +247,8 @@ export async function POST(request: NextRequest) {
     toAddress,
     value,
     timestamp,
+    fromUser,
+    toUser,
   });
 
   ///console.log("insertOne", result);
