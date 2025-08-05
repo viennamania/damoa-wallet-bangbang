@@ -1672,9 +1672,9 @@ export default function SendUsdt({ params }: any) {
 
                                 <span className="font-semibold text-lg">
                                   {transfer.sendOrReceive === "send" ? (
-                                    <span className="text-red-500">출금</span>
+                                    <span className="text-red-600">출금</span>
                                   ) : (
-                                    <span className="text-green-500">입금</span>
+                                    <span className="text-green-600">입금</span>
                                   )}
                                 </span>
 
@@ -1685,31 +1685,31 @@ export default function SendUsdt({ params }: any) {
 
                                 {transfer.sendOrReceive === "send" ? (
                                   <div className='flex flex-col gap-1'>
-                                    <span className="text-red-500">
+                                    <span className="text-red-600">
                                       받은 사람
                                     </span>
                                     {transfer?.toUser?.nickname && (
-                                      <span className="text-red-500">
+                                      <span className="text-red-600">
                                         {transfer?.toUser.nickname}
                                       </span>
                                     )}
 
-                                    <span className="text-red-500">
+                                    <span className="text-red-600">
                                       {transfer.transferData.toAddress.slice(0, 6) + '...' + transfer.transferData.toAddress.slice(-4)}
                                     </span>
                                   </div>
                                 ) : (
                                   <div className='flex flex-col gap-1'>
-                                    <span className="text-green-500">
+                                    <span className="text-green-600">
                                       보낸 사람
                                     </span>
                                     {transfer?.fromUser?.nickname && (
-                                      <span className="text-green-500">
+                                      <span className="text-green-600">
                                         {transfer?.fromUser.nickname}
                                       </span>
                                     )}
 
-                                    <span className="text-green-500">
+                                    <span className="text-green-600">
                                       {transfer.transferData.fromAddress.slice(0, 6) + '...' + transfer.transferData.fromAddress.slice(-4)}
                                     </span>
                                   </div>
@@ -1969,7 +1969,7 @@ export default function SendUsdt({ params }: any) {
 
                               <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
 
-                              <div className="text-red-500">
+                              <div className="text-red-600">
                                 {This_address_is_not_white_listed}<br />
                                 {If_you_are_sure_please_click_the_send_button}
                               </div>
@@ -2271,9 +2271,9 @@ export default function SendUsdt({ params }: any) {
 
                                 <span className="font-semibold text-lg">
                                   {transfer.sendOrReceive === "send" ? (
-                                    <span className="text-red-500">보내기</span>
+                                    <span className="text-red-600">보내기</span>
                                   ) : (
-                                    <span className="text-green-500">받기</span>
+                                    <span className="text-green-600">받기</span>
                                   )}
                                 </span>
 
