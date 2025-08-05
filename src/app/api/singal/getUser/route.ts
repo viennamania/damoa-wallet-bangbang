@@ -12,9 +12,7 @@ export async function POST(request: NextRequest) {
   } = body;
 
 
-
-
-  // api call
+  //console.log("getUser Request body:", body);
 
   try {
 
@@ -42,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     const data = await response.json();
     
-    //console.log("API response:", data);
+    ///console.log("GetUser API response:", data);
 
     return NextResponse.json({
       result: data.result,

@@ -21,6 +21,14 @@ export async function POST(request: NextRequest) {
 
 
   console.log("setUser body:", body);
+  /*
+  setUser body: {
+    storecode: 'admin',
+    walletAddress: '0xcFA96ca758fc18845fC49F3AC9A44e3731C736DC',
+    nickname: 'petrace',
+    mobile: '010-1234-5678'
+  }
+  */
 
 
   // api call
@@ -42,7 +50,6 @@ export async function POST(request: NextRequest) {
         mobile,
       }),
     });
-
 
 
     if (!response.ok) {

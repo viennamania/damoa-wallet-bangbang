@@ -1563,6 +1563,11 @@ export default function Index({ params }: any) {
 
   const [acceptingSellOrderRandom, setAcceptingSellOrderRandom] = useState(false);
 
+  const [escrowWalletAddress, setEscrowWalletAddress] = useState('');
+
+  // escrowing state
+  const [sendingEscrow, setSendingEscrow] = useState(false);
+
 
   console.log('acceptingSellOrderRandom', acceptingSellOrderRandom);
 
@@ -1713,15 +1718,22 @@ export default function Index({ params }: any) {
         const data = await response.json();
 
         //console.log('setBuyOrder data.result', data.result);
+        if (!data.result) {
+          toast.error('구매 주문 생성에 실패했습니다');
+          setAcceptingSellOrderRandom(false);
+          return;
+        }
 
 
 
         if (data.result) {
           toast.success('구매 주문이 생성되었습니다');
 
+
           const order = data.result;
 
-          //console.log('order', order);
+          setEscrowWalletAddress(order?.escrowWalletAddress);
+          setSendingEscrow(true);
 
           const escrowWalletAddress = order?.escrowWalletAddress;
 
@@ -1744,6 +1756,7 @@ export default function Index({ params }: any) {
           console.log("transactionResult===", transactionResult);
 
 
+          setSendingEscrow(false);
 
 
           router.push('/' + params.lang + '/' + params.chain + '/pay-usdt-reverse/' + order._id);
@@ -2763,6 +2776,46 @@ export default function Index({ params }: any) {
 
                     </button>
 
+                    {sendingEscrow && (
+                      <div className='flex flex-col items-center justify-center gap-2 mt-2'>
+
+                        {/* escrowWalletAddress */}
+                        {escrowWalletAddress && (
+                          <div className="flex flex-row items-center justify-center gap-2">
+                            <Image
+                              src="/icon-escrow-wallet.png"
+                              alt="Escrow Wallet"
+                              width={24}
+                              height={24}
+                            />
+                            <span className="text-sm text-zinc-500">
+                              에스크로 지갑 주소: {escrowWalletAddress.slice(0, 6)}...{escrowWalletAddress.slice(-4)}
+                            </span>
+                          </div>
+                        )}
+
+                        <div className="flex flex-row items-center justify-center gap-2">
+                          <Image
+                            src="/loading.png"
+                            alt="Loading"
+                            width={24}
+                            height={24}
+                            className='animate-spin'
+                          />
+                          <span className="text-sm text-zinc-500">
+                            에스크로 지갑으로{' '}
+                            {
+                              Number(selectedKrwAmount).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                            }{' '}MKRW를 전송 중입니다.
+                          </span>
+                        </div>
+
+                      </div>
+
+                    )}
+
+
+
                     {/* 정보: 구매주문할때 000 MKRW가 에스크로 지갑으로 전송됩니다. */}
                     {/* 판매가 되지 않으면 000 MKRW가 다시 내 지갑으로 전송됩니다. */}
                     <div className='mt-2 w-full flex flex-row items-center justify-start gap-2'>
@@ -2774,7 +2827,9 @@ export default function Index({ params }: any) {
                       />
                       <div className='flex flex-col gap-1'>
                         <span className="text-sm text-zinc-500">
-                          구매주문을 하면 {Number(selectedKrwAmount).toFixed(0)} MKRW가 에스크로 지갑으로 전송됩니다.
+                          구매주문을 하면 {
+                          Number(selectedKrwAmount).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                          } MKRW가 에스크로 지갑으로 전송됩니다.
                         </span>
                         <span className="text-sm text-zinc-500">
                           판매가 되지 않으면 다시 내 지갑으로 반환됩니다.
