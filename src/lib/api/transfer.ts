@@ -60,8 +60,8 @@ export async function insertOne(data: any) {
             walletAddress: data.toAddress,
         },
         sendOrReceive: "receive", // or "send" based on your logic
-        toUser: data.toUser, // Optional, can be user object
         fromUser: data.fromUser, // Optional, can be user object
+        toUser: data.toUser, // Optional, can be user object
         transferData: {
             transactionHash: data.transactionHash,
             transactionIndex: data.transactionIndex,
