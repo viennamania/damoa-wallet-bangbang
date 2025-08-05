@@ -2449,6 +2449,80 @@ export default function Index({ params }: any) {
 
                   <div className='w-full flex flex-col gap-5 items-center justify-center'>
                     
+
+
+                    {/* usdtAmount */}
+                    {/* 구매량 */}
+                    <div className="flex flex-row gap-2 items-center justify-center">
+
+                        <span className="text-sm text-zinc-500">
+                          구매량
+                        </span>
+
+                        <div className='flex flex-row gap-2 items-center justify-center'>
+                          <Image
+                            src="/token-usdt-icon.png"
+                            alt="USDT Icon"
+                            width={24}
+                            height={24}
+                            className="inline-block mr-1"
+                          />
+                          <span className="text-4xl font-semibold text-green-600"
+                            style ={{fontFamily: 'monospace'}}
+                          >
+                            {
+                              Number(selectedKrwAmount / rate).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                            }
+                          </span>
+                          <span className="text-sm text-zinc-500">
+                            USDT
+                          </span>
+                        </div>
+
+                    </div>
+
+
+                    {/* 시세 */}
+ 
+
+                    <div className="flex flex-row gap-2 items-center justify-center">
+
+                        <span className="text-sm text-zinc-500">
+                          시세
+                        </span>
+                        <div className="text-2xl font-semibold text-zinc-500">
+                          {
+                            rate?.toLocaleString('ko-KR')
+                          } 원
+                        </div>
+
+                        {/* new window for upbit site */}
+                        <a
+                          href="https://upbit.com/exchange?code=CRIX.UPBIT.KRW-USDT"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex flex-row gap-2 items-center justify-center"
+                        >
+                          <div className='flex flex-row gap-2 items-center justify-center'>
+                            <span className="text-sm text-zinc-500">
+                              시세제공
+                            </span>
+                            <Image
+                              src="/logo-upbit.jpg"
+                              alt="upbit"
+                              width={100}
+                              height={100}
+                              className="rounded-full w-12 h-12"
+                            />
+                          </div>
+                        </a>
+
+
+                    </div>
+
+
+                 
+
                     <div className="flex flex-row gap-2 items-center justify-center">
                       <span className="text-sm text-zinc-500">
                         구매금액
@@ -2472,35 +2546,7 @@ export default function Index({ params }: any) {
                       </button>
                     </div>
 
-                    {/* 시세 */}
-                    <div className="flex flex-row gap-2 items-center justify-center">
-                      <span className="text-sm text-zinc-500">
-                        시세
-                      </span>
-                      <div className="text-2xl font-semibold text-zinc-500">
-                        {
-                          rate?.toLocaleString('ko-KR')
-                        } 원
-                      </div>
-                    </div>
-
-                    {/* usdtAmount */}
-                    {/* 구매량 */}
-                    <div className="flex flex-row gap-2 items-center justify-center">
-                        <span className="text-sm text-zinc-500">
-                          구매량
-                        </span>
-                      
-                        <div className="text-2xl font-semibold text-zinc-500">
-                          {
-                            (selectedKrwAmount / rate)?.toLocaleString('ko-KR')
-                          } USDT
-                        </div>
-                    </div>
-
                   </div>
-
-                  {/* krw amount buttons */}
 
 
                   <div className="mt-4 grid grid-cols-2 xl:grid-cols-3 gap-4 w-full text-sm text-zinc-200">
@@ -2763,11 +2809,14 @@ export default function Index({ params }: any) {
                               구매주문 중입니다.
                             </span>
                           ) : (
-                            <span className="text-sm text-zinc-500
-                              hover:text-zinc-50
+                            <span className="text-sm text-zinc-800
+                              font-semibold hover:text-zinc-900 transition-colors duration-200
+                              hover:cursor-pointer
+                              hover:decoration-2
+                              hover:decoration-blue-500
                               ">
                               
-                              구매주문하기
+                              테더 구매주문하기
                             </span>
                           )}
                         </div>
@@ -3095,7 +3144,7 @@ export default function Index({ params }: any) {
                                 />
                               )}
 
-                              <p className=" text-xl font-semibold text-green-500 ">
+                              <p className=" text-xl font-semibold text-green-600 ">
                                 {TID}: {item.tradeId}
                               </p>
 
@@ -3210,7 +3259,7 @@ export default function Index({ params }: any) {
                                     width={32}
                                     height={32}
                                   />
-                                  <div className="text-sm text-green-500">
+                                  <div className="text-sm text-green-600">
                                     {
                                       ( (new Date(item.acceptedAt).getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 ).toFixed(0)
                                     } {minutes}
@@ -3302,7 +3351,7 @@ export default function Index({ params }: any) {
                                     width={32}
                                     height={32}
                                   />
-                                  <div className="text-sm text-green-500">
+                                  <div className="text-sm text-green-600">
                                     { ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) } {minutes}
                                   </div>
                                 </div>
@@ -3318,7 +3367,7 @@ export default function Index({ params }: any) {
                                   width={32}
                                   height={32}
                                 />
-                                <p className="text-sm text-green-500">
+                                <p className="text-sm text-green-600">
                                   {Completed_at} {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
                                 </p>
                               </div>
@@ -3378,7 +3427,7 @@ export default function Index({ params }: any) {
 
                               {/* 판매자가 입급을 확인였습니다. */}
 
-                              <p className="mt-4 text-lg text-green-500">
+                              <p className="mt-4 text-lg text-green-600">
                                 {Deposit_Confirmed}
                               </p>
                             </div>
@@ -3818,10 +3867,10 @@ export default function Index({ params }: any) {
                                   width={32}
                                   height={32}
                                 />
-                                <div className="text-lg font-semibold text-green-500">
+                                <div className="text-lg font-semibold text-green-600">
                                   {Bank_Transfer}
                                 </div>
-                                <span className="text-sm text-green-500">
+                                <span className="text-sm text-green-600">
                                   {When_the_deposit_is_completed}
                                 </span>
                               </div>
@@ -3832,7 +3881,7 @@ export default function Index({ params }: any) {
                               {address && (item.walletAddress === address || item.buyer?.walletAddress === address ) && (
                                 <>
                                   {/* bank transfer information 입금은행 */}
-                                  <div className='mt-4 text-lg text-green-500 font-semibold'>
+                                  <div className='mt-4 text-lg text-green-600 font-semibold'>
                                     입금은행
                                   </div>
                                   <div className='flex flex-row items-center justify-center gap-2'>
@@ -4164,7 +4213,7 @@ export default function Index({ params }: any) {
                           {/* buyer mobile number */}
                           {/*address && item.buyer?.walletAddress === address && (
                             <div className="mt-4 flex flex-row items-center gap-2">
-                              <div className="text-lg font-semibold text-green-500">
+                              <div className="text-lg font-semibold text-green-600">
                                 SMS: {item.buyer?.mobile}
                               </div>
                             </div>

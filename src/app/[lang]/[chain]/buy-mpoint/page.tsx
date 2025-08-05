@@ -1252,7 +1252,7 @@ export default function SendUsdt({ params }: any) {
         </button>
 
         <h1 className="text-lg font-semibold text-gray-800">
-          포인트 구매
+          포인트 충전
         </h1>
 
       </div>

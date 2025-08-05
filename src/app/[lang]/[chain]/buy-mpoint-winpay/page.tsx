@@ -1007,7 +1007,7 @@ export default function SendUsdt({ params }: any) {
         console.log("jwtToken", jwtToken);
 
 
-        toast.success("포인트 구매 성공");
+        toast.success("포인트 충전 성공");
 
         setSwapAmount(0); // reset amount
         setSwapAmountTo(0); // reset amount to
@@ -1015,7 +1015,7 @@ export default function SendUsdt({ params }: any) {
 
 
       } else {
-        toast.error("포인트 구매 실패");
+        toast.error("포인트 충전 실패");
       }
 
     } catch (error) {
@@ -1163,7 +1163,7 @@ export default function SendUsdt({ params }: any) {
         </button>
 
         <h1 className="text-lg font-semibold text-gray-800">
-          포인트 구매
+          포인트 충전
         </h1>
 
       </div>

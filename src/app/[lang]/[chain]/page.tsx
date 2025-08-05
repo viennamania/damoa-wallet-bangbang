@@ -1534,7 +1534,7 @@ function IndexPage(
                   p-2
               ">
                   <div className="text-sm md:text-lg text-white">
-                      포인트 구매
+                      포인트 충전
                   </div>
               </div>
 
@@ -1603,7 +1603,7 @@ function IndexPage(
                               hover:bg-gray-200
                               "
                         >
-                          테더로 구매하기
+                          테더로 충전하기
                         </button>
 
 
@@ -1626,7 +1626,7 @@ function IndexPage(
                               hover:bg-gray-200
                               "
                         >
-                          페이로 구매하기
+                          페이로 충전하기
                         </button>
 
                       </div>
@@ -1760,7 +1760,7 @@ function IndexPage(
                       bg-blue-50 rounded-b-lg
                       border border-blue-200
                     ">
-                      {/* 구매 신청하기 버튼 */}
+                      {/* 테더 구매 신청하기 버튼 */}
                       {/* 테더를 구매하기 위해서는 구매 신청을 해야 합니다. */}
                       {/* 구매 신청을 하면 판매자와 연결됩니다. */}
                       <div className="w-full flex flex-row gap-2 items-center justify-start text-sm md:text-lg text-zinc-800 font-semibold mb-2">
@@ -1791,7 +1791,7 @@ function IndexPage(
                             rounded-lg
                             "
                       >
-                        구매 신청하기
+                        테더 구매 신청하기
                       </button>
                     </div>
 
