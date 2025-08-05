@@ -2825,7 +2825,9 @@ return (
 
                             {/* seller information */}
                             {address && item.walletAddress === address && item?.seller && (
-                              <div className="w-full flex flex-row items-center justify-start">
+                              <div className="w-full flex flex-col items-start justify-start gap-2">
+
+
                                 <div className='flex flex-row items-center gap-2'>
 
                                   <Image
@@ -2859,7 +2861,22 @@ return (
                             )}
 
 
-
+                            {item.status === 'paymentRequested' && (
+                              <div className="w-full flex flex-row items-start justify-start gap-2
+                                border-b border-zinc-200 pb-2 mb-2">
+                                {/* 판매자가 테더를 전송중입니다. */}
+                                <Image
+                                  src="/loading.png"
+                                  alt="Loading"
+                                  width={32}
+                                  height={32}
+                                  className="animate-spin"
+                                />
+                                <p className=" text-lg text-[#f472b6]">
+                                  판매자가 테더를 전송중입니다.
+                                </p>
+                              </div>
+                            )}
 
                             <article
                                 className={`w-full bg-white rounded-lg shadow-md shadow-zinc-200 border-2 border-opacity-50
