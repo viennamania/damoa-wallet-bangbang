@@ -10,11 +10,61 @@ import {
 
 import {
   ///getOneByWalletAddress
+  upsertOneByWalletAddress,
 } from '@lib/api/user';
 
 import {
   insertOne,
 } from '@lib/api/transfer';
+
+
+
+import {
+  createThirdwebClient,
+  eth_getTransactionByHash,
+  getContract,
+  sendAndConfirmTransaction,
+  
+  sendTransaction,
+  sendBatchTransaction,
+  eth_maxPriorityFeePerGas,
+
+
+} from "thirdweb";
+
+//import { polygonAmoy } from "thirdweb/chains";
+import {
+  ethereum,
+  polygon,
+  arbitrum,
+  bsc,
+ } from "thirdweb/chains";
+
+import {
+  privateKeyToAccount,
+  smartWallet,
+  getWalletBalance,
+  
+ } from "thirdweb/wallets";
+
+
+import {
+  mintTo,
+  totalSupply,
+  transfer,
+  
+  getBalance,
+
+  balanceOf,
+
+} from "thirdweb/extensions/erc20";
+
+
+
+import {
+  bscContractAddressUSDT,
+  bscContractAddressMKRW,
+} from "../../../config/contractAddresses";
 
 
 
@@ -253,7 +303,71 @@ export async function POST(request: NextRequest) {
 
   ///console.log("insertOne", result);
 
-  
+
+
+  // get MKRW, USDT balanceOf fromAddress and toAddress
+  // update user collection with MKRW, USDT balance
+
+  const client = createThirdwebClient({
+    secretKey: process.env.THIRDWEB_SECRET_KEY || "",
+  });
+
+  const chain = bsc; // or polygon, arbitrum, etc.
+
+  const contractMKRW = getContract({
+    client,
+    chain: chain,
+    address: bscContractAddressMKRW, // MKRW on BSC
+  });
+
+  const contractUSDT = getContract({
+    client,
+    chain,
+    address: bscContractAddressUSDT, // USDT on BSC
+  });
+
+  const balanceMKRWFrom = await balanceOf({
+    contract: contractMKRW,
+    address: fromAddress,
+  });
+
+  const balanceUSDTFrom = await balanceOf({
+    contract: contractUSDT,
+    address: fromAddress,
+  });
+
+
+  // update user collection with MKRW, USDT balance for fromAddress
+  await upsertOneByWalletAddress({
+    walletAddress: fromAddress,
+    nickname: fromUser.nickname,
+    mkrwBalance: balanceMKRWFrom,
+    usdtBalance: balanceUSDTFrom,
+  });
+
+
+
+  const balanceMKRWTo = await balanceOf({
+    contract: contractMKRW,
+    address: toAddress,
+  });
+
+  const balanceUSDTTo = await balanceOf({
+    contract: contractUSDT,
+    address: toAddress,
+  });
+
+  // update user collection with MKRW, USDT balance for toAddress
+  await upsertOneByWalletAddress({
+    walletAddress: toAddress,
+    nickname: toUser.nickname,
+    mkrwBalance: balanceMKRWTo,
+    usdtBalance: balanceUSDTTo,
+  });
+
+
+
+
 
   return NextResponse.json({
     result: "ok",

@@ -74,6 +74,11 @@ export async function insertOne(data: any) {
 
 
 
+    
+
+
+
+
     return {
         result: "success",
     };
