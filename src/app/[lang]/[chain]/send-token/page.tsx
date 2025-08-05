@@ -877,7 +877,7 @@ export default function SendUsdt({ params }: any) {
 
 
           //toast.success(USDT_sent_successfully);
-          toast.success("전송 완료");
+          toast.success("출금 완료");
 
           setAmount(0); // reset amount
 
@@ -914,7 +914,7 @@ export default function SendUsdt({ params }: any) {
 
         } else {
 
-          toast.error("전송 실패");
+          toast.error("출금 실패");
 
         }
 
@@ -928,7 +928,7 @@ export default function SendUsdt({ params }: any) {
       console.error("error", error);
 
       //toast.error(Failed_to_send_USDT);
-      toast.error("전송 실패");
+      toast.error("출금 실패");
     }
 
     setSending(false);
@@ -1246,7 +1246,7 @@ export default function SendUsdt({ params }: any) {
         }),
       });
       if (!response.ok) {
-        toast.error("전송 내역을 불러오는 데 실패했습니다.");
+        toast.error("입출금 내역을 불러오는 데 실패했습니다.");
         setLoadingTransferListMKRW(false);
         return;
       }
@@ -1295,7 +1295,7 @@ export default function SendUsdt({ params }: any) {
         }),
       });
       if (!response.ok) {
-        toast.error("전송 내역을 불러오는 데 실패했습니다.");
+        toast.error("입출금 내역을 불러오는 데 실패했습니다.");
         setLoadingTransferListUSDT(false);
         return;
       }
@@ -2411,7 +2411,7 @@ export default function SendUsdt({ params }: any) {
                           height={20}
                           className='rounded-full w-6 h-6'
                         />
-                        <h2 className="text-sm font-semibold">전송 내역</h2>
+                        <h2 className="text-sm font-semibold">입출금 내역</h2>
                         {loadingTransferListMKRW && (
                           <div className="flex items-center justify-center">
                             <Image
