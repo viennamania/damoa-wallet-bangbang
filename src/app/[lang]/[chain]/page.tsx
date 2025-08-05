@@ -838,7 +838,7 @@ function IndexPage(
 
       setLoadingBuyOrders(true);
 
-      const response = await fetch("/api/order/getAllBuyOrders", {
+      const response = await fetch("/api/singal/getAllBuyOrders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -903,6 +903,73 @@ function IndexPage(
     toDate,
   ]);
 
+
+
+
+  // fecth my buy orders
+
+
+  const [currentProcessingOrder, setCurrentProcessingOrder] = useState(null) as any;
+
+  const [myBuyOrders, setMyBuyOrders] = useState([] as any[]);
+  const [loadingMyBuyOrders, setLoadingMyBuyOrders] = useState(false);
+  useEffect(() => {
+    const fetchMyBuyOrders = async () => {
+
+      setLoadingMyBuyOrders(true);
+
+      const response = await fetch("/api/singal/getMyBuyOrders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          storecode: storecode,
+          limit: 10,
+          page: 1,
+          walletAddress: address,
+          searchMyOrders: true,
+          searchOrderStatusCancelled: false,
+          searchOrderStatusCompleted: false,
+          searchStoreName: "",
+          privateSale: false,
+          searchBuyer: "",
+          searchDepositName: "",
+          searchStoreBankAccountNumber: "",
+          fromDate: "",
+          toDate: "",
+        }),
+      });
+
+      const data = await response.json();
+
+      //console.log("getMyBuyOrders data", data);
+
+      if (data.result) {
+        setMyBuyOrders(data.result.orders);
+
+        // find the current order by status 'ordered' or 'paymentRrequested'
+        const currentOrder = data.result.orders.find((order: any) =>
+          order.status === 'ordered' || order.status === 'paymentRequested'
+        );
+        if (currentOrder) {
+          setCurrentProcessingOrder(currentOrder);
+        } else {
+          setCurrentProcessingOrder(null);
+        }
+
+
+      } else {
+        setMyBuyOrders([]);
+      }
+
+      setLoadingMyBuyOrders(false);
+
+    };
+
+    fetchMyBuyOrders();
+
+  }, [storecode, address]);
 
 
 
@@ -1628,42 +1695,107 @@ function IndexPage(
 
                   </div>
                   
-                  <div className="w-full flex flex-col gap-2 items-center justify-start p-5
-                    bg-gray-50  rounded-b-lg
-                  ">
-                    {/* 구매 신청하기 버튼 */}
-                    {/* 테더를 구매하기 위해서는 구매 신청을 해야 합니다. */}
-                    {/* 구매 신청을 하면 판매자와 연결됩니다. */}
-                    <div className="w-full flex flex-row gap-2 items-center justify-start text-sm md:text-lg text-zinc-800 font-semibold mb-2">
-                      <Image
-                        src="/icon-info.png"
-                        alt="Info"
-                        width={35}
-                        height={35}
-                        className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                      />
-                      <span className="text-sm md:text-lg text-zinc-800 font-semibold">
-                        테더를 구매하기 위해서는 구매 신청을 해야 합니다. 구매 신청을 하면 판매자와 연결됩니다.
-                      </span>
-                    </div>
-                    <button
+                  { currentProcessingOrder ? (
+
+                    <div className="w-full flex flex-col gap-2 items-center justify-start p-5
+                      bg-blue-50 rounded-b-lg
+                      border border-blue-200
+                    ">
+                      {/* 현재 진행중인 주문 */}
+                      <div className="w-full flex flex-row gap-2 items-center justify-start text-sm md:text-lg text-zinc-800 font-semibold mb-2">
+                        <Image
+                          src="/icon-info.png"
+                          alt="Info"
+                          width={35}
+                          height={35}
+                          className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                        />
+                        <span className="text-sm md:text-lg text-zinc-800 font-semibold">
+                          현재 진행중인 주문이 있습니다. 주문을 완료해주세요.
+                        </span>
+                      </div>
+
+                      {/* status */}
+                      <div className="w-full flex flex-col gap-2 items-start justify-start text-sm md:text-lg text-zinc-800 font-semibold mb-2">
+                        <span className="text-sm md:text-lg text-zinc-800 font-semibold">
+                          주문 상태: {
+                          currentProcessingOrder.status === "ordered"
+                          ? "구매 신청 완료"
+                          : currentProcessingOrder.status === "paymentRequested"
+                          ? "결제 요청"
+                          : currentProcessingOrder.status === "paymentCompleted"
+                          ? "결제 완료"
+                          : currentProcessingOrder.status === "completed"
+                          ? "거래 완료"
+                          : "알 수 없는 상태"
+                          }
+                        </span>
+                        <span className="text-sm md:text-lg text-zinc-500">
+                          주문 번호: #{currentProcessingOrder.tradeId}
+                        </span>
+                      </div>
+
+                      <button
                         onClick={() => {
-                            // redirect to nft detail page
-                            router.push(
-                                "/" + params.lang + "/" + params.chain + "/paymaster"
-                            );
+                          router.push(
+                            "/" + params.lang + "/" + params.chain + "/pay-usdt-reverse/" + currentProcessingOrder._id
+                          );
                         }}
                         className="w-full
-                          rounded-b-lg
-                          bg-gray-100
+                          bg-blue-500
+                          text-white
                           p-2
-                          text-sm md:text-lg font-semibold text-zinc-800
-                          hover:bg-gray-200
-                          "
-                    >
-                      구매 신청하기
-                    </button>
-                  </div>
+                          text-sm md:text-lg font-semibold
+                          hover:bg-blue-600
+                          rounded-lg
+                        "
+                      >
+                        현재 진행중인 주문 보기
+                      </button>
+                    </div>
+
+                  ) : (
+                                 
+                    <div className="w-full flex flex-col gap-2 items-center justify-start p-5
+                      bg-blue-50 rounded-b-lg
+                      border border-blue-200
+                    ">
+                      {/* 구매 신청하기 버튼 */}
+                      {/* 테더를 구매하기 위해서는 구매 신청을 해야 합니다. */}
+                      {/* 구매 신청을 하면 판매자와 연결됩니다. */}
+                      <div className="w-full flex flex-row gap-2 items-center justify-start text-sm md:text-lg text-zinc-800 font-semibold mb-2">
+                        <Image
+                          src="/icon-info.png"
+                          alt="Info"
+                          width={35}
+                          height={35}
+                          className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                        />
+                        <span className="text-sm md:text-lg text-zinc-800 font-semibold">
+                          테더를 구매하기 위해서는 구매 신청을 해야 합니다. 구매 신청을 하면 판매자와 연결됩니다.
+                        </span>
+                      </div>
+                      <button
+                          onClick={() => {
+                              // redirect to nft detail page
+                              router.push(
+                                  "/" + params.lang + "/" + params.chain + "/paymaster"
+                              );
+                          }}
+                          className="w-full
+                            bg-blue-500
+                            text-white
+                            p-2
+                            text-sm md:text-lg font-semibold
+                            hover:bg-blue-600
+                            rounded-lg
+                            "
+                      >
+                        구매 신청하기
+                      </button>
+                    </div>
+
+                  )}
 
 
                   {/* 구매주문 목록 */}
@@ -1728,7 +1860,7 @@ function IndexPage(
 
                               <tr key={order._id} className="border-b hover:bg-gray-50">
                                 <td className="px-4 py-2">
-                                  <div className="flex flex-col items-start">
+                                  <div className="flex flex-col items-start gap-1">
                                   {/* time ago */}
                                     <span className="text-xs text-zinc-500">
                                       {
@@ -1739,9 +1871,28 @@ function IndexPage(
                                       }
                                     </span>
 
-                                    <span className="text-sm font-semibold text-zinc-800">
-                                      {order.nickname}
-                                    </span>
+                                    <div className="flex flex-row items-center gap-2">
+                                      <Image
+                                        src={order.avatar || "/icon-buyer.png"}
+                                        alt="Avatar"
+                                        width={18}
+                                        height={18}
+                                        className="rounded-full w-6 h-6"
+                                      />
+                                      <span className="text-sm font-semibold text-zinc-800">
+                                        {order.nickname}
+                                      </span>
+                                    </div>
+
+                                    {order.walletAddress === address ? (
+                                      <span className="text-xs text-blue-500 font-semibold">
+                                        나의 주문
+                                      </span>
+                                    ) : (
+                                      <span className="text-xs text-zinc-500">
+                                        {order.walletAddress.slice(0, 6)}...{order.walletAddress.slice(-4)} 
+                                      </span>
+                                    )}
   
                                   </div>
                                 </td>
@@ -1768,9 +1919,30 @@ function IndexPage(
                                 <td className="px-4 py-2">
 
                                   {order.walletAddress === address ? (
-                                    <span className="text-sm text-zinc-500 font-semibold">
-                                      나의 주문
-                                    </span>
+                                    <div className="flex flex-col items-center">
+
+                                      {order.status === "ordered" ? (
+                                        <span className="text-sm text-blue-500 font-semibold">
+                                          구매 신청됨
+                                        </span>
+                                      ) : order.status === "paymentRequested" ? (
+                                        <span className="text-sm text-yellow-500 font-semibold">
+                                          결제 요청됨
+                                        </span>
+                                      ) : order.status === "paymentConfirmed" ? (
+                                        <span className="text-sm text-green-500 font-semibold">
+                                          주문 완료됨
+                                        </span>
+                                      ) : order.status === "cancelled" ? (
+                                        <span className="text-sm text-red-500 font-semibold">
+                                          주문 취소됨
+                                        </span>
+                                      ) : (
+                                        <span className="text-sm text-red-500 font-semibold">
+                                          주문 상태: {order.status}
+                                        </span>
+                                      )}
+                                    </div>
                                   ) : (
                                     <button
                                       onClick={() => {
