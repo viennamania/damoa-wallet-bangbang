@@ -1844,8 +1844,8 @@ function IndexPage(
                             <th className="px-4 py-2 text-left text-sm font-semibold text-zinc-800">구매자</th>
                             <th className="px-4 py-2 text-left text-sm font-semibold text-zinc-800">
                               <div className="flex flex-col items-start">
-                                <span className="text-sm text-zinc-500">금액(MKRW)</span>
-                                <span className="text-sm text-zinc-500">수량(USDT)</span>
+                                <span className="text-sm text-zinc-500">구매금액(원)</span>
+                                <span className="text-sm text-zinc-500">구매수량(USDT)</span>
                                 <span className="text-xs text-zinc-500">환율</span>
                               </div>
                             </th>
@@ -1946,9 +1946,10 @@ function IndexPage(
                                   ) : (
                                     <button
                                       onClick={() => {
-                                        //
+                                        alert("판매하기 기능은 준비중입니다.");
                                       }}
                                       className="
+                                      text-sm md:text-lg
                                       border border-blue-500 text-blue-500 px-4 py-2 rounded-lg
                                       hover:bg-blue-500 hover:text-white
                                       transition duration-300 ease-in-out
