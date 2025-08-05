@@ -1228,13 +1228,15 @@ export default function SendUsdt({ params }: any) {
 
 
 
-  
-  const [transferListKCT, setTransferListKCT] = useState([]);
-  const [loadingTransferListKCT, setLoadingTransferListKCT] = useState(false);
+  // transfer list MKRW
+
+
+  const [transferListMKRW, setTransferListMKRW] = useState([]);
+  const [loadingTransferListMKRW, setLoadingTransferListMKRW] = useState(false);
   useEffect(() => {
-    const getTransferListKCT = async () => {
-      setLoadingTransferListKCT(true);
-      const response = await fetch('/api/transfer/getAllTransferKCT', {
+    const getTransferListMKRW = async () => {
+      setLoadingTransferListMKRW(true);
+      const response = await fetch('/api/transfer/getAllTransferMKRW', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1245,25 +1247,25 @@ export default function SendUsdt({ params }: any) {
       });
       if (!response.ok) {
         toast.error("전송 내역을 불러오는 데 실패했습니다.");
-        setLoadingTransferListKCT(false);
+        setLoadingTransferListMKRW(false);
         return;
       }
       const data = await response.json();
 
-      setTransferListKCT(data.result.transfers);
+      setTransferListMKRW(data.result.transfers);
 
-      setLoadingTransferListKCT(false);
+      setLoadingTransferListMKRW(false);
     };
 
 
     if (address) {
-      getTransferListKCT();
+      getTransferListMKRW();
     }
 
     // setInterval to refresh transfer list every 5 seconds
     const interval = setInterval(() => {
       if (address) {
-        getTransferListKCT();
+        getTransferListMKRW();
       }
     }
     , 5000);
@@ -1277,6 +1279,7 @@ export default function SendUsdt({ params }: any) {
 
 
   // transfer list USDT
+  /*
   const [transferListUSDT, setTransferListUSDT] = useState([]);
   const [loadingTransferListUSDT, setLoadingTransferListUSDT] = useState(false);
   useEffect(() => {
@@ -1315,6 +1318,10 @@ export default function SendUsdt({ params }: any) {
       clearInterval(interval);
     };
   }, [address]);
+  */
+
+
+
 
 
 
@@ -1607,34 +1614,44 @@ export default function SendUsdt({ params }: any) {
 
 
 
-                {String(token).toLowerCase() === "kct" && (
+                {String(token).toLowerCase() === "mkrw" && (
                   <div className="w-full mt-5 bg-white rounded-lg p-4">
-                    <h2 className="text-xl font-semibold mb-4">전송 내역</h2>
                     
-                    {loadingTransferListKCT ? (
-                      <div className="w-full flex items-center justify-center">
+                      <div className='flex flex-row gap-2 items-center justify-start mb-4'>
                         <Image
-                          src="/loading.png"
-                          alt="loading"
-                          width={50}
-                          height={50}
-                          className='animate-spin'
+                          src="/token-mkrw-icon.png"
+                          alt="MKRW"
+                          width={20}
+                          height={20}
+                          className='rounded-full w-6 h-6'
                         />
+                        <h2 className="text-sm font-semibold">전송 내역</h2>
+                        {loadingTransferListMKRW && (
+                          <div className="flex items-center justify-center">
+                            <Image
+                              src="/loading.png"
+                              alt="loading"
+                              width={20}
+                              height={20}
+                              className="animate-spin"
+                            />
+                          </div>
+                        )}
                       </div>
-                    ) : (
+
                       <table className="w-full table-auto">
                         <thead>
                           <tr
                             className="bg-gray-200 text-gray-700 text-sm font-semibold">
 
 
-                            <th className="px-4 py-2">날짜<br/>보내기 / 받기</th>
-                            <th className="px-4 py-2">보낸 사람<br/>받는 사람</th>
+                            <th className="px-4 py-2">날짜<br/>입금 / 출금</th>
+                            <th className="px-4 py-2">보낸 사람<br/>받은 사람</th>
                             <th className="px-4 py-2">수량</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {transferListKCT.map((transfer : any, index: number) => (
+                          {transferListMKRW.map((transfer : any, index: number) => (
 
 
                             <tr key={transfer._id}
@@ -1655,9 +1672,9 @@ export default function SendUsdt({ params }: any) {
 
                                 <span className="font-semibold text-lg">
                                   {transfer.sendOrReceive === "send" ? (
-                                    <span className="text-red-500">보내기</span>
+                                    <span className="text-red-500">출금</span>
                                   ) : (
-                                    <span className="text-green-500">받기</span>
+                                    <span className="text-green-500">입금</span>
                                   )}
                                 </span>
 
@@ -1665,13 +1682,43 @@ export default function SendUsdt({ params }: any) {
                               </td>
 
                               <td className="border px-4 py-2">
-                                {transfer.transferData.fromAddress.slice(0, 6)}...{transfer.transferData.fromAddress.slice(-4)}<br/>
-                                {transfer.transferData.toAddress.slice(0, 6)}...{transfer.transferData.toAddress.slice(-4)}
+
+                                {transfer.sendOrReceive === "send" ? (
+                                  <div className='flex flex-col gap-1'>
+                                    <span className="text-red-500">
+                                      받은 사람
+                                    </span>
+                                    {transfer?.toUser?.nickname && (
+                                      <span className="text-red-500">
+                                        {transfer?.toUser.nickname}
+                                      </span>
+                                    )}
+
+                                    <span className="text-red-500">
+                                      {transfer.transferData.toAddress.slice(0, 6) + '...' + transfer.transferData.toAddress.slice(-4)}
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <div className='flex flex-col gap-1'>
+                                    <span className="text-green-500">
+                                      보낸 사람
+                                    </span>
+                                    {transfer?.fromUser?.nickname && (
+                                      <span className="text-green-500">
+                                        {transfer?.fromUser.nickname}
+                                      </span>
+                                    )}
+
+                                    <span className="text-green-500">
+                                      {transfer.transferData.fromAddress.slice(0, 6) + '...' + transfer.transferData.fromAddress.slice(-4)}
+                                    </span>
+                                  </div>
+                                )}
                               </td>
                               <td className="border px-4 py-2">
                                 {
                                   (Number(transfer.transferData.value) / 10 ** 18)
-                                  .toFixed(2)
+                                  .toFixed(0)
                                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
@@ -1679,17 +1726,12 @@ export default function SendUsdt({ params }: any) {
                           ))}
                         </tbody>
                       </table>
-                    )}
+                  
+
                   </div>
 
 
-
-
-
                 )}
-
-
-
 
 
               </div>

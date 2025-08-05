@@ -91,22 +91,50 @@ export async function getTransferByWalletAddress(data: any) {
 
     const client = await clientPromise;
 
-    const collectionUsers = client.db('damoa').collection('users');
 
-    
-    const user = await collectionUsers.findOne(
-        { walletAddress: data.walletAddress },
-        { projection: { walletAddress: 1 } }
-    );
-
-
-    if (!user) {
-        return null;
-    }
-
-    // transferData: { transactionHash: string, transactionIndex: string, fromAddress: string, toAddress: string, value: string, timestamp: string }
-    // timestamp desc
-    
+    /*
+    {
+        "_id": {
+            "$oid": "689233b8f707d87be96596a5"
+        },
+        "user": {
+            "walletAddress": "0xDEe1E6E4F4b6eE8b9b11458D100DB990082ac787"
+        },
+        "sendOrReceive": "send",
+        "toUser": {
+            "user_id": "0xec6530e3cd76211F4b5114231F3f98AEA3F98Fe6",
+            "nickname": "hithere",
+            "profile_url": "/profile-default.png",
+            "require_auth_for_profile_image": false,
+            "metadata": {
+            "font_color": "black",
+            "font_preference": "times new roman"
+            },
+            "access_token": "9628432993e7c8278d54d28b7cafffb037f66010",
+            "created_at": 1752825794,
+            "discovery_keys": [],
+            "is_hide_me_from_friends": false,
+            "is_shadow_blocked": false,
+            "session_tokens": [],
+            "is_online": false,
+            "last_seen_at": -1,
+            "is_active": true,
+            "has_ever_logged_in": false,
+            "preferred_languages": [],
+            "locale": "",
+            "unread_channel_count": 0,
+            "unread_message_count": 0
+        },
+        "transferData": {
+            "transactionHash": "0x4660caf732c097fc933a6373ad86ff4bc9229226232b50b87768eea60df3deb7",
+            "transactionIndex": 57,
+            "fromAddress": "0xDEe1E6E4F4b6eE8b9b11458D100DB990082ac787",
+            "toAddress": "0xec6530e3cd76211F4b5114231F3f98AEA3F98Fe6",
+            "value": "1200000000000000000000",
+            "timestamp": 1754411957000
+        }
+        }
+    */
 
     const collectionUserTransfers = client.db('damoa').collection('userTransfers');
 
