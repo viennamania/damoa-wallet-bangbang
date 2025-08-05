@@ -1020,7 +1020,9 @@ export default function Index({ params }: any) {
 
               setEscrowWalletAddress(data.result.orders[0]?.escrowWallet.address || "");
 
-              data.result.orders[0].escrowWallet?.transactionHash ?
+              (data.result.orders[0].status === 'paymentConfirmed' ||
+                data.result.orders[0].status === 'cancelled')
+                ?
               setEscrowBalance(0) :
               setEscrowBalance(data.result.orders[0]?.escrowWallet.balance || 0);
             }
