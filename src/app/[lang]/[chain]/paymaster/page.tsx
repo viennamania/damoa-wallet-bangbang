@@ -2754,7 +2754,7 @@ export default function Index({ params }: any) {
                               hover:text-zinc-50
                               ">
                               
-                              구매하기
+                              구매주문하기
                             </span>
                           )}
                         </div>
@@ -2763,9 +2763,29 @@ export default function Index({ params }: any) {
 
                     </button>
 
+                    {/* 정보: 구매주문할때 000 MKRW가 에스크로 지갑으로 전송됩니다. */}
+                    {/* 판매가 되지 않으면 000 MKRW가 다시 내 지갑으로 전송됩니다. */}
+                    <div className='mt-2 w-full flex flex-row items-center justify-start gap-2'>
+                      <Image
+                        src="/icon-info.png"
+                        alt="Info"
+                        width={24}
+                        height={24}
+                      />
+                      <div className='flex flex-col gap-1'>
+                        <span className="text-sm text-zinc-500">
+                          구매주문을 하면 {Number(selectedKrwAmount).toFixed(0)} MKRW가 에스크로 지갑으로 전송됩니다.
+                        </span>
+                        <span className="text-sm text-zinc-500">
+                          판매가 되지 않으면 다시 내 지갑으로 반환됩니다.
+                        </span>
+                      </div>
+                    </div>
+
                   </div>
 
                   {/* deposit name description */}
+                  {/*
                   <div className='
                     mt-2 w-full flex flex-row items-center justify-start gap-2
                     '>
@@ -2779,6 +2799,7 @@ export default function Index({ params }: any) {
                       입금 시 반드시 사전 등록한 은행과 이름, 계좌번호로 송금해야 합니다. 이와 다를 시에는 입금 처리가 안될 수 있습니다.
                     </span>
                   </div>
+                  */}
 
                 </div>
 
@@ -4126,8 +4147,18 @@ export default function Index({ params }: any) {
             bg-white shadow-lg rounded-lg p-4
             border border-gray-200
             ">
-              <div className="text-lg text-zinc-500 font-semibold">
-                {nickname}님의 구매내역
+
+              <div className='flex flex-row items-center justify-start w-full gap-2 mb-4'>
+                <Image
+                  src="/icon-buy.webp"
+                  alt="Buy Icon"
+                  width={32}
+                  height={32}
+                  className="w-8 h-8 rounded-full"
+                />
+                <div className="text-lg text-zinc-500 font-semibold">
+                  {nickname}님의 구매내역
+                </div>
               </div>
 
               {buyOrders.length === 0 && (
@@ -4145,9 +4176,16 @@ export default function Index({ params }: any) {
                 bg-white shadow-lg rounded-lg p-6
                 border border-gray-200
                 ">
-                <div className='flex flex-row items-center justify-between w-full'>
+                <div className='flex flex-row items-center justify-start w-full gap-2 mb-4'>
+                  <Image
+                    src="/token-usdt-icon.png"
+                    alt='USDT Icon'
+                    width={32}
+                    height={32}
+                    className="w-8 h-8 rounded-full"
+                  />
                   <div className="text-lg text-zinc-500 font-semibold">
-                    최근 구매내역
+                    최근 테더 구매내역
                   </div>
                   {loadingBuyOrders && (
                     <Image
@@ -4166,9 +4204,9 @@ export default function Index({ params }: any) {
                   <table className="w-full table-auto">
                     <thead>
                       <tr className="bg-gray-100">
-                        <th className="px-4 py-2 text-sm text-left">수량 (USDT)</th>
-                        <th className="px-4 py-2 text-sm text-left">결제 금액</th>
-                        <th className="px-4 py-2 text-sm text-left">날짜</th>
+                        <th className="px-4 py-2 text-sm text-right">구매수량<br/>(USDT)</th>
+                        <th className="px-4 py-2 text-sm text-right">결제금액<br/>(MKRW)</th>
+                        <th className="px-4 py-2 text-sm text-center">날짜</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -4195,10 +4233,7 @@ export default function Index({ params }: any) {
                               "
                               style={{ fontFamily: 'monospace' }}
                               >
-                              {order.krwAmount.toLocaleString('ko-KR', {
-                                style: 'currency',
-                                currency: 'KRW'
-                              })}
+                              {order.krwAmount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             </div>
                           </td>
                           <td className="px-4 py-2">
