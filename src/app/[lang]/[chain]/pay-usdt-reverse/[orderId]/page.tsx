@@ -974,7 +974,8 @@ export default function Index({ params }: any) {
   
     
 
-    
+    const [escrowWalletAddress, setEscrowWalletAddress] = useState("");
+    const [escrowBalance, setEscrowBalance] = useState(0);
 
 
 
@@ -1003,7 +1004,7 @@ export default function Index({ params }: any) {
   
           const data = await response?.json();
   
-          console.log('getOneBuyOrder data.result', data.result);
+          ///console.log('getOneBuyOrder data.result', data.result);
 
   
           if (data.result) {
@@ -1016,6 +1017,9 @@ export default function Index({ params }: any) {
               setAddress(data.result.orders[0]?.walletAddress);
 
               ////setNickname(data.result.orders[0].buyer.nickname);
+
+              setEscrowWalletAddress(data.result.orders[0]?.escrowWallet.address || "");
+              setEscrowBalance(data.result.orders[0]?.escrowWallet.balance || 0);
             }
 
 
@@ -1999,13 +2003,10 @@ return (
 
 
           {!loadingUser && address ? (
-            <div className="mt-5 flex flex-col items-center gap-2 mb-4">
-
-             
-
+            <div className="mt-5 w-full flex flex-col items-center gap-2 mb-4">
 
               {/* my mkrw balance */}
-              <div className='w-full  flex-row items-between justify-start gap-5'>
+              <div className='w-full  flex-row items-start justify-between gap-2 mb-4'>
 
                 <div className="flex flex-row items-center justify-start">
                   <Image
@@ -2020,14 +2021,62 @@ return (
                   </span>
                 </div>
                 <div className=" flex flex-row items-start justify-start gap-2">
-                  <div className="text-2xl font-semibold text-zinc-500">
+                  <span className="text-2xl font-semibold text-zinc-500"
+                    style={{ fontFamily: 'monospace' }}
+                  >
                     {
                     Number(mkrwBalance).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                     }{' '}MKRW
-                  </div>
+                  </span>
                 </div>
 
               </div>
+
+
+              {/* escrowWalletAddress */}
+              {escrowWalletAddress && (
+                <div className="w-full flex flex-col items-start justify-start gap-2 mb-4">
+                  <div className="flex flex-row items-center justify-center gap-2">
+                    <Image
+                      src="/icon-escrow-wallet.png"
+                      alt="Escrow Wallet"
+                      width={20}
+                      height={20}
+                      className="inline-block mr-1"
+                    />
+                    <span className="text-sm text-zinc-500">
+                      에스크로 지갑 주소: {escrowWalletAddress.slice(0, 6)}...{escrowWalletAddress.slice(-4)}
+                    </span>
+                  </div>
+
+                  {/* 에스크로 balance */} 
+                  <div className="flex flex-row items-center justify-start">
+                    <Image
+                      src="/token-mkrw-icon.png"
+                      alt="MKRW Icon"
+                      width={20}
+                      height={20}
+                      className="inline-block mr-1"
+                    />
+                    <span className="text-sm font-semibold">
+                      내 에스크로 잔액
+                    </span>
+                  </div>
+                  <div className=" flex flex-row items-start justify-start gap-2">
+                    <span className="text-2xl font-semibold text-zinc-500"
+                      style={{ fontFamily: 'monospace' }}
+                    >
+                      {
+                      Number(escrowBalance).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                      }{' '}MKRW
+                    </span>
+                  </div>
+
+                </div>
+
+              )}
+
+
 
 
 
@@ -3160,12 +3209,31 @@ return (
                                     <p className="text-sm text-zinc-500">
                                       환율:{' '}{
 
-                                      Number(item.krwAmount / item.usdtAmount).toFixed(2)
+                                      Number(item.rate).toFixed(0)
 
                                     }</p>
                                   </div>
-                                  
 
+                                  {/* 결제방식 */}
+                                  <div className="mt-2 flex flex-row items-center justify-between gap-2">
+                                    <p className="text-lg text-zinc-500">
+                                      결제방식: {item?.paymentMethod === 'bank'
+                                        ? '계좌이체'
+                                        : item?.paymentMethod === 'mkrw'
+                                        ? 'MKRW 결제'
+                                        : item?.paymentMethod === 'cash'
+                                        ? '현금거래'
+                                        : item?.paymentMethod === 'card'
+                                        ? '카드결제'
+                                        : item?.paymentMethod === 'paypal'
+                                        ? '페이팔'
+                                        : item?.paymentMethod === 'crypto'
+                                        ? '암호화폐'
+                                        : item?.paymentMethod === 'other'
+                                        ? '기타'
+                                        : '알수없음'}
+                                    </p>
+                                  </div>
 
                                 </div>
 

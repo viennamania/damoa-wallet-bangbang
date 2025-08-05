@@ -1732,7 +1732,7 @@ export default function Index({ params }: any) {
 
           const order = data.result;
 
-          setEscrowWalletAddress(order?.escrowWalletAddress);
+          setEscrowWalletAddress(order?.escrowWalletAddress || '');
           setSendingEscrow(true);
 
           const escrowWalletAddress = order?.escrowWalletAddress;
