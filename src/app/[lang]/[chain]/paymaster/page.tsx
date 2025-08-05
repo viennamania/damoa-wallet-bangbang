@@ -4197,128 +4197,107 @@ export default function Index({ params }: any) {
         )}
 
 
-        {nickname && (
+
+        {buyOrders.length === 0 && (
           <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
             bg-white shadow-lg rounded-lg p-4
             border border-gray-200
             ">
-
-              <div className='flex flex-row items-center justify-start w-full gap-2 mb-4'>
-                <Image
-                  src="/icon-buy.webp"
-                  alt="Buy Icon"
-                  width={32}
-                  height={32}
-                  className="w-8 h-8 rounded-full"
-                />
-                <div className="text-lg text-zinc-500 font-semibold">
-                  {nickname}님의 구매내역
-                </div>
-              </div>
-
-              {buyOrders.length === 0 && (
-                <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
-                  bg-white shadow-lg rounded-lg p-4
-                  border border-gray-200
-                  ">
-                  <div className="text-lg text-zinc-500 font-semibold">
-                    최근 구매내역이 없습니다.
-                  </div>
-                </div>
-              )}
-
-              <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
-                bg-white shadow-lg rounded-lg p-6
-                border border-gray-200
-                ">
-                <div className='flex flex-row items-center justify-start w-full gap-2 mb-4'>
-                  <Image
-                    src="/token-usdt-icon.png"
-                    alt='USDT Icon'
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <div className="text-lg text-zinc-500 font-semibold">
-                    최근 테더 구매내역
-                  </div>
-                  {loadingBuyOrders && (
-                    <Image
-                      src="/loading.png"
-                      alt="Loading"
-                      width={32}
-                      height={32}
-                      className="animate-spin"
-                    />
-                  )}
-                </div>
-
-
-                <div className="w-full flex flex-col items-start justify-start mt-4">
-                  
-                  <table className="w-full table-auto">
-                    <thead>
-                      <tr className="bg-gray-100">
-                        <th className="px-4 py-2 text-sm text-right">구매수량<br/>(USDT)</th>
-                        <th className="px-4 py-2 text-sm text-right">결제금액<br/>(MKRW)</th>
-                        <th className="px-4 py-2 text-sm text-center">날짜</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {buyOrders.map((order) => (
-                        <tr key={order._id} className="border-b">
-                          <td className="px-4 py-2">
-                            <div className="
-                              w-18 
-                              2xl:w-32
-                              flex items-center justify-end
-                              text-lg text-green-600 font-semibold
-                              "
-                              style={{ fontFamily: 'monospace' }}
-                              >
-                              {order.usdtAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            </div>
-                          </td>
-                          <td className="px-4 py-2">
-                            <div className="
-                              w-20
-                              2xl:w-32
-                              flex items-center justify-end
-                              text-sm text-zinc-500 font-semibold
-                              "
-                              style={{ fontFamily: 'monospace' }}
-                              >
-                              {order.krwAmount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            </div>
-                          </td>
-                          <td className="px-4 py-2">
-                            <div className='flex flex-col xl:flex-row items-start xl:items-center gap-1'>
-                              <span className="text-sm text-zinc-500">
-                                {new Date(order.createdAt).toLocaleDateString('ko-KR', {
-                                  year: 'numeric',
-                                  month: '2-digit',
-                                  day: '2-digit',
-                                })}
-                              </span>
-                              <span className="text-xs text-zinc-400">
-                                {new Date(order.createdAt).toLocaleTimeString('ko-KR', {
-                                  hour: '2-digit',
-                                  minute: '2-digit',
-                                  second: '2-digit'
-                                })}
-                              </span>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-
+            <div className="text-lg text-zinc-500 font-semibold">
+              최근 구매내역이 없습니다.
             </div>
+          </div>
         )}
+
+        <div className="w-full flex flex-col items-center justify-center mt-10 mb-10
+          bg-white shadow-lg rounded-lg p-6
+          border border-gray-200
+          ">
+          <div className='flex flex-row items-center justify-start w-full gap-2 mb-4'>
+            <Image
+              src="/token-usdt-icon.png"
+              alt='USDT Icon'
+              width={32}
+              height={32}
+              className="w-8 h-8 rounded-full"
+            />
+            <div className="text-lg text-zinc-500 font-semibold">
+              최근 테더 구매내역
+            </div>
+            {loadingBuyOrders && (
+              <Image
+                src="/loading.png"
+                alt="Loading"
+                width={32}
+                height={32}
+                className="animate-spin"
+              />
+            )}
+          </div>
+
+
+          <div className="w-full flex flex-col items-start justify-start mt-4">
+            
+            <table className="w-full table-auto">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="px-4 py-2 text-sm text-right">구매수량<br/>(USDT)</th>
+                  <th className="px-4 py-2 text-sm text-right">결제금액<br/>(MKRW)</th>
+                  <th className="px-4 py-2 text-sm text-center">날짜</th>
+                </tr>
+              </thead>
+              <tbody>
+                {buyOrders.map((order) => (
+                  <tr key={order._id} className="border-b">
+                    <td className="px-4 py-2">
+                      <div className="
+                        w-18 
+                        2xl:w-32
+                        flex items-center justify-end
+                        text-lg text-green-600 font-semibold
+                        "
+                        style={{ fontFamily: 'monospace' }}
+                        >
+                        {order.usdtAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                      </div>
+                    </td>
+                    <td className="px-4 py-2">
+                      <div className="
+                        w-20
+                        2xl:w-32
+                        flex items-center justify-end
+                        text-sm text-zinc-500 font-semibold
+                        "
+                        style={{ fontFamily: 'monospace' }}
+                        >
+                        {order.krwAmount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                      </div>
+                    </td>
+                    <td className="px-4 py-2">
+                      <div className='flex flex-col xl:flex-row items-start xl:items-center gap-1'>
+                        <span className="text-sm text-zinc-500">
+                          {new Date(order.createdAt).toLocaleDateString('ko-KR', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                          })}
+                        </span>
+                        <span className="text-xs text-zinc-400">
+                          {new Date(order.createdAt).toLocaleTimeString('ko-KR', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                          })}
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
 
 
 
