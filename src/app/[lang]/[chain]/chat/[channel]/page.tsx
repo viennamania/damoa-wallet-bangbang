@@ -396,7 +396,7 @@ function ChatPageContent(
       
 
   const [nickname, setNickname] = useState("");
-  const [avatar, setAvatar] = useState("/profile-default.png");
+  const [avatar, setAvatar] = useState("/icon-default-avatar.png");
   const [userCode, setUserCode] = useState("");
 
 
@@ -588,7 +588,7 @@ function ChatPageContent(
                     <div className="flex flex-col gap-2 items-start justify-end">
                       <div className="flex flex-row items-center gap-2">
                         <Image
-                          src={user?.avatar || "/profile-default.png"}
+                          src={user?.avatar || "/icon-default-avatar.png"}
                           alt="Avatar"
                           width={20}
                           height={20}
@@ -629,7 +629,7 @@ function ChatPageContent(
 
                 nickname={  nickname }
 
-                profileUrl='https://wallet.cryptopay.beauty/profile-default.png'
+                profileUrl='https://wallet.cryptopay.beauty/icon-default-avatar.png'
               />
             )}
 

@@ -223,7 +223,7 @@ function AgentPage(
     const [nickname, setNickname] = useState("");
     const [editedNickname, setEditedNickname] = useState("");
 
-    const [avatar, setAvatar] = useState("/profile-default.png");
+    const [avatar, setAvatar] = useState("/icon-default-avatar.png");
 
 
 
@@ -297,7 +297,7 @@ function AgentPage(
 
             } else {
                 setNickname('');
-                setAvatar('/profile-default.png');
+                setAvatar('/icon-default-avatar.png');
                 setUserCode('');
                 setSeller(null);
                 setEditedNickname('');
@@ -800,7 +800,7 @@ function AgentPage(
 
                                     <div className="flex items-center gap-4">
                                         <Image
-                                            src={user.profile_url || "/profile-default.png"}
+                                            src={user.profile_url || "/icon-default-avatar.png"}
                                             alt={user.nickname}
                                             width={50}
                                             height={50}

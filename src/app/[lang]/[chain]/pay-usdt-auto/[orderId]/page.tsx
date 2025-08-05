@@ -2167,7 +2167,7 @@ export default function Index({ params }: any) {
                       <div className="hidden flex-row gap-2 items-center justify-center">
                         
                           <Image
-                            src={user?.avatar || "/profile-default.png"}
+                            src={user?.avatar || "/icon-default-avatar.png"}
                             alt="Avatar"
                             width={20}
                             height={20}
@@ -2271,7 +2271,7 @@ export default function Index({ params }: any) {
                                 <div className='flex flex-row items-center gap-2'>
 
                                   <Image
-                                      src={item.avatar || '/profile-default.png'}
+                                      src={item.avatar || '/icon-default-avatar.png'}
                                       alt="Avatar"
                                       width={32}
                                       height={32}
@@ -2320,7 +2320,7 @@ export default function Index({ params }: any) {
                                 <div className='flex flex-row items-center gap-2'>
 
                                   <Image
-                                      src={item.buyer?.avatar || '/profile-default.png'}
+                                      src={item.buyer?.avatar || '/icon-default-avatar.png'}
                                       alt="Avatar"
                                       width={32}
                                       height={32}

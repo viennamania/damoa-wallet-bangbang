@@ -111,7 +111,7 @@ export async function getTransferByWalletAddress(data: any) {
         "toUser": {
             "user_id": "0xec6530e3cd76211F4b5114231F3f98AEA3F98Fe6",
             "nickname": "hithere",
-            "profile_url": "/profile-default.png",
+            "profile_url": "/icon-default-avatar.png",
             "require_auth_for_profile_image": false,
             "metadata": {
             "font_color": "black",

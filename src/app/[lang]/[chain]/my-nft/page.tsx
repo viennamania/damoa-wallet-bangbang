@@ -511,7 +511,7 @@ export default function SettingsPage({ params }: any) {
     const [nickname, setNickname] = useState("");
     const [editedNickname, setEditedNickname] = useState("");
 
-    const [avatar, setAvatar] = useState("/profile-default.png");
+    const [avatar, setAvatar] = useState("/icon-default-avatar.png");
 
 
 
@@ -623,7 +623,7 @@ export default function SettingsPage({ params }: any) {
 
             } else {
                 setNickname('');
-                setAvatar('/profile-default.png');
+                setAvatar('/icon-default-avatar.png');
                 setUserCode('');
                 setSeller(null);
                 setEditedNickname('');

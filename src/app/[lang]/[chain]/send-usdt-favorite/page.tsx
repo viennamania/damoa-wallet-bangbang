@@ -846,7 +846,7 @@ export default function SendUsdt({ params }: any) {
                         <div className="flex flex-row items-center gap-2">
                     
                           <Image
-                            src={user?.avatar || "/profile-default.png"}
+                            src={user?.avatar || "/icon-default-avatar.png"}
                             alt="Avatar"
                             width={20}
                             height={20}
@@ -980,7 +980,7 @@ export default function SendUsdt({ params }: any) {
 
                     <div className=" w-full flex flex-row gap-2 items-center justify-center">
                       <Image
-                        src={recipient?.avatar || '/profile-default.png'}
+                        src={recipient?.avatar || '/icon-default-avatar.png'}
                         alt="profile"
                         width={38}
                         height={38}
@@ -1071,7 +1071,7 @@ export default function SendUsdt({ params }: any) {
 
 
                         <Image
-                          src={recipient.avatar || '/profile-default.png'}
+                          src={recipient.avatar || '/icon-default-avatar.png'}
                           alt="profile"
                           width={30}
                           height={30}

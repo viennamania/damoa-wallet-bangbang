@@ -547,7 +547,7 @@ function IndexPage(
  
 
   const [nickname, setNickname] = useState("");
-  const [avatar, setAvatar] = useState("/profile-default.png");
+  const [avatar, setAvatar] = useState("/icon-default-avatar.png");
   const [userCode, setUserCode] = useState("");
 
 
@@ -591,7 +591,7 @@ function IndexPage(
 
           } else {
               setNickname("");
-              setAvatar("/profile-default.png");
+              setAvatar("/icon-default-avatar.png");
               setUserCode("");
               setSeller(null);
           }

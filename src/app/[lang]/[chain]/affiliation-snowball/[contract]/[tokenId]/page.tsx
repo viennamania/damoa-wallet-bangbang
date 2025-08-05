@@ -326,7 +326,7 @@ export default function AgentPage({ params }: any) {
 
   const [nickname, setNickname] = useState("");
   const [userCode, setUserCode] = useState("");
-  const [avatar, setAvatar] = useState("/profile-default.png");
+  const [avatar, setAvatar] = useState("/icon-default-avatar.png");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -353,7 +353,7 @@ export default function AgentPage({ params }: any) {
 
         } else {
             setNickname('');
-            setAvatar('/profile-default.png');
+            setAvatar('/icon-default-avatar.png');
             setUserCode('');
         }
 
@@ -740,7 +740,7 @@ export default function AgentPage({ params }: any) {
                             '>
 
                             <Image
-                                src={ownerInfo?.avatar || '/profile-default.png'}
+                                src={ownerInfo?.avatar || '/icon-default-avatar.png'}
                                 width={60}
                                 height={60}
                                 alt={ownerInfo?.nickname}
@@ -873,7 +873,7 @@ export default function AgentPage({ params }: any) {
                             >
 
                               <Image
-                                  src={member?.avatar || '/profile-default.png'}
+                                  src={member?.avatar || '/icon-default-avatar.png'}
                                   width={40}
                                   height={40}
                                   alt={member?.nickname}

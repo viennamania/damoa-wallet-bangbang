@@ -297,7 +297,7 @@ function IndexPage(
 
   const [nickname, setNickname] = useState("");
   const [userCode, setUserCode] = useState("");
-  const [avatar, setAvatar] = useState("/profile-default.png");
+  const [avatar, setAvatar] = useState("/icon-default-avatar.png");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -324,7 +324,7 @@ function IndexPage(
 
         } else {
             setNickname('');
-            setAvatar('/profile-default.png');
+            setAvatar('/icon-default-avatar.png');
             setUserCode('');
         }
 

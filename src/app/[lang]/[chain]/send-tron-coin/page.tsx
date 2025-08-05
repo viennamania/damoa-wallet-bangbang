@@ -953,7 +953,7 @@ useEffect(() => {
 
                       <div className=" w-full flex flex-row gap-2 items-center justify-center">
                         <Image
-                          src={recipient?.avatar || '/profile-default.png'}
+                          src={recipient?.avatar || '/icon-default-avatar.png'}
                           alt="profile"
                           width={38}
                           height={38}
@@ -1030,7 +1030,7 @@ useEffect(() => {
 
 
                         <Image
-                          src={recipient.avatar || '/profile-default.png'}
+                          src={recipient.avatar || '/icon-default-avatar.png'}
                           alt="profile"
                           width={30}
                           height={30}

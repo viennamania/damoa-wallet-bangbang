@@ -686,7 +686,7 @@ export default function Index({ params }: any) {
 
 
     const [nickname, setNickname] = useState("");
-    const [avatar, setAvatar] = useState("/profile-default.png");
+    const [avatar, setAvatar] = useState("/icon-default-avatar.png");
     const [userCode, setUserCode] = useState("");
   
   
@@ -1615,7 +1615,7 @@ export default function Index({ params }: any) {
                           <div className="flex flex-row items-center gap-2">
                       
                             <Image
-                              src={user?.avatar || "/profile-default.png"}
+                              src={user?.avatar || "/icon-default-avatar.png"}
                               alt="Avatar"
                               width={20}
                               height={20}

@@ -2218,7 +2218,7 @@ export default function AIPage({ params }: any) {
                                     {userCode ? (
                                         <div className='flex flex-row items-center gap-2'>
                                             <Image
-                                                src={userAvatar || "/profile-default.png"}
+                                                src={userAvatar || "/icon-default-avatar.png"}
                                                 alt="Avatar"
                                                 width={38}
                                                 height={38}

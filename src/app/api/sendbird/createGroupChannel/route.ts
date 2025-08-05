@@ -201,7 +201,7 @@ export async function POST(request: NextRequest) {
       {
         user_id: '0x86722e6b5a13EC03c7Fd1e1decfadc846b0929f0',
         nickname: 'genie',
-        profile_url: '/profile-default.png',
+        profile_url: '/icon-default-avatar.png',
         require_auth_for_profile_image: false,
         metadata: [Object],
         is_online: false,
@@ -216,7 +216,7 @@ export async function POST(request: NextRequest) {
       {
         user_id: '0xDEe1E6E4F4b6eE8b9b11458D100DB990082ac787',
         nickname: 'wayne',
-        profile_url: '/profile-default.png',
+        profile_url: '/icon-default-avatar.png',
         require_auth_for_profile_image: false,
         metadata: [Object],
         is_online: false,

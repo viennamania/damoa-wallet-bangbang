@@ -496,7 +496,7 @@ export default function SettingsPage({ params }: any) {
 
     
     const [nickname, setNickname] = useState("");
-    const [avatar, setAvatar] = useState("/profile-default.png");
+    const [avatar, setAvatar] = useState("/icon-default-avatar.png");
     const [userCode, setUserCode] = useState("");
 
 
@@ -556,7 +556,7 @@ export default function SettingsPage({ params }: any) {
 
             } else {
                 setNickname('');
-                setAvatar('/profile-default.png');
+                setAvatar('/icon-default-avatar.png');
                 setUserCode('');
                 setSeller(null);
                 setEditedNickname('');
@@ -1433,7 +1433,7 @@ export default function SettingsPage({ params }: any) {
 
                     <div className='flex flex-row items-center space-x-4'>
                         <Image
-                            src={avatar ? avatar : "/profile-default.png"}
+                            src={avatar ? avatar : "/icon-default-avatar.png"}
                             alt="Profile Picture"
                             width={50}
                             height={50}

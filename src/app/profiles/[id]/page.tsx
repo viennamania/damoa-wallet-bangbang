@@ -124,7 +124,7 @@ export default function ProfilePage() {
 
     
     const [nickname, setNickname] = useState("");
-    const [avatar, setAvatar] = useState("/profile-default.png");
+    const [avatar, setAvatar] = useState("/icon-default-avatar.png");
     const [userCode, setUserCode] = useState("");
 
 
