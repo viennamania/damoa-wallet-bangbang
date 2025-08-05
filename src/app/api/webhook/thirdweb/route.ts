@@ -341,8 +341,8 @@ export async function POST(request: NextRequest) {
   await upsertOneByWalletAddress({
     walletAddress: fromAddress,
     nickname: fromUser.nickname,
-    mkrwBalance: balanceMKRWFrom,
-    usdtBalance: balanceUSDTFrom,
+    mkrwBalance: Number(balanceMKRWFrom) / 10 ** 18, // assuming MKRW has 18 decimals
+    usdtBalance: Number(balanceUSDTFrom) / 10 ** 18, // assuming USDT has 18 decimals
   });
 
 
@@ -361,8 +361,8 @@ export async function POST(request: NextRequest) {
   await upsertOneByWalletAddress({
     walletAddress: toAddress,
     nickname: toUser.nickname,
-    mkrwBalance: balanceMKRWTo,
-    usdtBalance: balanceUSDTTo,
+    mkrwBalance: Number(balanceMKRWTo) / 10 ** 18,
+    usdtBalance: Number(balanceUSDTTo) / 10 ** 18,
   });
 
 
