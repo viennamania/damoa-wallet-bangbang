@@ -331,11 +331,25 @@ function AgentPage(
 
 
         {/* total supply of MKRW */}
-        <div className="text-center text-gray-600 mb-4">
-            <span className="text-lg md:text-xl font-semibold"
-                style={{ fontFamily: 'monospace' }}>
-                현재 발행된 MKRW 총량: {totalSupplyMKRW.toLocaleString()} MKRW
-            </span>
+        
+        <div className="flex flex-col items-center justify-center w-full mb-5">
+
+            <div className="flex flex-row gap-2 items-center">                    
+                <Image
+                    src="/token-mkrw-icon.png"
+                    alt="MKRW Icon"
+                    width={40}
+                    height={40}
+                    className="inline-block mr-2"
+                />
+                <span className="text-lg md:text-xl font-semibold">
+                    MKRW 총 유통량:
+                </span>
+                <span className="text-2xl md:text-4xl font-semibold text-yellow-600"
+                    style={{ fontFamily: 'monospace' }}>
+                    {totalSupplyMKRW.toLocaleString()}
+                </span>
+            </div>
             {/* bscscan link */}
             <div className="mt-2">
                 <Button
