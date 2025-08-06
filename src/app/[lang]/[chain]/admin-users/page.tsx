@@ -840,6 +840,59 @@ function AgentPage(
     }
 
 
+    // get mint history
+    // /api/transfer/getAllMint
+    const [loadingMintHistory, setLoadingMintHistory] = useState(false);
+    const [mintHistory, setMintHistory] = useState([] as any[]);
+    const getMintHistory = async () => {
+        try {
+
+            if (loadingMintHistory) {
+                return;
+            }
+
+            setLoadingMintHistory(true);
+
+            const response = await fetch("/api/transfer/getAllMint", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                    page: 1, // page number for pagination
+                    limit: 2, // limit the number of mints to fetch
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to get mint history');
+            }
+
+            const data = await response.json();
+
+
+            setMintHistory(data.result.transfers || []);
+            setLoadingMintHistory(false);
+
+        } catch (error) {
+            console.error("getMintHistory error", error);
+            setLoadingMintHistory(false);
+        }
+    };
+
+    useEffect(() => {
+        
+        getMintHistory();
+
+        // interval to refresh mint history every 5 seconds
+        const interval = setInterval(() => {
+            getMintHistory();
+        }, 5000);
+        return () => clearInterval(interval);
+ 
+    }, []);
+
 
     return (
 
@@ -938,6 +991,71 @@ function AgentPage(
                             {totalSupplyMKRW.toLocaleString()}
                         </span>
                     </div>
+
+                    {/* mint history */}
+                    {/* background is transparent */}
+
+                    <div className="flex flex-col items-start gap-2 mb-4
+                        bg-black/50
+                        text-white
+                        backdrop-filter backdrop-blur-md
+                        rounded-lg shadow-md
+                        p-4 mt-4">
+                        {mintHistory.map((mint, index) => (
+                            <div key={index} className="flex flex-row items-center justify-between
+                                gap-4">
+                                <div className="flex flex-row items-center gap-2">
+                                    <span className="text-sm">
+                                        {mint.toUser.nickname || "익명"}
+                                    </span>
+                                    <span className="text-xs">
+                                        {new Date(mint.transferData.timestamp).toLocaleString()}
+                                    </span>
+                                </div>
+                                <span className="text-lg font-semibold text-yellow-400">
+                                    {Number(
+                                        mint.transferData.value / 10 ** 18
+                                    ).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+
+                
+
+ 
+                        {/*
+                            <table className="min-w-full border-collapse">
+                                <thead>
+                                    <tr>
+                                        <th className="border px-4 py-2">회원</th>
+                                        <th className="border px-4 py-2">민팅 수량</th>
+                                        <th className="border px-4 py-2">날짜</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {mintHistory.map((mint, index) => (
+                                        <tr key={index}>
+                                            <td className="border px-4 py-2">
+                                                {mint.toUser.nickname}
+                                            </td>
+                                            <td className="border px-4 py-2">
+                                                {
+                                                Number(mint.transferData.value).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                                }
+                                            </td>
+                                            <td className="border px-4 py-2">
+                                                {new Date(mint.timestamp).toLocaleDateString()}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        */}
+    
+                   
+
+
                     {/* bscscan link */}
                     <div className="mt-2">
                         <Button

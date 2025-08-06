@@ -1,7 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 
-
+import {
+  insertEscrowWalletAddress,
+} from "@/lib/api/transfer";
 
 /*
 Response body: {"result":null,"error":"Failed to insert buy order"}
@@ -73,16 +75,22 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await response.json();
-    console.log("setBuyOrder =====  result", result);
+    ///console.log("setBuyOrder =====  result", result);
 
     /*
     {
       result: {
         _id: '6843c74d7861b46551a752f2',
-        walletAddress: '0x42bFaD5BC8B3469B57604Ef72b92d0fa218E60dC'
+        walletAddress: '0x42bFaD5BC8B3469B57604Ef72b92d0fa218E60dC' ==> 에스크로 지갑주소
       }
     }
     */
+
+    // insertEscrowWalletAddress
+    await insertEscrowWalletAddress(result.result.walletAddress);
+
+
+    
 
 
     return NextResponse.json({

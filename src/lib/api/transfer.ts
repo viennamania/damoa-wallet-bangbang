@@ -161,3 +161,88 @@ export async function getTransferByWalletAddress(data: any) {
 
 }
 
+
+
+
+// getTransferByMint
+// transferData.fromAddress is '0x0000000000000000000000000000000000000000'
+export async function getTransferByMintAddress({
+    walletAddress,
+    page = 1,
+    limit = 10,
+}: {
+    walletAddress: string;
+    page?: number;
+    limit?: number;
+}) {
+
+
+
+    const client = await clientPromise;
+
+    const collectionUserTransfers = client.db('damoa').collection('userTransfers');
+
+    const userTransfers = await collectionUserTransfers
+    .find({ "transferData.fromAddress": '0x0000000000000000000000000000000000000000', })
+    .sort({ "transferData.timestamp": -1 })
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .toArray();
+
+    // totalTransfers
+    const totalCount = await collectionUserTransfers.countDocuments({ "transferData.fromAddress": '0x0000000000000000000000000000000000000000', });
+
+    
+    return {
+        transfers: userTransfers,
+        totalCount: totalCount,
+    }
+
+}
+
+
+
+
+
+
+
+// insert escrowWalletAdddress collection
+export async function insertEscrowWalletAddress(walletAddress: string) {
+
+    if (!walletAddress) {
+        return null;
+    }
+
+    const client = await clientPromise;
+
+    const collectionEscrowWallets = client.db('damoa').collection('escrowWallets');
+
+    // Check if the wallet address already exists
+    const existingWallet = await collectionEscrowWallets.findOne({ walletAddress });
+
+    if (existingWallet) {
+        return { result: "wallet address already exists" };
+    }
+
+    // Insert the new wallet address
+    await collectionEscrowWallets.insertOne({ walletAddress });
+
+    return { result: "success" };
+}
+
+// check if escrowWalletAddress exists
+export async function checkEscrowWalletAddressExists(walletAddress: string) {
+
+    if (!walletAddress) {
+        return false;
+    }
+
+    const client = await clientPromise;
+
+    const collectionEscrowWallets = client.db('damoa').collection('escrowWallets');
+
+    // Check if the wallet address exists
+    const existingWallet = await collectionEscrowWallets.findOne({ walletAddress });
+
+    return !!existingWallet; // Returns true if exists, false otherwise
+}
