@@ -1311,7 +1311,7 @@ function IndexPage(
                 style={{fontFamily: "monospace"}}
               >
                 {
-                totalSupplyMKRW.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                totalSupplyMKRW.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                 }
               </span>
             </div>
