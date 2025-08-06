@@ -721,7 +721,7 @@ function AgentPage(
     return (
 
         <main className="
-        p-4 min-h-[100vh] flex-col items-start justify-center container max-w-screen-lg mx-auto
+        p-4 min-h-[100vh] flex-col items-start justify-center container max-w-screen-xl mx-auto
         bg-[#E7EDF1]
         ">
 
@@ -998,11 +998,18 @@ function AgentPage(
                         </Button>
                     </div>
 
-                    {loadingUsers && (
-                        <div className="flex justify-center items-center py-4">
-                            <p className="text-gray-500">회원 목록을 불러오는 중...</p>
+                    <div className="w-full flex justify-between items-center mb-4">
+                        <div className="flex justify-between items-center py-4">
+                            <p className="text-sm text-gray-500">
+                                총 {users.length}명의 회원이 있습니다.
+                            </p>
                         </div>
-                    )}
+                        {loadingUsers && (
+                            <div className="flex justify-center items-center py-4">
+                                <p className="text-sm text-gray-500">회원 목록을 불러오는 중...</p>
+                            </div>
+                        )}
+                    </div>
 
                     <div className="overflow-x-auto">
                         <table className="min-w-full bg-white">
@@ -1028,31 +1035,50 @@ function AgentPage(
                             <tbody>
                                 {users.map((user) => (
                                     <tr key={user.walletAddress} className="border-b hover:bg-gray-50">
+
                                         <td className="px-6 py-4 whitespace-nowrap">{user.nickname}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap">{shortenAddress(user.walletAddress)}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-right text-lg text-geay-600"
+
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="flex flex-row items-center gap-2">
+                                                <Image
+                                                    src='/icon-shield.png'
+                                                    alt="Shield Icon"
+                                                    width={20}
+                                                    height={20}
+                                                    className="inline-block"
+                                                />
+                                                <span className="text-sm text-gray-600">
+                                                    {user.walletAddress.length > 10 ? user.walletAddress.slice(0, 10) + '...' : user.walletAddress}
+                                                </span>
+
+                                                {/* button for new window  bsc explorer */}
+                                                <Button
+                                                    onClick={() => {
+                                                        window.open(
+                                                            "https://bscscan.com/address/" + user.walletAddress,
+                                                            "_blank"
+                                                        );
+                                                    }}
+                                                    className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded hover:bg-gray-300"
+                                                >
+                                                    BscScan
+                                                </Button>
+                                            </div>
+                                        </td>
+
+                                        <td className="px-6 py-4 whitespace-nowrap text-right text-lg text-yellow-600"
                                             style={{ fontFamily: 'monospace' }}
                                         >
                                             {
                                             Number(user.mkrwBalance).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",") // format number with commas
                                             }
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-right text-lg text-yellow-600"
+                                        <td className="px-6 py-4 whitespace-nowrap text-right text-lg text-green-600"
                                             style={{ fontFamily: 'monospace' }}
                                         >
                                             {Number(user.usdtBalance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <Button
-                                                onClick={() => {
-                                                    router.push(
-                                                        "/" + params.lang + "/" + params.chain + "/sendToUserUSDT/" + user.walletAddress
-                                                    );
-                                                }}
-                                                className="text-sm bg-green-500 text-white px-4 py-2 rounded"
-                                            >
-                                                테더 송금하기
-                                            </Button>
+                                        <td className="px-6 py-4 whitespace-nowrap gap-2 flex justify-center items-center">
 
                                             <Button
                                                 onClick={() => {
@@ -1064,6 +1090,61 @@ function AgentPage(
                                             >
                                                 포인트 송금하기
                                             </Button>
+
+                                            <Button
+                                                onClick={() => {
+                                                    router.push(
+                                                        "/" + params.lang + "/" + params.chain + "/sendToUserUSDT/" + user.walletAddress
+                                                    );
+                                                }}
+                                                className="text-sm bg-green-500 text-white px-4 py-2 rounded"
+                                            >
+                                                테더 송금하기
+                                            </Button>
+
+                                            {/* 포인트 출금 차단 */}
+                                            <div className="flex flex-row gap-2
+                                                items-center justify-center
+                                                border-l border-gray-200 pl-4">
+                                                {/* 차단상태 */}
+                                                {user?.isBlocked ? (
+                                                    <div className="flex flex-row gap-2 items-center">
+                                                        {/* 포인트 출금 차단 상태 */}
+                                                        <span className="text-sm text-red-500">
+                                                            포인트 출금 차단됨
+                                                        </span>
+                                                        {/* 포인트 출금 차단 해제 버튼 */}
+                                                        <Button
+                                                            onClick={() => {
+                                                                // 포인트 출금 차단 해제 기능은 현재 준비중입니다.
+                                                                alert('준비중입니다.');
+                                                            }}
+                                                            className="text-sm bg-red-500 text-white px-4 py-2 rounded"
+                                                        >
+                                                            포인트 출금 차단 해제
+                                                        </Button>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex flex-row gap-2 items-center">
+                                                        {/* 포인트 출금 가능 상태 */}
+                                                        <span className="text-sm text-green-500">
+                                                            포인트 출금 가능
+                                                        </span>
+                                                        {/* 포인트 출금 차단 버튼 */}
+                                                        <Button
+                                                            onClick={() => {
+                                                                // 포인트 출금 차단 기능은 현재 준비중입니다.
+                                                                alert('준비중입니다.');
+                                                            }}
+                                                            className="text-sm bg-gray-500 text-white px-4 py-2 rounded"
+                                                        >
+                                                            포인트 출금 차단
+                                                        </Button>
+                                                    </div>
+                                                )}
+                                            </div>
+
+
                                         </td>
                                     </tr>
                                 ))}
