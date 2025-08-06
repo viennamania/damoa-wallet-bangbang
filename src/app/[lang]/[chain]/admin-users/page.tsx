@@ -52,7 +52,10 @@ import Image from 'next/image';
 
 //import Uploader from '@/components/uploader';
 
-import { balanceOf } from "thirdweb/extensions/erc20";
+import {
+    balanceOf,
+    totalSupply,
+} from "thirdweb/extensions/erc20";
 
 
 
@@ -184,7 +187,7 @@ function AgentPage(
 
 
 
-
+    const [totalSupplyMKRW, setTotalSupplyMKRW] = useState(0);
     const [balanceMKRW, setBalanceMKRW] = useState(0);
     useEffect(() => {
   
@@ -196,6 +199,16 @@ function AgentPage(
         }
   
         ///console.log('getBalance address', address);
+
+
+        const resultTotalSupply = await totalSupply({
+            contract: contractMKRW,
+        });
+        //console.log("resultTotalSupply", resultTotalSupply);
+        setTotalSupplyMKRW(Number(resultTotalSupply) / 10 ** 18);
+
+
+
   
         
         const result = await balanceOf({
@@ -797,7 +810,7 @@ function AgentPage(
 
             const data = await response.json();
 
-            console.log("updateUserBlockStatus data", data);
+            //console.log("updateUserBlockStatus data", data);
 
             if (data.result) {
                 // refresh users
@@ -904,6 +917,29 @@ function AgentPage(
                 )}
 
 
+                {/* total supply of MKRW */}
+                {totalSupplyMKRW > 0 && (
+                <div className="text-center text-gray-600 mb-4">
+                    <span className="text-lg md:text-xl font-semibold"
+                        style={{ fontFamily: 'monospace' }}>
+                        현재 발행된 MKRW 총량: {totalSupplyMKRW.toLocaleString()} MKRW
+                    </span>
+                    {/* bscscan link */}
+                    <div className="mt-2">
+                        <Button
+                            onClick={() => {
+                                window.open(
+                                    `https://bscscan.com/token/${bscContractAddressMKRW}`,
+                                    "_blank"
+                                );
+                            }}
+                            className="text-sm bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200"
+                        >
+                            BscScan에서 확인하기
+                        </Button>
+                    </div>
+                </div>
+                )}
 
 
                 {/* 메뉴: 공지사항, 회원목록 */}
