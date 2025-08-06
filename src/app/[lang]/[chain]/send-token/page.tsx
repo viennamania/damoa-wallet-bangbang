@@ -2498,7 +2498,7 @@ export default function SendUsdt({ params }: any) {
                                     </span>
                                     {transfer?.toUser?.nickname && (
                                       <span className="text-red-600">
-                                        {transfer?.toUser.nickname}
+                                        {transfer?.toUser?.nickname}
                                       </span>
                                     )}
 
@@ -2513,7 +2513,7 @@ export default function SendUsdt({ params }: any) {
                                     </span>
                                     {transfer?.fromUser?.nickname && (
                                       <span className="text-green-600">
-                                        {transfer?.fromUser.nickname}
+                                        {transfer?.fromUser?.nickname}
                                       </span>
                                     )}
 

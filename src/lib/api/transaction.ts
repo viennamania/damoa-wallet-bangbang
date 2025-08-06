@@ -85,7 +85,7 @@ export async function insertOne(data: any) {
 
   ////console.log('user: ' + user);
 
-  const fromUserNickname = fromUser.nickname;
+  const fromUserNickname = fromUser?.nickname;
 
   const userMobile = user.mobile;
 

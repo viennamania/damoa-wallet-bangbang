@@ -224,6 +224,8 @@ export async function POST(request: NextRequest) {
   }
   */
 
+  let fromUser = null;
+
   let user_id = fromAddress;
 
   let url = `https://api-${process.env.SENDBIRD_APPLICATION_ID}.sendbird.com/v3/users/${user_id}?include_unread_count=true`;
@@ -252,11 +254,16 @@ export async function POST(request: NextRequest) {
    //   { error: 'Failed to fetch user' },
    //   { status: response.status }
    // );
+  } else {
+    console.log("Fetched user from Sendbird:", response.statusText);
+    fromUser = await response.json();
   }
 
-  const fromUser = await response.json();
+  //const fromUser = await response.json();
 
 
+
+  let toUser = null;
 
   user_id = toAddress;
   url = `https://api-${process.env.SENDBIRD_APPLICATION_ID}.sendbird.com/v3/users/${user_id}?include_unread_count=true`;
@@ -282,9 +289,12 @@ export async function POST(request: NextRequest) {
     //  { error: 'Failed to fetch user' },
     //  { status: toResponse.status }
     //);
+  } else {
+    console.log("Fetched user from Sendbird:", toResponse.statusText);
+    toUser = await toResponse.json();
   }
 
-  const toUser = await toResponse.json();
+  ///const toUser = await toResponse.json();
 
 
 
@@ -340,7 +350,7 @@ export async function POST(request: NextRequest) {
   // update user collection with MKRW, USDT balance for fromAddress
   await upsertOneByWalletAddress({
     walletAddress: fromAddress,
-    nickname: fromUser.nickname,
+    nickname: fromUser?.nickname,
     mkrwBalance: Number(balanceMKRWFrom) / 10 ** 18, // assuming MKRW has 18 decimals
     usdtBalance: Number(balanceUSDTFrom) / 10 ** 18, // assuming USDT has 18 decimals
   });
@@ -360,7 +370,7 @@ export async function POST(request: NextRequest) {
   // update user collection with MKRW, USDT balance for toAddress
   await upsertOneByWalletAddress({
     walletAddress: toAddress,
-    nickname: toUser.nickname,
+    nickname: toUser?.nickname,
     mkrwBalance: Number(balanceMKRWTo) / 10 ** 18,
     usdtBalance: Number(balanceUSDTTo) / 10 ** 18,
   });
