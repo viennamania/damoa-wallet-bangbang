@@ -1304,7 +1304,7 @@ function IndexPage(
                   className="rounded-full w-8 h-8 mr-2"
                 />
                 <span className="text-sm md:text-lg font-semibold text-zinc-800">
-                  MKRW 총 발행량
+                  MKRW 총 유통량
                 </span>
               </div>
               <span className="text-2xl md:text-4xl font-semibold text-yellow-600"
