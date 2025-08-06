@@ -670,8 +670,6 @@ function IndexPage(
               address: address,
             });
 
-            console.log("balance==========", balance);
-
             if (params.chain === "bsc") {
               setUsdtBalance(Number(balance) / 10 ** 18);
             } else {
