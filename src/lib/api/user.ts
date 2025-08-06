@@ -70,6 +70,9 @@ export interface UserProps {
   },
 
 
+  mkrwBalance: number,
+  usdtBalance: number,
+
 }
 
 export interface ResultProps {
@@ -797,6 +800,8 @@ export async function getAllUsers(
       mobile: user?.mobile,
       email: user?.email,
       start: user?.start,
+      mkrwBalance: user?.mkrwBalance,
+      usdtBalance: user?.usdtBalance,
     };
   } );
 

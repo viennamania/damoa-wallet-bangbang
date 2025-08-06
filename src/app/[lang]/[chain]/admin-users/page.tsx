@@ -470,6 +470,76 @@ function AgentPage(
 
 
 
+
+
+
+    // get native users
+    // api/user/getAllUsers
+
+    const [loadingUsers, setLoadingUsers] = useState(false);
+    const [users, setUsers] = useState([] as any[]);
+    const getUsers = async () => {
+        try {
+            if (loadingUsers) {
+                return;
+            }
+
+            setLoadingUsers(true);
+
+            const response = await fetch("/api/user/getAllUsers", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    limit: 10, // limit the number of users to fetch
+                    page: 1, // page number for pagination
+                    // if searchNickname is empty, then get all users
+                    searchNickname: searchNickname, // search by nickname
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to get users');
+            }
+
+            const data = await response.json();
+
+            setUsers(data.result.users || []);
+            setLoadingUsers(false);
+
+        } catch (error) {
+            console.error("getUsers error", error);
+            setLoadingUsers(false);
+        }
+    };
+    useEffect(() => {
+        getUsers();
+    }, [searchNickname]);
+
+    /*
+      users: [
+    {
+      id: undefined,
+      createdAt: '2025-08-06T00:38:58.062Z',
+      avatar: undefined,
+      walletAddress: '0x19D435d40F4f94398730Abe425b904e685C5973C',
+      nickname: 'summerj',
+      mobile: undefined,
+      email: undefined,
+      start: undefined,
+      mkrwBalance: 9024,
+      usdtBalance: 0.123
+    },
+    */
+
+
+
+
+
+
+
+
     // call api /api/sendbird/getAllUsers
     const [loadingSendbirdUsers, setLoadingSendbirdUsers] = useState(false);
     const [sendbirdUsers, setSendbirdUsers] = useState([] as any[]);
@@ -728,9 +798,9 @@ function AgentPage(
 
 
                {/* list of sendbird users */}
+               {/*
                 <div className="w-full mb-5">
                     
-                    {/* icon-invite.png */}
                     <div className="flex items-center gap-2 mb-4
                         border-b-2 border-gray-200 pb-2">
                         <Image
@@ -743,7 +813,6 @@ function AgentPage(
                     </div>
 
 
-                    {/* 검색 기능 */}
                     <div className="flex flex-row gap-2 mb-4">
                         <Image
                             src="/icon-search.png"
@@ -813,7 +882,6 @@ function AgentPage(
                                         </div>
                                     </div>
 
-                                    {/* 채팅하기, 송금하기 버튼 */}
                                     <div className="flex flex-col gap-2">
                                         <Button
                                             onClick={() => {
@@ -837,7 +905,6 @@ function AgentPage(
                                             테더 송금하기
                                         </Button>
 
-                                        {/* 포인트 송금하기 버튼 */}
                                         <Button
                                             onClick={() => {
                                                 router.push(
@@ -882,13 +949,157 @@ function AgentPage(
                         </>
                     )}
                 </div>
+                */}
+
+                {/* list of native users */}
+                {/* table view */}
+                <div className="w-full mb-5">
+                    
+                    <div className="flex items-center gap-2 mb-4
+                        border-b-2 border-gray-200 pb-2">
+                        <Image
+                            src="/icon-invite.png"
+                            alt="Invite Icon"
+                            width={24}
+                            height={24}
+                        />
+                        <h2 className="text-xl font-bold">회원 목록</h2>
+                    </div>
+
+                    <div className="flex flex-row gap-2 mb-4">
+                        <Image
+                            src="/icon-search.png"
+                            alt="Search Icon"
+                            width={24}
+                            height={24}
+                            className="self-center"
+                        />
+                        <input
+                            type="text"
+                            placeholder="회원 검색 (닉네임)"
+                            value={searchNickname}
+                            onChange={(e) => setSearchNickname(e.target.value)}
+                            className="w-full p-2 border border-gray-300 rounded-lg"
+                        />
+                        <Button
+                            onClick={() => {
+                                // 검색 기능 구현
+                                getUsers();
+                            }}
+                            className={`
+                                ${searchNickname ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-700"}
+                                w-32  flex-shrink-0
+                                hover:bg-blue-600 hover:text-white
+                                px-4 py-2 rounded-lg
+                                transition-colors duration-200
+                            `}
+                        >
+                            검색
+                        </Button>
+                    </div>
+
+                    {loadingUsers && (
+                        <div className="flex justify-center items-center py-4">
+                            <p className="text-gray-500">회원 목록을 불러오는 중...</p>
+                        </div>
+                    )}
+
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full bg-white">
+                            <thead>
+                                <tr className="border-b">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        닉네임
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        지갑 주소
+                                    </th>
+                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        MKRW 잔액
+                                    </th>
+                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        USDT 잔액
+                                    </th>
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        행동
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users.map((user) => (
+                                    <tr key={user.walletAddress} className="border-b hover:bg-gray-50">
+                                        <td className="px-6 py-4 whitespace-nowrap">{user.nickname}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap">{shortenAddress(user.walletAddress)}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-right text-lg text-geay-600"
+                                            style={{ fontFamily: 'monospace' }}
+                                        >
+                                            {
+                                            Number(user.mkrwBalance).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",") // format number with commas
+                                            }
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-right text-lg text-yellow-600"
+                                            style={{ fontFamily: 'monospace' }}
+                                        >
+                                            {Number(user.usdtBalance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <Button
+                                                onClick={() => {
+                                                    router.push(
+                                                        "/" + params.lang + "/" + params.chain + "/sendToUserUSDT/" + user.walletAddress
+                                                    );
+                                                }}
+                                                className="text-sm bg-green-500 text-white px-4 py-2 rounded"
+                                            >
+                                                테더 송금하기
+                                            </Button>
+
+                                            <Button
+                                                onClick={() => {
+                                                    router.push(
+                                                        "/" + params.lang + "/" + params.chain + "/sendToUserMKRW/" + user.walletAddress
+                                                    );
+                                                }}
+                                                className="text-sm bg-yellow-500 text-white px-4 py-2 rounded ml-2"
+                                            >
+                                                포인트 송금하기
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+
+                        {/*}
+                        <div className="flex justify-between items-center py-4">
+                            <div className="text-sm text-gray-500">
+                                총 {users.length}명의 회원이 있습니다.
+                            </div>
+                            <Pagination
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                onPageChange={handlePageChange}
+                            />
+                        </div>
+                        */}
+
+                    </div>
+
+                    {users.length === 0 && !loadingUsers && (
+                        <div className="flex justify-center items-center py-4">
+                            <p className="text-gray-500">회원이 없습니다.</p>
+                        </div>
+                    )}
+
+
+
+                </div>
+
+
+
 
 
             </div>
-
-
-
-
 
 
             {/* 이용방법인 궁금하신가요? 이용가이드 */}
