@@ -1022,10 +1022,10 @@ function AgentPage(
                                         지갑 주소
                                     </th>
                                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        MKRW 잔액
+                                        포인트 잔액(MKRW)
                                     </th>
                                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        USDT 잔액
+                                        테더 잔액(USDT)
                                     </th>
                                     <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         행동
