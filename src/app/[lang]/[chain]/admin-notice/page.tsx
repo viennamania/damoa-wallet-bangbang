@@ -7,22 +7,101 @@ import dynamic from "next/dynamic";
 
 import '@sendbird/uikit-react/dist/index.css';
 
-import {
 
-  useActiveWallet,
-  
+import { client } from "../../../client";
+
+import {
+    getContract,
+    sendTransaction,
+    sendAndConfirmTransaction,
+} from "thirdweb";
+
+import {
+    ConnectButton,
+    useActiveAccount,
+    useActiveWallet,
+
+    useConnectedWallets,
+    useSetActiveWallet,
 } from "thirdweb/react";
 
-import { balanceOf, transfer } from "thirdweb/extensions/erc20";
- 
 
-import { useSearchParams } from 'next/navigation'
+
 
 import Image from 'next/image';
 
 import React, { useEffect, useState, Suspense } from 'react';
 
+import { Button } from "@headlessui/react";
+
 import Link from "next/link";
+
+
+
+
+//import Uploader from '@/components/uploader';
+
+import {
+    balanceOf,
+    totalSupply,
+} from "thirdweb/extensions/erc20";
+
+import {
+    polygon,
+    arbitrum,
+    ethereum,
+    bsc,
+} from "thirdweb/chains";
+
+import {
+  inAppWallet,
+  createWallet,
+} from "thirdweb/wallets";
+
+
+import {
+    useRouter,
+    useSearchParams,
+} from "next//navigation";
+
+
+
+
+import {
+    bscContractAddressUSDT,
+    bscContractAddressMKRW,
+} from "@/app/config/contractAddresses";
+
+
+const wallets = [
+  inAppWallet({
+    auth: {
+      options: [
+        "google",
+        "discord",
+        "email",
+        "x",
+        "passkey",
+        //"phone",
+        "facebook",
+        "line",
+        "apple",
+        "coinbase",
+      ],
+    },
+  }),
+  /*
+  createWallet("com.coinbase.wallet"),
+  createWallet("me.rainbow"),
+  createWallet("io.rabby"),
+  createWallet("io.zerion.wallet"),
+  createWallet("io.metamask"),
+  //createWallet("com.binance.wallet"),
+  createWallet("com.bitget.web3"),
+  createWallet("com.trustwallet.app"),
+  createWallet("com.okex.wallet"),
+  */
+];
 
 
 
@@ -65,37 +144,64 @@ function AgentPage(
   
 
 
-  console.log('address', address);
+    const contractMKRW = getContract({
+        client,
+        chain: bsc,
+        address: bscContractAddressMKRW,
+    });
+    
+    const contractUSDT = getContract({
+        client,
+        chain: bsc,
+        address: bscContractAddressUSDT,
+    });
 
-  const [balance, setBalance] = useState(0);
 
-  /*
-  useEffect(() => {
+    const [totalSupplyMKRW, setTotalSupplyMKRW] = useState(0);
+    const [balanceMKRW, setBalanceMKRW] = useState(0);
+    useEffect(() => {
 
-    if (!address) return;
-    // get the balance
-    const getBalance = async () => {
-      const result = await balanceOf({
-        contract,
-        address: address,
-      });
-  
-      //console.log(result);
-  
-      setBalance( Number(result) / 10 ** 18 );
+        // get the balance
+        const getBalanceMKRW = async () => {
 
-    };
+        if (!address) {
+            return;
+        }
 
-    if (address) getBalance();
+        ///console.log('getBalance address', address);
 
-    const interval = setInterval(() => {
-      if (address) getBalance();
-    } , 1000);
 
-    return () => clearInterval(interval);
+        const resultTotalSupply = await totalSupply({
+            contract: contractMKRW,
+        });
+        //console.log("resultTotalSupply", resultTotalSupply);
+        setTotalSupplyMKRW(Number(resultTotalSupply) / 10 ** 18);
 
-  } , [address]);
-  */
+
+
+
+        
+        const result = await balanceOf({
+            contract: contractMKRW,
+            address: address,
+        });
+
+
+        //console.log(result);
+
+        if (!result) return;
+
+        setBalanceMKRW( Number(result) / 10 ** 18 );
+
+        };
+
+        if (address) getBalanceMKRW();
+        const interval = setInterval(() => {
+            if (address) getBalanceMKRW();
+        } , 5000)
+        return () => clearInterval(interval);
+    }, [address, contractMKRW]);
+
 
 
       
@@ -157,6 +263,96 @@ function AgentPage(
 
       <div className="w-full flex flex-col items-center justify-center gap-4">
 
+
+        {!address && (
+
+        <div className="
+            mt-16
+            w-full flex flex-col justify-center items-center gap-2 p-2">
+        
+            <ConnectButton
+            client={client}
+            wallets={wallets}
+            accountAbstraction={{
+                chain: bsc,
+                sponsorGas: true
+            }}
+            
+            theme={"light"}
+
+            // button color is dark skyblue convert (49, 103, 180) to hex
+            connectButton={{
+                style: {
+                backgroundColor: "#3167b4", // dark skyblue
+                // font color is gray-300
+                color: "#f3f4f6", // gray-300
+                padding: "10px 20px",
+                borderRadius: "10px",
+                fontSize: "16px",
+                // w-full
+                width: "100%",
+                },
+                label: "로그인 및 회원가입",
+            }}
+
+            connectModal={{
+                size: "wide", 
+                //size: "compact",
+                titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
+                showThirdwebBranding: false,
+            }}
+
+            locale={"ko_KR"}
+            //locale={"en_US"}
+            />
+
+
+
+
+            <div className="mt-20
+            flex flex-row gap-2 justify-center items-center">
+            <span className="text-sm md:text-lg text-zinc-500">
+                이용방법이 궁금하신가요?
+            </span>
+            <Link
+                href="#"
+                className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
+            >
+                이용가이드
+            </Link>
+            </div>
+
+
+
+        </div>
+
+        )}
+
+
+
+        {/* total supply of MKRW */}
+        {totalSupplyMKRW > 0 && (
+        <div className="text-center text-gray-600 mb-4">
+            <span className="text-lg md:text-xl font-semibold"
+                style={{ fontFamily: 'monospace' }}>
+                현재 발행된 MKRW 총량: {totalSupplyMKRW.toLocaleString()} MKRW
+            </span>
+            {/* bscscan link */}
+            <div className="mt-2">
+                <Button
+                    onClick={() => {
+                        window.open(
+                            `https://bscscan.com/token/${bscContractAddressMKRW}`,
+                            "_blank"
+                        );
+                    }}
+                    className="text-sm bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200"
+                >
+                    BscScan에서 확인하기
+                </Button>
+            </div>
+        </div>
+        )}
 
 
         {/* 메뉴: 공지사항, 회원목록 */}

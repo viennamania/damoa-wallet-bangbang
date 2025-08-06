@@ -228,9 +228,10 @@ function AgentPage(
       if (address) getBalanceMKRW();
         const interval = setInterval(() => {
             if (address) getBalanceMKRW();
-        } , 1000)
+        } , 5000)
         return () => clearInterval(interval);
     }, [address, contractMKRW]);
+
 
 
     const [balanceUSDT, setBalanceUSDT] = useState(0);
@@ -263,7 +264,7 @@ function AgentPage(
       if (address) getBalanceUSDT();
         const interval = setInterval(() => {
             if (address) getBalanceUSDT();
-        } , 1000)
+        } , 5000)
         return () => clearInterval(interval);
     }, [address, contractUSDT]);
 
@@ -1369,7 +1370,9 @@ function AgentPage(
                                             {/* 포인트 출금 차단 */}
 
                                             {/* 출금 차단 */}
-                                            <div className="flex flex-row gap-2
+                                            <div className="
+                                                w-64 
+                                                flex flex-row gap-2
                                                 items-center justify-center
                                                 border-l border-gray-200 pl-4">
                                                 {/* 차단상태 */}
