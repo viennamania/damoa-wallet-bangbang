@@ -981,6 +981,51 @@ function IndexPage(
 
 
 
+
+  // fetch store info by storecode
+  const [storeInfo, setStoreInfo] = useState<any>(null);
+  const [loadingStoreInfo, setLoadingStoreInfo] = useState(false);
+  useEffect(() => {
+    const fetchStoreInfo = async () => {
+
+
+      setLoadingStoreInfo(true);
+      const response = await fetch('/api/singal/getOneStore', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          storecode: storecode,
+        }),
+      });
+
+      if (!response) {
+        setLoadingStoreInfo(false);
+        toast.error('가맹점 정보를 가져오는 데 실패했습니다.');
+        return;
+      }
+
+      const data = await response?.json();
+
+      ///console.log('getOneStore data', data);
+
+      if (data.result) {
+        setStoreInfo(data.result);
+      }
+
+      setLoadingStoreInfo(false);
+    };
+
+    fetchStoreInfo();
+
+  }, [storecode]);
+
+
+
+
+
+
   return (
 
 
@@ -1739,7 +1784,7 @@ function IndexPage(
                   p-2
               ">
                   <div className="text-sm md:text-lg text-white">
-                      테더 P2P 거래
+                      P2P 테더 구매
                   </div>
               </div>
 
@@ -1749,14 +1794,23 @@ function IndexPage(
               ">
                   <div className="w-full flex flex-row gap-2 items-center justify-between p-5
                   ">
-                    <div className="w-1/4 flex flex-row gap-2 items-center justify-start">
+                    <div className="w-1/4 flex flex-col gap-2 items-center justify-start
+                      border-r border-gray-200
+                      pr-5">
+                        {/* store logo */}
+                        <span className="text-xs md:text-lg font-semibold text-zinc-800 mb-2">
+                          가맹점
+                        </span>
                         <Image
-                            src="/logo-tether.svg"
-                            alt="USDT"
-                            width={50}
-                            height={50}
-                            className="rounded-lg w-10 h-10 xl:w-12 xl:h-12"
+                          src={storeInfo?.storeLogo || "/logo.png"}
+                          alt="Store Logo"
+                          width={30}
+                          height={30}
+                          className="rounded-lg w-6 h-6 xl:w-8 xl:h-8 mb-2"
                         />
+                        <span className="text-xs md:text-sm text-zinc-800 font-semibold">
+                          {storeInfo?.storeName}
+                        </span>
                     </div>
 
                     <div className="w-3/4 flex flex-col gap-1 items-center justify-center">
@@ -1766,7 +1820,9 @@ function IndexPage(
                           현재 환율
                         </div>
                         <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                          1 USDT = { usdtRate } 포인트(MKRW)
+                          10,000 포인트 = {
+                          Number(1 / usdtRate * 10000).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          } 테더
                         </div>
                       </div>
 
@@ -1775,7 +1831,7 @@ function IndexPage(
                           최소 구매량
                         </div>
                         <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                          1 USDT
+                          1 테더
                         </div>
                       </div>
 
@@ -1792,8 +1848,8 @@ function IndexPage(
                       {/* 현재 진행중인 주문 */}
                       <div className="w-full flex flex-row gap-2 items-center justify-start text-sm md:text-lg text-zinc-800 font-semibold mb-2">
                         <Image
-                          src="/icon-info.png"
-                          alt="Info"
+                          src="/icon-trading-live.gif"
+                          alt="Trading Live"
                           width={35}
                           height={35}
                           className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
