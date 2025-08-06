@@ -1794,7 +1794,7 @@ function IndexPage(
               ">
                   <div className="w-full flex flex-row gap-2 items-center justify-between p-5
                   ">
-                    <div className="w-1/4 flex flex-col gap-2 items-center justify-start
+                    <div className="w-24  flex flex-col gap-2 items-center justify-start
                       border-r border-gray-200
                       pr-5">
                         {/* store logo */}
@@ -1813,7 +1813,7 @@ function IndexPage(
                         </span>
                     </div>
 
-                    <div className="w-3/4 flex flex-col gap-1 items-center justify-center">
+                    <div className="w-full flex flex-col gap-1 items-center justify-center">
 
                       <div className="w-full flex flex-row gap-2 items-center justify-start">
                         <div className="w-32 text-sm text-zinc-800">
