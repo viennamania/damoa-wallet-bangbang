@@ -1250,7 +1250,20 @@ function AgentPage(
                                 {users.map((user) => (
                                     <tr key={user.walletAddress} className="border-b hover:bg-gray-50">
 
-                                        <td className="px-6 py-4 whitespace-nowrap">{user.nickname}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="flex flex-row items-center gap-2">
+                                                <Image
+                                                    src={user.avatar || '/icon-default-avatar.png'}
+                                                    alt={user.nickname}
+                                                    width={40}
+                                                    height={40}
+                                                    className="rounded-full"
+                                                />
+                                                <span className="text-sm font-medium text-gray-800">
+                                                    {user.nickname}
+                                                </span>
+                                            </div>
+                                        </td>
 
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex flex-row items-center gap-2">

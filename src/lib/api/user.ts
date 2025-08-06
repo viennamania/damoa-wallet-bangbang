@@ -804,6 +804,8 @@ export async function getAllUsers(
       start: user?.start,
       mkrwBalance: user?.mkrwBalance,
       usdtBalance: user?.usdtBalance,
+
+      isBlocked: user?.isBlocked,
     };
   } );
 

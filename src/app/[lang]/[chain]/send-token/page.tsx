@@ -1632,7 +1632,9 @@ export default function SendUsdt({ params }: any) {
 
               <div className='mt-5 w-full flex flex-col gap-5'>
 
-                {user.isBlocked ? (
+                {
+                token?.toLowerCase() === "mkrw" &&
+                user.isBlocked ? (
 
                   <div className="w-full flex flex-col items-center justify-center gap-2 p-4 bg-red-100 border border-red-300 rounded-lg">
                     <div className="text-red-600 font-semibold text-lg">
