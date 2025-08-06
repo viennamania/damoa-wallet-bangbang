@@ -56,7 +56,8 @@ import {
 import {
     allowance,
     approve,
-    balanceOf
+    balanceOf,
+    totalSupply,
 } from "thirdweb/extensions/erc20";
 
 
@@ -697,12 +698,19 @@ function IndexPage(
 
 
 
-
+  const [totalSupplyMKRW, setTotalSupplyMKRW] = useState(0);
   // MKRW balance
   const [MKRWBalance, setMKRWBalance] = useState(0);
   useEffect(() => {
     
       const getMKRWBalance = async () => {
+
+        const responseTotalSupply = await totalSupply({
+          contract: contractMKRW,
+        });
+        //console.log("MKRW total supply", responseTotalSupply);
+        setTotalSupplyMKRW(Number(responseTotalSupply) / 10 ** 18);
+
 
         const balance = await balanceOf({
           contract: contractMKRW,
@@ -1165,7 +1173,7 @@ function IndexPage(
                 transform hover:-translate-y-1
         ">
           <div className="flex flex-row justify-start items-center gap-2">
-            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+            <div className="w-3 h-3 bg-yellow-600 rounded-full"></div>
             <h2 className="text-xl md:text-3xl font-semibold text-zinc-100 ">
               {title}
             </h2>
@@ -1255,7 +1263,7 @@ function IndexPage(
                 onClick={() => {
                   confirm("로그아웃 하시겠습니까?") && activeWallet?.disconnect();
                 }}
-                className="flex flex-row gap-2 items-center bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
+                className="flex flex-row gap-2 items-center bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
               >
                 <Image
                   src="/icon-wallet.png"
@@ -1278,6 +1286,41 @@ function IndexPage(
 
         <div className="mt-5 w-full flex flex-col items-center xl:items-stretch justify-center gap-5 mb-10">
           
+
+          {/* total supply MKRW */}
+          {/* notice */}
+          <div className="w-full flex flex-col bg-white p-5 rounded-lg text-start gap-2
+                        hover:shadow-lg
+                        transition duration-300 ease-in-out
+                        transform hover:-translate-y-1
+          ">
+            <div className="flex flex-row justify-between items-center">
+              <div className="flex flex-row justify-start items-center gap-2">
+                <Image
+                  src="/token-mkrw-icon.png"
+                  alt="MKRW"
+                  width={40}
+                  height={40}
+                  className="rounded-full w-8 h-8 mr-2"
+                />
+                <span className="text-sm md:text-lg font-semibold text-zinc-800">
+                  MKRW 총 발행량
+                </span>
+              </div>
+              <span className="text-2xl md:text-4xl font-semibold text-yellow-600"
+                style={{fontFamily: "monospace"}}
+              >
+                {
+                totalSupplyMKRW.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
+              </span>
+            </div>
+            {/* 설명 */}
+            <p className="text-sm md:text-base text-zinc-600">
+              MKRW는 결제 생태계의 핵심 토큰으로, 결제 생태계 내에서 다양한 용도로 사용됩니다.
+            </p>
+          </div>
+
 
 
 
@@ -1966,19 +2009,19 @@ function IndexPage(
                                           구매 신청됨
                                         </span>
                                       ) : order.status === "paymentRequested" ? (
-                                        <span className="text-sm text-yellow-500 font-semibold">
+                                        <span className="text-sm text-yellow-600 font-semibold">
                                           결제 요청됨
                                         </span>
                                       ) : order.status === "paymentConfirmed" ? (
-                                        <span className="text-sm text-green-500 font-semibold">
+                                        <span className="text-sm text-green-600 font-semibold">
                                           주문 완료됨
                                         </span>
                                       ) : order.status === "cancelled" ? (
-                                        <span className="text-sm text-red-500 font-semibold">
+                                        <span className="text-sm text-red-600 font-semibold">
                                           주문 취소됨
                                         </span>
                                       ) : (
-                                        <span className="text-sm text-red-500 font-semibold">
+                                        <span className="text-sm text-red-600 font-semibold">
                                           주문 상태: {order.status}
                                         </span>
                                       )}
@@ -2431,10 +2474,10 @@ function Header(
 
 
       
-      <h1 className="text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-yellow-500">
+      <h1 className="text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-yellow-600">
         MKRW Wallet
         <span className="text-zinc-300 inline-block mx-1"> + </span>
-        <span className="inline-block -skew-x-6 text-green-500 font-bold"> USDT </span>
+        <span className="inline-block -skew-x-6 text-green-600 font-bold"> USDT </span>
       </h1>
 
       <p className="text-gray-600
