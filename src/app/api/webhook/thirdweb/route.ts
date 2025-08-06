@@ -15,6 +15,7 @@ import {
 
 import {
   insertOne,
+  checkEscrowWalletAddressExists,
 } from '@lib/api/transfer';
 
 
@@ -224,6 +225,13 @@ export async function POST(request: NextRequest) {
   }
   */
 
+
+  
+  let isEscrowTransfer = false;
+
+
+
+
   let fromUser = null;
 
   let user_id = fromAddress;
@@ -263,6 +271,12 @@ export async function POST(request: NextRequest) {
 
 
 
+  // checkEscrowWalletAddressExists
+  isEscrowTransfer = await checkEscrowWalletAddressExists(fromAddress);
+
+
+
+
   let toUser = null;
 
   user_id = toAddress;
@@ -297,6 +311,9 @@ export async function POST(request: NextRequest) {
   ///const toUser = await toResponse.json();
 
 
+  // checkEscrowWalletAddressExists
+  isEscrowTransfer = isEscrowTransfer || await checkEscrowWalletAddressExists(toAddress);
+
 
 
 
@@ -309,6 +326,7 @@ export async function POST(request: NextRequest) {
     timestamp,
     fromUser,
     toUser,
+    isEscrowTransfer,
   });
 
   ///console.log("insertOne", result);

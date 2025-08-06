@@ -51,6 +51,7 @@ export async function insertOne(data: any) {
             value: data.value,
             timestamp: data.timestamp,
         },
+        isEscrowTransfer: data.isEscrowTransfer || false, // Optional, can be true or false
     });
 
 
@@ -70,6 +71,7 @@ export async function insertOne(data: any) {
             value: data.value,
             timestamp: data.timestamp,
         },
+        isEscrowTransfer: data.isEscrowTransfer || false, // Optional, can be true or false
     });
 
 
