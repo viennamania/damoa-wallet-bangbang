@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState, Suspense, use } from "react";
 
 import { toast } from 'react-toastify';
 
@@ -715,6 +715,74 @@ function AgentPage(
             }
         }
     }
+
+
+
+
+
+    // array of objects with user_id and block status
+    const [changingUserBlockStatus, setChangingUserBlockStatus] = useState(
+        [] as { user_id: string; is_blocked: boolean }[]
+    );
+    useEffect(() => {
+        users.forEach((user) => {
+            if (!changingUserBlockStatus.some((u) => u.user_id === user.walletAddress)) {
+                setChangingUserBlockStatus((prev) => [
+                    ...prev,
+                    { user_id: user.walletAddress, is_blocked: false },
+                ]);
+            }
+        });
+    }, [users, changingUserBlockStatus]);
+
+
+    // 포인트 출금 차단, 해재 functions array
+    const toggleUserBlockStatus = async (user: any) => {
+        try {
+            const isCurrentlyBlocked = changingUserBlockStatus.find(
+                (u) => u.user_id === user.walletAddress
+            )?.is_blocked;
+
+            const response = await fetch("/api/user/toggleUserBlockStatus", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: user.walletAddress,
+                    is_blocked: !isCurrentlyBlocked,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to toggle user block status');
+            }
+
+            const data = await response.json();
+
+            console.log("toggleUserBlockStatus data", data);
+
+            if (data.result) {
+                setChangingUserBlockStatus((prev) =>
+                    prev.map((u) =>
+                        u.user_id === user.walletAddress
+                            ? { ...u, is_blocked: !isCurrentlyBlocked }
+                            : u
+                    )
+                );
+                toast.success(`회원 ${!isCurrentlyBlocked ? '차단' : '해제'} 완료`);
+            } else {
+                toast.error('회원 차단/해제 실패');
+            }
+
+        } catch (error) {
+            console.error("toggleUserBlockStatus error", error);
+            toast.error('회원 차단/해제 중 오류 발생');
+        }
+    };
+
+
+
 
 
 
