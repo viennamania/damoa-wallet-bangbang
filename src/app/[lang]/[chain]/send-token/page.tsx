@@ -1836,11 +1836,6 @@ export default function SendUsdt({ params }: any) {
 
                           />
 
-                    
-
-
-                
-
 
                         </>
 
@@ -2545,14 +2540,14 @@ export default function SendUsdt({ params }: any) {
                                       {/* mint icon */}
                                       {/* mint */}
                                       <Image
-                                        src="/icon-mint.gif"
-                                        alt="mint"
+                                        src="/icon-charge.png"
+                                        alt="charge"
                                         width={20}
                                         height={20}
                                         className='rounded-full w-6 h-6'
                                       />
                                       <span className="text-green-600">
-                                        발행
+                                        충전
                                       </span>
                                     </div>
                                   ) : (
