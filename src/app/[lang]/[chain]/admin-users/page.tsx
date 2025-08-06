@@ -68,42 +68,45 @@ import {
 } from "next//navigation";
 
 
-const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
 
 
-
+import {
+    bscContractAddressUSDT,
+    bscContractAddressMKRW,
+} from "@/app/config/contractAddresses";
 
 
 
 const wallets = [
-    inAppWallet({
-      auth: {
-        options: [
-          "google",
-          "discord",
-          "email",
-          "x",
-          "passkey",
-          //"phone",
-          "facebook",
-          "line",
-          "apple",
-          "coinbase",
-        ],
-      },
-    }),
-    /*
-    createWallet("com.coinbase.wallet"),
-    createWallet("me.rainbow"),
-    createWallet("io.rabby"),
-    createWallet("io.zerion.wallet"),
-    createWallet("io.metamask"),
-    //createWallet("com.binance.wallet"),
-    createWallet("com.bitget.web3"),
-    createWallet("com.trustwallet.app"),
-    createWallet("com.okex.wallet"),
-    */
+  inAppWallet({
+    auth: {
+      options: [
+        "google",
+        "discord",
+        "email",
+        "x",
+        "passkey",
+        //"phone",
+        "facebook",
+        "line",
+        "apple",
+        "coinbase",
+      ],
+    },
+  }),
+  /*
+  createWallet("com.coinbase.wallet"),
+  createWallet("me.rainbow"),
+  createWallet("io.rabby"),
+  createWallet("io.zerion.wallet"),
+  createWallet("io.metamask"),
+  //createWallet("com.binance.wallet"),
+  createWallet("com.bitget.web3"),
+  createWallet("com.trustwallet.app"),
+  createWallet("com.okex.wallet"),
+  */
 ];
+
 
 
 
@@ -149,12 +152,17 @@ function AgentPage(
     const account = useActiveAccount();
 
 
-    const contract = getContract({
+    const contractMKRW = getContract({
         client,
         chain: bsc,
-        address: contractAddress,
+        address: bscContractAddressMKRW,
     });
     
+    const contractUSDT = getContract({
+        client,
+        chain: bsc,
+        address: bscContractAddressUSDT,
+    });
 
     
 
@@ -177,11 +185,11 @@ function AgentPage(
 
 
 
-    const [balance, setBalance] = useState(0);
+    const [balanceMKRW, setBalanceMKRW] = useState(0);
     useEffect(() => {
   
       // get the balance
-      const getBalance = async () => {
+      const getBalanceMKRW = async () => {
 
         if (!address) {
             return;
@@ -191,7 +199,7 @@ function AgentPage(
   
         
         const result = await balanceOf({
-          contract,
+          contract: contractMKRW,
           address: address,
         });
   
@@ -199,23 +207,52 @@ function AgentPage(
         //console.log(result);
   
         if (!result) return;
-    
-        setBalance( Number(result) / 10 ** 6 );
-  
+
+        setBalanceMKRW( Number(result) / 10 ** 18 );
+
       };
-  
-      if (address) getBalance();
-  
-      const interval = setInterval(() => {
-        if (address) getBalance();
-      } , 1000);
-  
-      return () => clearInterval(interval);
-  
-    } , [address, contract]);
+
+      if (address) getBalanceMKRW();
+        const interval = setInterval(() => {
+            if (address) getBalanceMKRW();
+        } , 1000)
+        return () => clearInterval(interval);
+    }, [address, contractMKRW]);
 
 
-    ///console.log("balance", balance);
+    const [balanceUSDT, setBalanceUSDT] = useState(0);
+    useEffect(() => {
+  
+      // get the balance
+      const getBalanceUSDT = async () => {
+
+        if (!address) {
+            return;
+        }
+  
+        ///console.log('getBalance address', address);
+  
+        
+        const result = await balanceOf({
+          contract: contractUSDT,
+          address: address,
+        });
+  
+    
+        //console.log(result);
+  
+        if (!result) return;
+
+        setBalanceUSDT( Number(result) / 10 ** 18 );
+
+      };
+
+      if (address) getBalanceUSDT();
+        const interval = setInterval(() => {
+            if (address) getBalanceUSDT();
+        } , 1000)
+        return () => clearInterval(interval);
+    }, [address, contractUSDT]);
 
 
 
@@ -1033,6 +1070,73 @@ function AgentPage(
                         />
                         <h2 className="text-xl font-bold">회원 목록</h2>
                     </div>
+
+
+
+
+
+                 {/* balance display */}
+                    {/* balanceMKC, balanceMKRW, balanceMUSD */}
+                    {address && (
+
+                        <div className="flex flex-row items-start justify-start mb-4">
+
+
+                            {/* 내 지갑 주소 */}
+                            <div className="flex flex-col items-start mr-8">
+                                <h3 className="text-lg font-semibold mb-2">내 지갑 주소</h3>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <Image
+                                        src="/icon-shield.png"
+                                        alt="Shield Icon"
+                                        width={24}
+                                        height={24}
+                                    />
+                                    <span className="text-sm text-gray-600">
+                                        {address.length > 10 ? address.slice(0, 10) + '...' : address}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* 잔액 표시 */}
+                            <div className="flex flex-col items-start">
+                                <h3 className="text-lg font-semibold mb-2">내 잔액</h3>
+                                <div className="flex flex-row gap-4 mb-4">
+                                    <div className="flex flex-row items-center">
+                                        <Image
+                                            src="/token-mkrw-icon.png"
+                                            alt="MKRW Icon"
+                                            width={24}
+                                            height={24}
+                                            className="mr-2"
+                                        />
+                                        <span className="text-lg font-semibold text-yellow-600">
+                                            {balanceMKRW.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} MKRW
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-row items-center">
+                                        <Image
+                                            src="/token-usdt-icon.png"
+                                            alt="USDT Icon"
+                                            width={24}
+                                            height={24}
+                                            className="mr-2"
+                                        />
+                                        <span className="text-lg font-semibold text-green-600">
+                                            {balanceUSDT.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} USDT
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    )}
+
+
+
+
+
+
 
                     <div className="flex flex-row gap-2 mb-4">
                         <Image
