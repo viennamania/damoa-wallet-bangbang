@@ -1624,7 +1624,7 @@ function IndexPage(
                       {/* 1 USDT = 1340 MKRW */}
                       <div className="w-full flex flex-row gap-2 items-center justify-between p-5
                       ">
-                        <div className="w-1/4 flex flex-row gap-2 items-center justify-start">
+                        <div className="w-1/5 flex flex-row gap-2 items-center justify-start">
                             <Image
                                 src="/logo-mpoint.png"
                                 alt="MKRW"
@@ -1634,14 +1634,14 @@ function IndexPage(
                             />
                         </div>
 
-                        <div className="w-3/4 flex flex-col gap-1 items-center justify-center">
+                        <div className="w-4/5 flex flex-col gap-1 items-center justify-center">
 
                           <div className="w-full flex flex-row gap-2 items-center justify-start">
                             <div className="w-32 text-sm text-zinc-800">
                               현재 환율
                             </div>
                             <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                              1 USDT = { usdtRate } MKRW
+                              1 테더 = { Number(usdtRate).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",") } 포인트
                             </div>
                           </div>
 
@@ -1650,7 +1650,7 @@ function IndexPage(
                               최소 구매량
                             </div>
                             <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                              10000 MKRW
+                              10,000 포인트
                             </div>
                           </div>
 
@@ -1661,15 +1661,10 @@ function IndexPage(
                       <div className="w-full flex flex-row gap-2 items-center justify-between p-5
                       ">
                         <button
-                            onClick={() => {
-                                // redirect to nft detail page
-                                
+                            onClick={() => {   
                                 router.push(
                                     "/" + params.lang + "/" + params.chain + "/buy-mpoint"
                                 );
-                                
-                              {/* 준비중입니다. */}
-                                //alert("준비중입니다.");
                             }}
                             className="w-full
                               rounded-b-lg
@@ -1679,20 +1674,26 @@ function IndexPage(
                               hover:bg-gray-200
                               "
                         >
-                          테더로 충전하기
+                          <div className="flex flex-row gap-2 items-center justify-center">
+                            <span className="text-sm md:text-lg">
+                              테더로 충전하기
+                            </span>
+                            <Image
+                                src="/icon-charge.png"
+                                alt="Charge"
+                                width={25}
+                                height={25}
+                                className="rounded-lg w-6 h-6 xl:w-8 xl:h-8"
+                            />
+                          </div>
                         </button>
 
 
                         <button
                             onClick={() => {
-                                // redirect to nft detail page
-                                
                                 router.push(
                                     "/" + params.lang + "/" + params.chain + "/buy-mpoint-winpay"
                                 );
-                                
-                              {/* 준비중입니다. */}
-                                //alert("준비중입니다.");
                             }}
                             className="w-full
                               rounded-b-lg
@@ -1702,7 +1703,18 @@ function IndexPage(
                               hover:bg-gray-200
                               "
                         >
-                          페이로 충전하기
+                          <div className="flex flex-row gap-2 items-center justify-center">
+                            <span className="text-sm md:text-lg">
+                              페이로 충전하기
+                            </span>
+                            <Image
+                                src="/icon-charge.png"
+                                alt="Charge"
+                                width={25}
+                                height={25}
+                                className="rounded-lg w-6 h-6 xl:w-8 xl:h-8"
+                            />
+                          </div>
                         </button>
 
                       </div>
