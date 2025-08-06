@@ -1038,11 +1038,11 @@ export default function SendUsdt({ params }: any) {
 
           console.log("transactionHash", transactionHash);
           if (transactionHash) {
-            toast.success("구매 완료");
+            toast.success("충전 완료");
             setSwapAmount(0); // reset amount
             setSwapAmountTo(0); // reset swap amount to
           } else {
-            toast.error("구매 실패");
+            toast.error("충전 실패");
           }
 
 
@@ -1070,7 +1070,7 @@ export default function SendUsdt({ params }: any) {
 
         if (transactionHash) {
 
-          toast.success("구매 완료");
+          toast.success("충전 완료");
 
           setSwapAmount(0); // reset amount
           setSwapAmountTo(0); // reset swap amount to
@@ -1096,7 +1096,7 @@ export default function SendUsdt({ params }: any) {
 
 
         } else {
-          toast.error("구매 실패");
+          toast.error("충전 실패");
         }
 
 
@@ -1111,7 +1111,7 @@ export default function SendUsdt({ params }: any) {
       
       console.error("error", error);
 
-      toast.error("구매 실패");
+      toast.error("충전 실패");
     }
 
     setLoadingSwap(false);
@@ -1252,7 +1252,7 @@ export default function SendUsdt({ params }: any) {
         </button>
 
         <h1 className="text-lg font-semibold text-gray-800">
-          포인트 충전
+           충전
         </h1>
 
       </div>
@@ -1336,7 +1336,7 @@ export default function SendUsdt({ params }: any) {
                         className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
                       />
                       <span className="text-lg font-semibold text-gray-800">
-                        포인트
+                        나의 포인트 잔액
                       </span>
                     </div>
 
@@ -1360,7 +1360,7 @@ export default function SendUsdt({ params }: any) {
                         className='rounded-full w-8 h-8 xl:w-10 xl:h-10'
                       />
                       <span className="text-lg font-semibold text-gray-800">
-                        테더
+                        나의 테더 잔액
                       </span>
                     </div>
 
@@ -1390,7 +1390,7 @@ export default function SendUsdt({ params }: any) {
                         text-white
 
                       ">
-                        구매할 포인트(MKRW) 수량을 입력하세요.
+                        충전할 포인트(MKRW) 수량을 입력하세요.
                       </div>
                     </div>
 
@@ -1513,12 +1513,12 @@ export default function SendUsdt({ params }: any) {
                             />
                           </div>
                           <div className="text-gray-800">
-                            구매 중...
+                            충전 중...
                           </div>
                         </div>
                       ) : (
                         <div className="w-full flex flex-row items-center justify-center gap-2">
-                          구매하기
+                          충전하기
                         </div>
                       )}
                     </button>
@@ -1532,7 +1532,7 @@ export default function SendUsdt({ params }: any) {
 
                     { swapAmountTo < 10 && (
                       <div className='text-red-500 text-sm'>
-                        최소 1 USDT 이상 구매 가능합니다.
+                        최소 1 USDT 이상 충전 가능합니다.
                       </div>
                     ) }
 
