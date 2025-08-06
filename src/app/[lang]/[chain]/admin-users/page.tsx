@@ -789,7 +789,7 @@ function AgentPage(
     return (
 
         <main className="
-        p-4 min-h-[100vh] flex-col items-start justify-center container max-w-screen-xl mx-auto
+        p-4 min-h-[100vh] flex-col items-start justify-center container max-w-screen-2xl mx-auto
         bg-[#E7EDF1]
         ">
 
@@ -1146,6 +1146,7 @@ function AgentPage(
                                         >
                                             {Number(user.usdtBalance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </td>
+
                                         <td className="px-6 py-4 whitespace-nowrap gap-2 flex justify-center items-center">
 
                                             <Button
