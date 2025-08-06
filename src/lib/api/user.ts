@@ -73,6 +73,8 @@ export interface UserProps {
   mkrwBalance: number,
   usdtBalance: number,
 
+  isBlocked: boolean,
+
 }
 
 export interface ResultProps {
@@ -1637,5 +1639,46 @@ export async function getOneByTelegramId(
   );
 
   return results;
+
+}
+
+
+
+
+
+
+
+
+// updateOneBlockStatus
+export async function updateOneBlockStatus({
+  walletAddress,
+  isBlocked,
+}: {
+  walletAddress: string;
+  isBlocked: boolean;
+}): Promise<UserProps | null> {
+
+  const client = await clientPromise;
+  const collection = client.db('damoa').collection('users');
+
+  // update and return updated user
+  if (!walletAddress) {
+    return null;
+  }
+
+  const result = await collection.updateOne(
+    { walletAddress: walletAddress },
+    { $set: { isBlocked: isBlocked } }
+  );
+
+  if (result) {
+    const updated = await collection.findOne<UserProps>(
+      { walletAddress: walletAddress },
+    );
+
+    return updated;
+  } else {
+    return null;
+  }
 
 }
