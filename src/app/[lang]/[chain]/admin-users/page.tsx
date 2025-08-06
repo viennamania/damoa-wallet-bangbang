@@ -919,7 +919,7 @@ function AgentPage(
 
 
                 {/* total supply of MKRW */}
-                {totalSupplyMKRW > 0 && (
+                
                 <div className="text-center text-gray-600 mb-4">
                     <span className="text-lg md:text-xl font-semibold"
                         style={{ fontFamily: 'monospace' }}>
@@ -940,7 +940,7 @@ function AgentPage(
                         </Button>
                     </div>
                 </div>
-                )}
+                
 
 
                 {/* 메뉴: 공지사항, 회원목록 */}
