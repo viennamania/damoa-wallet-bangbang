@@ -203,19 +203,9 @@ function IndexPage(
 
 
   const contract = getContract({
-    // the client you have created via `createThirdwebClient()`
     client,
-    // the chain the contract is deployed on
-    
-    
+  
     chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
-  
-  
-  
-    // the contract's address
-    ///address: contractAddress,
-
-  
 
     address: params.chain === "bsc" ? bscContractAddressUSDT : params.chain === "arbitrum" ? arbitrumContractAddressUSDT : params.chain === "polygon" ? polygonContractAddressUSDT : params.chain === "ethereum" ? ethereumContractAddressUSDT : polygonContractAddressUSDT,
 

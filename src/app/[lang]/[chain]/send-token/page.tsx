@@ -80,24 +80,56 @@ const styles = {
 
 
 
+import {
+  ethereumContractAddressUSDT,
+  polygonContractAddressUSDT,
+  arbitrumContractAddressUSDT,
+  bscContractAddressUSDT,
+
+  bscContractAddressMKRW,
+} from "../../../config/contractAddresses";
+
+
 
 const wallets = [
   inAppWallet({
     auth: {
-      options: ["phone"],
+      options: [
+        "google",
+        "discord",
+        "email",
+        "x",
+        "passkey",
+        //"phone",
+        "facebook",
+        "line",
+        "apple",
+        "coinbase",
+      ],
     },
   }),
+  /*
+  createWallet("com.coinbase.wallet"),
+  createWallet("me.rainbow"),
+  createWallet("io.rabby"),
+  createWallet("io.zerion.wallet"),
+  createWallet("io.metamask"),
+  //createWallet("com.binance.wallet"),
+  createWallet("com.bitget.web3"),
+  createWallet("com.trustwallet.app"),
+  createWallet("com.okex.wallet"),
+  */
 ];
-
 
 
 
 const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
 const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // USDT on Arbitrum
 const contractAddressEthereum = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // USDT on Ethereum
-const contractAddressBsc = "0x55d398326f99059fF775485246999027B3197955"; // USDT on BSC
 
-const contractAddressMKRW = "0xEb0a5ea0001Aa9f419BbaF8ceDad265A60f0B10f"; // MKRW on BSC
+//const contractAddressBsc = "0x55d398326f99059fF775485246999027B3197955"; // USDT on BSC
+
+//const contractAddressMKRW = "0xEb0a5ea0001Aa9f419BbaF8ceDad265A60f0B10f"; // MKRW on BSC
 
 
 
@@ -282,8 +314,7 @@ export default function SendUsdt({ params }: any) {
     
     chain: params.chain === "bsc" ? bsc : params.chain === "arbitrum" ? arbitrum : params.chain === "polygon" ? polygon : params.chain === "ethereum" ? ethereum : polygon,
 
-    address: params.chain === "bsc" ? contractAddressBsc : params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
-
+    address: params.chain === "bsc" ? bscContractAddressUSDT : params.chain === "arbitrum" ? contractAddressArbitrum : params.chain === "polygon" ? contractAddress : params.chain === "ethereum" ? contractAddressEthereum : contractAddress,
 
     // OPTIONAL: the contract's abi
     //abi: [...],
@@ -298,7 +329,7 @@ export default function SendUsdt({ params }: any) {
     // the chain the contract is deployed on
     chain: bsc,
     // the contract's address
-    address: contractAddressMKRW,
+    address: bscContractAddressMKRW,
   });
 
 
@@ -2502,33 +2533,61 @@ export default function SendUsdt({ params }: any) {
                                       </span>
                                     )}
 
-                                    <span className="text-red-600">
-                                      {transfer.transferData.toAddress.slice(0, 6) + '...' + transfer.transferData.toAddress.slice(-4)}
+                                    <span className="text-red-600 text-sm">
+                                      {transfer.transferData.toAddress.slice(0, 6) + '...'}
                                     </span>
                                   </div>
                                 ) : (
-                                  <div className='flex flex-col gap-1'>
-                                    <span className="text-green-600">
-                                      보낸 사람
-                                    </span>
-                                    {transfer?.fromUser?.nickname && (
-                                      <span className="text-green-600">
-                                        {transfer?.fromUser?.nickname}
-                                      </span>
-                                    )}
+                                  <>
 
-                                    <span className="text-green-600">
-                                      {transfer.transferData.fromAddress.slice(0, 6) + '...' + transfer.transferData.fromAddress.slice(-4)}
-                                    </span>
-                                  </div>
+                                  {transfer.transferData.fromAddress === '0x0000000000000000000000000000000000000000' ? (
+                                    <div className='flex flex-row gap-2 items-center justify-start'>
+                                      {/* mint icon */}
+                                      {/* mint */}
+                                      <Image
+                                        src="/icon-mint.gif"
+                                        alt="mint"
+                                        width={20}
+                                        height={20}
+                                        className='rounded-full w-6 h-6'
+                                      />
+                                      <span className="text-green-600">
+                                        발행
+                                      </span>
+                                    </div>
+                                  ) : (
+
+                                  
+                                    <div className='flex flex-col gap-1'>
+                                      <span className="text-green-600">
+                                        보낸 사람
+                                      </span>
+                                      {transfer?.fromUser?.nickname && (
+                                        <span className="text-green-600">
+                                          {transfer?.fromUser?.nickname}
+                                        </span>
+                                      )}
+
+                                      <span className="text-green-600 text-sm">
+                                        {transfer.transferData.fromAddress.slice(0, 6) + '...'}
+                                      </span>
+                                    </div>
+
+                                  )}
+
+                                  </>
                                 )}
                               </td>
-                              <td className="border px-4 py-2">
+                              <td className="border px-4 py-2 text-right">
+                                <span className="text-lg font-semibold text-gray-800"
+                                  style={{fontFamily: 'monospace'}}
+                                >
                                 {
                                   (Number(transfer.transferData.value) / 10 ** 18)
                                   .toFixed(0)
                                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
+                                </span>
                               </td>
                             </tr>
                           ))}
