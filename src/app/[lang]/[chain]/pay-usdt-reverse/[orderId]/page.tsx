@@ -2025,7 +2025,7 @@ return (
                     내 포인트 잔액
                   </span>
                 </div>
-                <div className=" flex flex-row items-start justify-start gap-2">
+                <div className="mt-2 flex flex-row items-start justify-start gap-2">
                   <span className="text-2xl font-semibold text-zinc-500"
                     style={{ fontFamily: 'monospace' }}
                   >

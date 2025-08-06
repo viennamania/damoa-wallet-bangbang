@@ -2144,7 +2144,8 @@ export default function SendUsdt({ params }: any) {
                             "value": "1000000000000000000000",
                             "timestamp": 1748665142000,
                             "_id": "683a833a7a4edd08cb8716de"
-                        }
+                        },
+                        isEscrowTransfer: false,
                     }
                 ]
                   */}
@@ -2518,6 +2519,7 @@ export default function SendUsdt({ params }: any) {
                               <td className="border px-4 py-2">
 
                                 {transfer.sendOrReceive === "send" ? (
+
                                   <div className='flex flex-col gap-1'>
                                     <span className="text-red-600">
                                       받은 사람
@@ -2527,11 +2529,16 @@ export default function SendUsdt({ params }: any) {
                                         {transfer?.toUser?.nickname}
                                       </span>
                                     )}
-
                                     <span className="text-red-600 text-sm">
                                       {transfer.transferData.toAddress.slice(0, 6) + '...'}
                                     </span>
+                                    {transfer.isEscrowTransfer && (
+                                      <span className="text-red-600 text-xs">
+                                        에스크로 지갑으로 출금됨
+                                      </span>
+                                    )}
                                   </div>
+
                                 ) : (
                                   <>
 
@@ -2566,6 +2573,11 @@ export default function SendUsdt({ params }: any) {
                                       <span className="text-green-600 text-sm">
                                         {transfer.transferData.fromAddress.slice(0, 6) + '...'}
                                       </span>
+                                      {transfer.isEscrowTransfer && (
+                                        <span className="text-green-600 text-xs">
+                                          에스크로 지갑에서 입금됨
+                                        </span>
+                                      )}
                                     </div>
 
                                   )}
@@ -2592,61 +2604,7 @@ export default function SendUsdt({ params }: any) {
 
                   </div>
 
-
                 )}
-
-
-
-
-
-
-
-            {/* transaction history table */}
-            {/*
-            <div className="w-full flex flex-col gap-5 items-start justify-start
-              border border-gray-300 rounded-lg p-4
-            ">
-              <table className="w-full border border-gray-300 rounded-lg">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="p-2 border border-gray-300">Date</th>
-                    <th className="p-2 border border-gray-300">Amount</th>
-                    <th className="p-2 border border-gray-300">Recipient</th>
-                    <th className="p-2 border border-gray-300">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="p-2 border border-gray-300">2024-08-01</td>
-                    <td className="p-2 border border-gray-300">100.24</td>
-                    <td className="p-2 border border-gray-300">0x1234567890</td>
-                    <td className="p-2 border border-gray-300">Success</td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-gray-300">2024-08-01</td>
-                    <td className="p-2 border border-gray-300">100.24</td>
-                    <td className="p-2 border border-gray-300">0x1234567890</td>
-                    <td className="p-2 border border-gray-300">Success</td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 border border-gray-300">2024-08-01</td>
-                    <td className="p-2 border border-gray-300">100.24</td>
-                    <td className="p-2 border border-gray-300">0x1234567890</td>
-                    <td className="p-2 border border-gray-300">Success</td>
-                  </tr>
-
-                </tbody>
-              </table>
-
-              <div className="w-full flex flex-row gap-2 items-center justify-center">
-                <button className="p-2 rounded-lg bg-gray-300 text-gray-400">Prev</button>
-                <button className="p-2 rounded-lg bg-gray-300 text-gray-400">Next</button>
-              </div>
-            </div>
-            */}
-
-
-
 
 
         </div>
