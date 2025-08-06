@@ -1820,8 +1820,8 @@ function IndexPage(
                           현재 환율
                         </div>
                         <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                          10,000 포인트 = {
-                          Number(1 / usdtRate * 10000).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          1,000 포인트 = {
+                          Number(1 / usdtRate * 1000).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                           } 테더
                         </div>
                       </div>
