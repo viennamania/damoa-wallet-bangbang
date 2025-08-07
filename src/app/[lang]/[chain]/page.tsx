@@ -1486,16 +1486,41 @@ function IndexPage(
             <div className="w-full flex flex-col gap-2 items-center justify-start
                 bg-white p-5 rounded-b-lg
             ">
-                
-                <span className="text-2xl md:text-3xl font-semibold text-zinc-800">
+              <div className="flex flex-row gap-2 items-center justify-start">
+                <span className="text-4xl md:text-7xl text-zinc-800">
                     {
                       Number(totoalUsdtBalance * usdtRate + MKRWBalance)
                         .toFixed(0)
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    }{' '}원
+                    }
                     
                 </span>
+                <span className="text-sm md:text-lg text-zinc-600">
+                  원
+                </span>
+              </div>
 
+              {/* 환율 */}
+              <div className="w-full flex flex-row gap-2 items-center justify-start">
+                <Image
+                  src="/icon-foreign-exchange.png"
+                  alt="Exchange Rate"
+                  width={20}
+                  height={20}
+                  className="rounded-full w-8 h-8 xl:w-10 xl:h-10"
+                />
+                <div className="flex flex-row gap-2 items-center justify-start">
+                  <span className="text-sm md:text-lg text-zinc-600">
+                    1 포인트 = 1 원
+                  </span>
+                  {/* divider */}
+                  <span className="text-sm md:text-lg text-zinc-600">|</span>
+                  <span className="text-sm md:text-lg text-zinc-600">
+                    1 테더 = {Number(usdtRate).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원
+                  </span>
+                </div>
+
+              </div>
 
             </div>
 
@@ -1542,7 +1567,9 @@ function IndexPage(
                   포인트
                 </span>
 
-                <div className="w-full text-2xl font-bold text-zinc-800 text-right">
+                <div className="w-full text-2xl font-bold text-yellow-600 text-right"
+                  style={{ fontFamily: "monospace" }}
+                >
                   {
                     Number(MKRWBalance)
                       .toFixed(0)
@@ -1563,7 +1590,7 @@ function IndexPage(
                       "/" + params.lang + "/" + params.chain + "/send-token/?token=MKRW"
                     );
                   }}
-                  className="w-10 h-10"
+                  className="w-16 h-16 ml-2"
                 >
                   <Image
                     src="/goto-icon.webp"
@@ -1591,7 +1618,9 @@ function IndexPage(
 
 
                   {/* floating point number to fixed 5 and text size small */}
-                <div className="w-full text-2xl font-bold text-zinc-800 text-right">
+                <div className="w-full text-2xl font-bold text-green-600 text-right"
+                  style={{ fontFamily: "monospace" }}
+                >
                   {
                     Number(usdtBalance)
                     .toFixed(2)
@@ -1608,7 +1637,7 @@ function IndexPage(
                       "/" + params.lang + "/" + params.chain + "/send-token/?token=USDT"
                     );
                   }}
-                  className="w-10 h-10"
+                  className="w-16 h-16 ml-2"
                 >
                   <Image
                     src="/goto-icon.webp"
@@ -1670,6 +1699,7 @@ function IndexPage(
                             />
                         </div>
 
+                        {/*
                         <div className="w-4/5 flex flex-col gap-1 items-center justify-center">
 
                           <div className="w-full flex flex-row gap-2 items-center justify-start">
@@ -1691,10 +1721,13 @@ function IndexPage(
                           </div>
 
                         </div>
+                        */}
 
                       </div>
 
-                      <div className="w-full flex flex-row gap-2 items-center justify-between p-5
+                      <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-2 p-5
+                        rounded-b-lg
+                        bg-white
                       ">
                         {/*
                         <button
@@ -1733,17 +1766,15 @@ function IndexPage(
                                     "/" + params.lang + "/" + params.chain + "/buy-mpoint-winpay"
                                 );
                             }}
-                            className="w-full
-                              rounded-b-lg
-                              bg-gray-100
+                            className="border border-green-200 bg-green-50
+                              rounded-lg
                               p-2
                               text-sm md:text-lg font-semibold text-zinc-800
-                              hover:bg-gray-200
-                              "
-                        >
+                              hover:bg-green-100
+                        ">
                           <div className="flex flex-row gap-2 items-center justify-center">
                             <span className="text-sm md:text-lg">
-                              뱅크페이로 충전하기
+                              뱅크페이로 충전
                             </span>
                             <Image
                                 src="/icon-charge.png"
@@ -1760,17 +1791,15 @@ function IndexPage(
                                     "/" + params.lang + "/" + params.chain + "/buy-mpoint-winpay"
                                 );
                             }}
-                            className="w-full
-                              rounded-b-lg
-                              bg-gray-100
+                            className="border border-blue-200 bg-blue-50
+                              rounded-lg
                               p-2
                               text-sm md:text-lg font-semibold text-zinc-800
-                              hover:bg-gray-200
-                              "
-                        >
+                              hover:bg-blue-100
+                        ">
                           <div className="flex flex-row gap-2 items-center justify-center">
                             <span className="text-sm md:text-lg">
-                              카카오페이로 충전하기
+                              카카오페이로 충전
                             </span>
                             <Image
                                 src="/icon-charge.png"
