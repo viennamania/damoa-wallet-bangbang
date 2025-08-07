@@ -1672,7 +1672,8 @@ function IndexPage(
 
               <div className="w-full flex flex-row gap-2 items-center justify-start
                   rounded-t-lg
-                  bg-[#3167b4]
+                  bg-green-600
+                  text-white
                   p-2
               ">
                   <div className="text-sm md:text-lg text-white">
