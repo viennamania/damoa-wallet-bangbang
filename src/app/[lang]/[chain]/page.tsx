@@ -1628,7 +1628,7 @@ function IndexPage(
                 >
                   {
                     Number(usdtBalance)
-                    .toFixed(2)
+                    .toFixed(3)
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
                 </div>
@@ -1879,7 +1879,7 @@ function IndexPage(
                           underline
                         ">
                           1,000 포인트 = {
-                          Number(1 / usdtRate * 1000).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          Number(1 / usdtRate * 1000).toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                           } 테더
                         </div>
                       </div>
@@ -2230,7 +2230,7 @@ function IndexPage(
                                       style={{ fontFamily: 'monospace' }}
                                     >
                                       {
-                                        Number(order.usdtAmount).toFixed(2)
+                                        Number(order.usdtAmount).toFixed(3)
                                           .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                       }
                                     </span>

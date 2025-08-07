@@ -2235,7 +2235,9 @@ export default function Index({ params }: any) {
 
                   <div className="flex flex-row items-center justify-center gap-2">
                     <span className="text-xl font-semibold text-zinc-100">
-                      {Number(balance).toFixed(2)}
+                      {
+                        Number(balance).toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                      }
                     </span>
                     {' '}
                     <span className="text-sm text-zinc-100">
@@ -2282,7 +2284,7 @@ export default function Index({ params }: any) {
                 내 포인트 잔액
               </span>
             </div>
-            <div className=" flex flex-row items-start justify-start gap-2">
+            <div className="mt-2 flex flex-row items-start justify-start gap-2">
               <div className="text-2xl font-semibold text-zinc-500">
                 {
                 Number(mkrwBalance).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
@@ -2471,7 +2473,7 @@ export default function Index({ params }: any) {
                             style ={{fontFamily: 'monospace'}}
                           >
                             {
-                              Number(selectedKrwAmount / rate).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              Number(selectedKrwAmount / rate).toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                             }
                           </span>
                           <span className="text-sm text-zinc-500">
@@ -3400,7 +3402,7 @@ export default function Index({ params }: any) {
                               <p className="text-lg font-semibold text-zinc-500">{item.usdtAmount} USDT</p>
                               <p className="text-lg font-semibold text-zinc-500">{Rate}: {
 
-                                Number(item.krwAmount / item.usdtAmount).toFixed(2)
+                                Number(item.krwAmount / item.usdtAmount).toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
                               }</p>
                             </div>
@@ -4307,7 +4309,7 @@ export default function Index({ params }: any) {
                         "
                         style={{ fontFamily: 'monospace' }}
                         >
-                        {order.usdtAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        {order.usdtAmount.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                       </div>
                     </td>
                     <td className="px-4 py-2">

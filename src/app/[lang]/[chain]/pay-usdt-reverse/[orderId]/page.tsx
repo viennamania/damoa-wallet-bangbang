@@ -2771,19 +2771,17 @@ return (
                             최적의 판매자와 매칭중입니다.
                             */}
                             {item.status === 'ordered' && (
-                              <div className="w-full flex flex-row items-start justify-start gap-2
+                              <div className="w-full flex flex-row items-center justify-start gap-2
                                 border-b border-zinc-200 pb-2 mb-2">
-                                {/* new order icon */}
-                                {/* loading icon */}
                                 <Image
-                                  src="/icon-matching.png"
-                                  alt="Loading"
-                                  width={32}
-                                  height={32}
-                                  className="animate-spin"
+                                  src="/icon-ai-agent.gif"
+                                  alt="AI Agent"
+                                  width={100}
+                                  height={100}
+                                  className="rounded-lg w-24 h-24 xl:w-32 xl:h-32"
                                 />
                                 <p className=" text-lg text-[#f472b6]">
-                                  최적의 판매자와 매칭중입니다.
+                                  인공지능(AI 에이전트)에 의해 최적의 판매자와 매칭중입니다.
                                 </p>
                               </div>
                             )}
@@ -2934,9 +2932,7 @@ return (
                                       거래번호:{' '}#{item.tradeId}
                                     </p>
 
-
-
-                                    <div className="flex flex-row items-center gap-2">
+                                    <div className="mt-2 flex flex-row items-center gap-2">
                                       {/* new order icon */}
                                       {
                                         (new Date(item.createdAt).getTime() - new Date().getTime()) / 1000 / 60 / 60 < 24 && (
@@ -2970,9 +2966,10 @@ return (
 
                                       
                                       {/* Expired in 24 hours */}
-                                      <p className=" text-sm text-zinc-500">
-                                        {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)} 시간
-                                        {' '}후에 자동 취소됩니다.
+                                      <p className="text-sm text-zinc-500 underline">
+                                        판매자와 매칭이 되지 않으면{' '}
+                                        {1 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)} 시간
+                                        {' '}후에 자동 취소되고 에스크로한 포인트는 자동으로 <span className="font-semibold text-[#f472b6]">환불됩니다.</span>
                                       </p>
 
                                     </div>
