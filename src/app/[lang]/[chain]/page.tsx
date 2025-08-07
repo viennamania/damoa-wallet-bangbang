@@ -1910,52 +1910,136 @@ function IndexPage(
                         <Image
                           src="/icon-trading-live.gif"
                           alt="Trading Live"
-                          width={35}
-                          height={35}
-                          className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                          width={80}
+                          height={80}
+                          className="rounded-lg w-20 h-20 xl:w-24 xl:h-24"
                         />
-                        <span className="text-sm md:text-lg text-zinc-800 font-semibold">
-                          현재 진행중인 주문이 있습니다. 주문을 완료해주세요.
-                        </span>
+                        <div className="flex flex-row gap-2 items-center justify-start">
+                          <Image
+                            src="/icon-dot.png"
+                            alt="Dot"
+                            width={20}
+                            height={20}
+                            className="rounded-full w-6 h-6"
+                          />
+                          <span className="text-sm md:text-lg text-zinc-800 font-semibold">
+                            현재 진행중인 주문이 있습니다. 주문을 완료해주세요.
+                          </span>
+                        </div>
                       </div>
 
                       {/* status */}
-                      <div className="w-full flex flex-col gap-2 items-start justify-start text-sm md:text-lg text-zinc-800 font-semibold mb-2">
-                        <span className="text-sm md:text-lg text-zinc-800 font-semibold">
-                          주문 상태: {
-                          currentProcessingOrder.status === "ordered"
-                          ? "구매 신청 완료"
-                          : currentProcessingOrder.status === "paymentRequested"
-                          ? "결제 요청"
-                          : currentProcessingOrder.status === "paymentCompleted"
-                          ? "결제 완료"
-                          : currentProcessingOrder.status === "completed"
-                          ? "거래 완료"
-                          : "알 수 없는 상태"
-                          }
-                        </span>
-                        <span className="text-sm md:text-lg text-zinc-500">
-                          주문 번호: #{currentProcessingOrder.tradeId}
-                        </span>
+                      <div className="w-full flex flex-col gap-2 items-center justify-start
+                        border border-blue-200
+                        bg-blue-50
+                        p-2 rounded-lg rounded-r-lg
+                      ">
+                        
+                        <div className="w-full flex flex-row gap-2 items-center justify-start">
+                          <Image
+                            src="/icon-buy.webp"
+                            alt="Order"
+                            width={30}
+                            height={30}
+                            className="rounded-lg w-8 h-8 xl:w-10 xl:h-10 mb-2"
+                          />
+                          <div className="flex flex-col gap-1 items-start justify-start">
+                            <span className="text-sm md:text-lg text-zinc-500">
+                              주문 번호: #{currentProcessingOrder.tradeId}
+                            </span>
+                            <span className="text-sm md:text-lg text-zinc-500">
+                              주문 일시: {new Date(currentProcessingOrder.createdAt).toLocaleString()}
+                            </span>
+                            <div className="w-full flex flex-row gap-2 items-center justify-start">
+                              주문 상태:
+                                  {
+                                  currentProcessingOrder.status === "ordered"
+                                  ? 
+                                  <span className="flex flex-row gap-2 items-center justify-start
+                                    border border-yellow-200
+                                    bg-yellow-50
+                                    text-sm md:text-lg text-yellow-600 font-semibold
+                                    p-1 rounded-lg
+                                  ">
+                                    테더 구매 신청 완료
+                                  </span>
+                                  : currentProcessingOrder.status === "paymentRequested"
+                                  ?
+                                  <span className="flex flex-row gap-2 items-center justify-start
+                                    border border-blue-200
+                                    bg-blue-50
+                                    text-sm md:text-lg text-blue-600 font-semibold
+                                    p-1 rounded-lg
+                                  ">
+                                    결제 요청 완료
+                                  </span>
+                                  : currentProcessingOrder.status === "paymentCompleted"
+                                  ?
+                                  <span className="flex flex-row gap-2 items-center justify-start
+                                    border border-green-200
+                                    bg-green-50
+                                    text-sm md:text-lg text-green-600 font-semibold
+                                    p-1 rounded-lg
+                                  ">
+                                    결제 완료
+                                  </span>
+                                  : currentProcessingOrder.status === "completed"
+                                  ?
+                                  <span className="flex flex-row gap-2 items-center justify-start
+                                    border border-gray-200
+                                    bg-gray-50
+                                    text-sm md:text-lg text-gray-600 font-semibold
+                                    p-1 rounded-lg
+                                  ">
+                                    거래 완료
+                                  </span>
+                                  : currentProcessingOrder.status === "cancelled"
+                                  ?
+                                  <span className="flex flex-row gap-2 items-center justify-start
+                                    border border-red-200
+                                    bg-red-50
+                                    text-sm md:text-lg text-red-600 font-semibold
+                                    p-1 rounded-lg
+                                  ">
+                                    거래 취소
+                                  </span>
+                                  :
+                                  <span className="flex flex-row gap-2 items-center justify-start
+                                    border border-gray-200
+                                    bg-gray-50
+                                    text-sm md:text-lg text-gray-600 font-semibold
+                                    p-1 rounded-lg
+                                  ">
+                                    알 수 없는 상태
+                                  </span>
+                                  }
+
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => {
+                            router.push(
+                              "/" + params.lang + "/" + params.chain + "/pay-usdt-reverse/" + currentProcessingOrder._id
+                            );
+                          }}
+                          className="w-full
+                            bg-blue-500
+                            text-white
+                            p-2
+                            text-sm md:text-lg font-semibold
+                            hover:bg-blue-600
+                            rounded-lg
+                          "
+                        >
+                          현재 진행중인 주문 보기
+                        </button>
+
+
+
+
                       </div>
 
-                      <button
-                        onClick={() => {
-                          router.push(
-                            "/" + params.lang + "/" + params.chain + "/pay-usdt-reverse/" + currentProcessingOrder._id
-                          );
-                        }}
-                        className="w-full
-                          bg-blue-500
-                          text-white
-                          p-2
-                          text-sm md:text-lg font-semibold
-                          hover:bg-blue-600
-                          rounded-lg
-                        "
-                      >
-                        현재 진행중인 주문 보기
-                      </button>
                     </div>
 
                   ) : (
