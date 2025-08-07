@@ -1447,7 +1447,7 @@ function IndexPage(
                 p-2
             ">
                 <span className="text-sm md:text-lg text-white">
-                  총 자산
+                  나의 총 자산
                 </span>
 
                 <div className="flex flex-row gap-2 items-center justify-end">
@@ -1530,7 +1530,8 @@ function IndexPage(
         )}
 
 
-        {/* 나의 자산 */}
+        {/* 나의 포트폴리오 */}
+        {/* address가 있을 때만 보여줌 */}
         {address && (
           <div className="mt-5 w-full flex flex-col gap-0 items-center justify-between">
 
@@ -1540,7 +1541,7 @@ function IndexPage(
                 p-2
             ">
                 <span className="text-sm md:text-lg text-white">
-                  나의 자산
+                  나의 포트폴리오
                 </span>
             </div>
             
