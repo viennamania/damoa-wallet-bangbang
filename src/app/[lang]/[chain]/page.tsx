@@ -1956,6 +1956,9 @@ function IndexPage(
                       {/* 테더 구매 신청하기 버튼 */}
                       {/* 테더를 구매하기 위해서는 구매 신청을 해야 합니다. */}
                       {/* 구매 신청을 하면 판매자와 연결됩니다. */}
+                      {/*
+                      테더를 구매하기 위해서는 구매 신청을 해야 합니다. 구매 신청을 하면 인공지능에 의해 최적의 판매자와 연결됩니다.
+                      */}
                       <div className="w-full flex flex-row gap-2 items-center justify-start text-sm md:text-lg text-zinc-800 font-semibold mb-2">
                         <Image
                           src="/icon-info.png"
@@ -1965,7 +1968,7 @@ function IndexPage(
                           className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
                         />
                         <span className="text-sm md:text-lg text-zinc-800 font-semibold">
-                          테더를 구매하기 위해서는 구매 신청을 해야 합니다. 구매 신청을 하면 판매자와 연결됩니다.
+                          테더를 구매하기 위해서는 구매 신청을 해야 합니다. 구매 신청을 하면 인공지능(AI)에 의해 최적의 판매자와 연결됩니다.
                         </span>
                       </div>
                       <button
