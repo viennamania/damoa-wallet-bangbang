@@ -1535,9 +1535,13 @@ function IndexPage(
         {address && (
           <div className="mt-5 w-full flex flex-col gap-0 items-center justify-between">
 
+            {/* background image is /background-portfolio.jpg */}
             <div className="w-full flex flex-row gap-2 items-center justify-start
                 rounded-t-lg
-                bg-[#3167b4]
+                bg-[url('/background-portfolio.jpg')]
+                bg-cover bg-center
+                bg-no-repeat
+                text-white
                 p-2
             ">
                 <span className="text-sm md:text-lg text-white">
@@ -1831,7 +1835,8 @@ function IndexPage(
           <div className="mt-5 w-full flex flex-col gap-0 items-center justify-between">
               <div className="w-full flex flex-row gap-2 items-center justify-start
                   rounded-t-lg
-                  bg-[#3167b4]
+                  bg-orange-600
+                  text-white
                   p-2
               ">
                   <div className="text-sm md:text-lg text-white">
