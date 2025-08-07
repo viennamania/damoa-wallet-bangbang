@@ -2100,8 +2100,10 @@ function IndexPage(
                               // if my order, background color is blue-50
                               <tr key={order._id} className={`border-b hover:bg-gray-50 ${order.walletAddress === address ? "bg-blue-50" : ""}`}>
 
-                                <td className="px-4 py-2">
-                                  <div className="flex flex-col items-start gap-1">
+                                <td className="px-2 py-2">
+                                  <div className="
+                                    w-20 md:w-32
+                                    flex flex-col items-start gap-1">
                                   {/* time ago */}
                                     <span className="text-xs text-zinc-500">
                                       {
@@ -2137,8 +2139,8 @@ function IndexPage(
   
                                   </div>
                                 </td>
-                                <td className="px-4 py-2">
-                                  <div className="flex flex-col items-end">
+                                <td className="px-2 py-2">
+                                  <div className="w-full flex flex-col items-end">
 
                                     <span className="text-lg text-green-600 font-bold"
                                       style={{ fontFamily: 'monospace' }}
@@ -2164,12 +2166,12 @@ function IndexPage(
                                   </div>
                                 </td>
 
-                                <td className="px-4 py-2
+                                <td className="px-2 py-2
                                 w-32 flex flex-col items-center justify-center text-center
                                 ">
 
                                   {order.walletAddress === address ? (
-                                    <div className="flex flex-col items-center">
+                                    <div className="w-full flex flex-col items-center justify-end">
 
                                       {order.status === "ordered" ? (
                                         <span className="text-sm text-blue-500 font-semibold
@@ -2209,7 +2211,7 @@ function IndexPage(
                                       )}
                                     </div>
                                   ) : (
-                                    <div className="flex flex-col items-center">
+                                    <div className="w-full flex flex-col items-center justify-end">
                                     {/*
                                       <button
                                         onClick={() => {
