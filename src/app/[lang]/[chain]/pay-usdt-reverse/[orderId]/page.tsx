@@ -1967,7 +1967,7 @@ return (
 
                   <div className="flex flex-row items-center justify-center gap-2">
                     <span className="text-xl font-semibold text-zinc-100">
-                      {Number(balance).toFixed(2)}
+                      {Number(balance).toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     </span>
                     {' '}
                     <span className="text-sm text-zinc-100">
@@ -2285,7 +2285,9 @@ return (
 
                       <div className=" flex flex-col gap-2 items-start">
                         <div className="text-5xl font-semibold text-zinc-500">
-                          {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                          {
+                          Number(balance).toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                          } <span className="text-lg">USDT</span>
                         </div>
                       </div>
 
@@ -2904,7 +2906,9 @@ return (
                                   height={32}
                                 />
                                 <p className=" text-lg text-[#f472b6]">
-                                  판매자가 테더를 전송하고 거래가 완료되었습니다.
+                                  판매자가 테더 {
+                                  Number(item.usdtAmount).toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                  } 개를 전송하고 거래가 완료되었습니다.
                                 </p>
                               </div>
                             )}
@@ -3233,34 +3237,45 @@ return (
                                 <div className="mt-4 flex flex-col items-start gap-2 p-2">
 
 
-                                  <p className="text-lg text-zinc-500">
-                                    구매금액:{' '}
-                                    {
-                                      // currency
-                                    
-                                      Number(item.krwAmount)?.toLocaleString('ko-KR', {
-                                        style: 'currency',
-                                        currency: 'KRW',
-                                      })
+                                  <div className="flex flex-row items-center justify-between gap-2">
 
-                                    }
-                                  </p>
+                                    <span className="text-lg text-zinc-500">
+                                      구매량:
+                                    </span>
+                                    <div className='flex flex-row items-center gap-2'>
+                                      <Image
+                                        src="/token-usdt-icon.png"
+                                        alt="USDT"
+                                        width={24}
+                                        height={24}
+                                      />
+                                      <span className="text-xl text-green-600 font-semibold">
+                                        {
+                                        Number(item.usdtAmount).toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                        }
+                                      </span>
+                                      <span className="text-sm text-zinc-500">
+                                        USDT
+                                      </span>
+                                    </div>
 
 
-                                  
-                                  <div className="mt-2 flex flex-row items-center justify-between gap-2">
 
-
-                                    <p className="text-lg text-zinc-500">
-                                      구매량:{' '}{item.usdtAmount}{' '}USDT
-                                    </p>
                                     <p className="text-sm text-zinc-500">
                                       환율:{' '}{
 
-                                      Number(item.rate).toFixed(0)
+                                      Number(item.rate).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
                                     }</p>
                                   </div>
+
+                                  <p className="mt-2 text-lg text-zinc-500">
+                                    구매금액:{' '}
+                                    {
+                                      Number(item.krwAmount).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                    }{' '}원
+                                  </p>
+
 
                                   {/* 결제방식 */}
                                   <div className="mt-2 flex flex-row items-center justify-between gap-2">
@@ -3268,7 +3283,7 @@ return (
                                       결제방식: {item?.paymentMethod === 'bank'
                                         ? '계좌이체'
                                         : item?.paymentMethod === 'mkrw'
-                                        ? 'MKRW 결제'
+                                        ? '포인트(MKRW) 결제'
                                         : item?.paymentMethod === 'cash'
                                         ? '현금거래'
                                         : item?.paymentMethod === 'card'
