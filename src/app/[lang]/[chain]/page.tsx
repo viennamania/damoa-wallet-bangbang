@@ -1961,7 +1961,7 @@ function IndexPage(
                       {/* 테더를 구매하기 위해서는 구매 신청을 해야 합니다. */}
                       {/* 구매 신청을 하면 판매자와 연결됩니다. */}
                       {/*
-                      테더를 구매하기 위해서는 구매 신청을 해야 합니다. 구매 신청을 하면 인공지능에 의해 최적의 판매자와 연결됩니다.
+                      테더를 구매하기 위해서는 구매 신청을 해야 합니다. 구매 신청을 하면 인공지능(AI 에이전트)에 의해 최적의 판매자와 연결됩니다.
                       */}
                       <div className="w-full flex flex-row gap-5 items-start justify-start
                         text-sm md:text-lg text-zinc-800 font-semibold mb-2"
@@ -1975,17 +1975,27 @@ function IndexPage(
                         />
                         <div className="flex flex-col gap-2 items-start justify-start">
                           <div className="w-full flex flex-row gap-2 items-center justify-start">
-                            {/* dot */}
-                            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <Image
+                              src="/icon-dot.png"
+                              alt="Dot"
+                              width={20}
+                              height={20}
+                              className="rounded-full w-6 h-6"
+                            />
                             <span className="text-sm md:text-lg text-zinc-800 font-semibold">
                               테더를 구매하기 위해서는 구매 신청을 해야 합니다.
                             </span>
                           </div>
                           <div className="w-full flex flex-row gap-2 items-center justify-start">
-                            {/* dot */}
-                            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <Image
+                              src="/icon-dot.png"
+                              alt="Dot"
+                              width={20}
+                              height={20}
+                              className="rounded-full w-6 h-6"
+                            />
                             <span className="text-sm md:text-lg text-zinc-800 font-semibold">
-                              구매 신청을 하면 인공지능(AI)에 의해 최적의 판매자와 연결됩니다.
+                              구매 신청을 하면 인공지능(AI 에이전트)에 의해 최적의 판매자와 연결됩니다.
                             </span>
                           </div>
                         </div>
@@ -2007,7 +2017,7 @@ function IndexPage(
                             rounded-lg
                             "
                       >
-                        테더 구매 신청하기
+                        {storeInfo?.storeName || "가맹점"}에서 테더 구매 신청하기
                       </button>
                     </div>
 
