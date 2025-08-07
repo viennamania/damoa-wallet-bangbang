@@ -2050,16 +2050,18 @@ function IndexPage(
                       text-zinc-800 font-semibold
                       text-lg md:text-xl
                     ">
-                      <Image
-                        src="/icon-buyorder.png"
-                        alt="Buy Order"
-                        width={35}
-                        height={35}
-                        className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
-                      />
-                      <span className="text-sm md:text-lg text-zinc-800 font-semibold">
-                        구매주문 목록
-                      </span>
+                      <div className="flex flex-row gap-2 items-center justify-start">
+                        <Image
+                          src="/icon-buyorder.png"
+                          alt="Buy Order"
+                          width={35}
+                          height={35}
+                          className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                        />
+                        <span className="text-sm md:text-lg text-zinc-800 font-semibold">
+                          구매주문 목록
+                        </span>
+                      </div>
                       <span className="text-sm md:text-lg text-zinc-500">
                         총 {totalBuyOrders}건
                       </span>
@@ -2073,22 +2075,24 @@ function IndexPage(
                           <tr className="bg-gray-100">
                             <th className="px-4 py-2 text-left text-sm font-semibold text-zinc-800">구매자</th>
                             <th className="px-4 py-2 text-left text-sm font-semibold text-zinc-800">
-                              <div className="flex flex-col items-start">
-                                <span className="text-sm text-zinc-500">구매수량(USDT)</span>
-                                <span className="text-sm text-zinc-500">구매금액(원)</span>
+                              <div className="flex flex-col items-end gap-1">
+                                <span className="text-sm text-green-600">구매수량</span>
+                                <span className="text-sm text-yellow-600">구매금액</span>
                                 <span className="text-xs text-zinc-500">환율</span>
                               </div>
                             </th>
-                            <th className="px-4 py-2 text-left text-sm font-semibold text-zinc-800">판매</th>
+                            <th className="px-4 py-2 text-center text-sm font-semibold text-zinc-800">진행상태</th>
                           </tr>
                         </thead>
                         <tbody>
                           {buyOrders.map((order) => (
 
-                            // if order.status is cancelled, skip this order
-                            order.status !== "cancelled" && (
+                            // if order.status is unfulfilled, skip this order
+                            order.status !== "unfulfilled" && (
 
-                              <tr key={order._id} className="border-b hover:bg-gray-50">
+                              // if my order, background color is blue-50
+                              <tr key={order._id} className={`border-b hover:bg-gray-50 ${order.walletAddress === address ? "bg-blue-50" : ""}`}>
+
                                 <td className="px-4 py-2">
                                   <div className="flex flex-col items-start gap-1">
                                   {/* time ago */}
@@ -2148,7 +2152,7 @@ function IndexPage(
                                     </span>
 
                                     <span className="text-xs text-zinc-500">
-                                      {order.rate}
+                                      {Number(order.rate).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원
                                     </span>
                                   </div>
                                 </td>
