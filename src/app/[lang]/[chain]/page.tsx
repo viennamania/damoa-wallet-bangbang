@@ -1510,12 +1510,12 @@ function IndexPage(
                   className="rounded-full w-8 h-8 xl:w-10 xl:h-10"
                 />
                 <div className="flex flex-row gap-2 items-center justify-start">
-                  <span className="text-sm md:text-lg text-zinc-600">
+                  <span className="text-sm md:text-lg text-zinc-600 underline">
                     1 포인트 = 1 원
                   </span>
                   {/* divider */}
                   <span className="text-sm md:text-lg text-zinc-600">|</span>
-                  <span className="text-sm md:text-lg text-zinc-600">
+                  <span className="text-sm md:text-lg text-zinc-600 underline">
                     1 테더 = {Number(usdtRate).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원
                   </span>
                 </div>
@@ -1868,7 +1868,9 @@ function IndexPage(
                         <div className="w-32 text-sm text-zinc-800">
                           현재 환율
                         </div>
-                        <div className="w-full text-sm text-zinc-800 font-bold text-right">
+                        <div className="w-full text-sm text-zinc-800 font-bold text-right
+                          underline
+                        ">
                           1,000 포인트 = {
                           Number(1 / usdtRate * 1000).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                           } 테더
@@ -1877,10 +1879,12 @@ function IndexPage(
 
                       <div className="w-full flex flex-row gap-2 items-center justify-start">
                         <div className="w-32 text-sm text-zinc-800">
-                          최소 구매량
+                          최소 구매금액
                         </div>
-                        <div className="w-full text-sm text-zinc-800 font-bold text-right">
-                          1 테더
+                        <div className="w-full text-sm text-zinc-800 font-bold text-right
+                          underline
+                        ">
+                          1,000 포인트
                         </div>
                       </div>
 
@@ -1959,18 +1963,34 @@ function IndexPage(
                       {/*
                       테더를 구매하기 위해서는 구매 신청을 해야 합니다. 구매 신청을 하면 인공지능에 의해 최적의 판매자와 연결됩니다.
                       */}
-                      <div className="w-full flex flex-row gap-2 items-center justify-start text-sm md:text-lg text-zinc-800 font-semibold mb-2">
+                      <div className="w-full flex flex-row gap-5 items-start justify-start
+                        text-sm md:text-lg text-zinc-800 font-semibold mb-2"
+                      >
                         <Image
-                          src="/icon-info.png"
-                          alt="Info"
-                          width={35}
-                          height={35}
-                          className="rounded-lg w-8 h-8 xl:w-10 xl:h-10"
+                          src="/icon-ai-agent.gif"
+                          alt="AI Agent"
+                          width={100}
+                          height={100}
+                          className="rounded-lg w-24 h-24 xl:w-32 xl:h-32"
                         />
-                        <span className="text-sm md:text-lg text-zinc-800 font-semibold">
-                          테더를 구매하기 위해서는 구매 신청을 해야 합니다. 구매 신청을 하면 인공지능(AI)에 의해 최적의 판매자와 연결됩니다.
-                        </span>
+                        <div className="flex flex-col gap-2 items-start justify-start">
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            {/* dot */}
+                            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <span className="text-sm md:text-lg text-zinc-800 font-semibold">
+                              테더를 구매하기 위해서는 구매 신청을 해야 합니다.
+                            </span>
+                          </div>
+                          <div className="w-full flex flex-row gap-2 items-center justify-start">
+                            {/* dot */}
+                            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <span className="text-sm md:text-lg text-zinc-800 font-semibold">
+                              구매 신청을 하면 인공지능(AI)에 의해 최적의 판매자와 연결됩니다.
+                            </span>
+                          </div>
+                        </div>
                       </div>
+
                       <button
                           onClick={() => {
                               // redirect to nft detail page
