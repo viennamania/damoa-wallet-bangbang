@@ -1519,7 +1519,6 @@ function IndexPage(
                     1 테더 = {Number(usdtRate).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원
                   </span>
                 </div>
-
               </div>
 
             </div>

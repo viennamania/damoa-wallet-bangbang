@@ -996,8 +996,8 @@ export default function SendUsdt({ params }: any) {
 
 
 
-  const [selectDeposit, setSelectDeposit] = useState(true);
-  const [selectWithdraw, setSelectWithdraw] = useState(false);
+  const [selectDeposit, setSelectDeposit] = useState(false);
+  const [selectWithdraw, setSelectWithdraw] = useState(true);
   const [selectSwap, setSelectSwap] = useState(false);
 
 
@@ -1523,6 +1523,7 @@ export default function SendUsdt({ params }: any) {
                   {/* 입금 button / 출금 button / 스왑 button*/}
                   {/* radio buttons */}
                   <div className="w-full flex flex-row gap-2 items-center justify-between">
+                    {/*
                     <button
                       onClick={() => {
                         setSelectDeposit(true);
@@ -1536,19 +1537,12 @@ export default function SendUsdt({ params }: any) {
                       `}
                     >
                       <div className='flex flex-col gap-2 items-center justify-start'>
-                        {/*}
-                        <Image
-                          src="/icon-deposit.png"
-                          alt="deposit"
-                          width={20}
-                          height={20}
-                        />
-                        */}
                         <span className='text-sm'>
                           입금
                         </span>
                       </div>
                     </button>
+                    */}
 
                     <button
                       onClick={() => {
@@ -1665,7 +1659,7 @@ export default function SendUsdt({ params }: any) {
 
                 {
                 token?.toLowerCase() === "mkrw" &&
-                user?.isBlocked ? (
+                user.isBlocked ? (
 
                   <div className="w-full flex flex-col items-center justify-center gap-2 p-4 bg-red-100 border border-red-300 rounded-lg">
                     <div className="text-red-600 font-semibold text-lg">
