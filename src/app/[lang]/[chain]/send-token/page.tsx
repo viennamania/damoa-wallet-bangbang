@@ -1653,10 +1653,6 @@ export default function SendUsdt({ params }: any) {
 
 
 
-
-
-
-
             {address
             && selectWithdraw
             && (
