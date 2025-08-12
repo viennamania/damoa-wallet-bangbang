@@ -314,7 +314,9 @@ export async function POST(request: NextRequest) {
             isMandatoryIssuer: false, // Not mandatory issuer
             ///returnUrl: `https://discordapp.com/api/webhooks/1390514441380036638/YL10zmKNU9yOjmrjOMsEWiEDeoFmx58ht7UsnzGI7_z1MHnB_8Ux-lqnbsVHwzFfahfA`,
 
-            returnUrl: 'https://wallet.cryptopay.beauty/api/webhook/winpay/buyPoint',
+            ///////returnUrl: 'https://wallet.cryptopay.beauty/api/webhook/winpay/buyPoint',
+
+            returnUrl: 'http://wallet.cryptopay.beauty/api/webhook/winpay/buyPoint',
         }
 
 
