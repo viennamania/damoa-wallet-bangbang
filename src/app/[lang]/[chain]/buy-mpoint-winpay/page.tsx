@@ -1091,8 +1091,11 @@ export default function SendUsdt({ params }: any) {
         const data = await response.json();
 
         if (data.status === 'success') {
-            toast.success("결제가 완료되었습니다.");
-            setSwapAmount(0); // reset swap amount
+            
+          toast.success("결제가 완료되었습니다.");
+
+          setSwapAmount(0); // reset swap amount
+
 
         } else {
             toast.error("결제 실패: " + data.message);

@@ -1,24 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-/*
 import {
-  UserProps,
-    acceptBuyOrder,
-  updateBuyOrderByQueueId,
-} from '@lib/api/order';
-*/
-
-import {
-  ///getOneByWalletAddress
-  upsertOneByWalletAddress,
-} from '@lib/api/user';
-
-import {
-  insertOne,
-  checkEscrowWalletAddressExists,
-} from '@lib/api/transfer';
-
-
+    getPaymentByTid,
+} from '@/lib/api/winpay';
 
 import {
   createThirdwebClient,
@@ -135,6 +119,24 @@ export async function POST(request: NextRequest) {
         } = dataCheck;
 
 
+        // Check if the payment exists in the database
+        const payment = await getPaymentByTid(tid);
+        if (!payment) {
+            return NextResponse.json(
+                { error: 'Payment not found' },
+                { status: 404 }
+            );
+        }
+
+        console.log("Payment found:", payment);
+
+
+
+        const toWalletAddress = ordNm; // Use ordNm as the wallet address
+        console.log("toWalletAddress", toWalletAddress);
+        const amount = amt;
+        console.log("amount", amount);
+
 
 
         const client = createThirdwebClient({
@@ -180,9 +182,6 @@ export async function POST(request: NextRequest) {
 
         console.log("adminSmartWalletAddress: ", adminSmartWalletAddress);
 
-
-        const toWalletAddress = '0x86722e6b5a13EC03c7Fd1e1decfadc846b0929f0'; // MKRW Wallet Address
-        const amount = amt;
 
         /*
         const transactions = [] as any;

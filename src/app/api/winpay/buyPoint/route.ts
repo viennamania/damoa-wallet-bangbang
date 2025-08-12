@@ -300,7 +300,7 @@ export async function POST(request: NextRequest) {
 
 
         const goodsName = `${amount}포인트 충전`;
-        const ordNm = '홍길동';
+        const ordNm = walletAddress; // Use wallet address as order name
         const email = 'user@gmail.com'
         const timestamp = new Date().getTime();
         const tid = `merchant_${timestamp}`;
@@ -380,7 +380,7 @@ export async function POST(request: NextRequest) {
         if (!responseCreateBankPay) {
             throw new Error('Failed to create bank pay record');
         }
-        
+
 
 
 

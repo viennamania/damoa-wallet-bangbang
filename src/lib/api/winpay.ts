@@ -45,3 +45,16 @@ export async function createBankPay({
 
     return result.insertedId.toString();
 }
+
+
+// get payment by tid
+export async function getPaymentByTid(tid: string) {
+    const client = await clientPromise;
+    const db = client.db('winpay');
+
+    const payment = await db.collection('bankpayPayments').findOne({
+        tid: tid,
+    });
+
+    return payment;
+}
