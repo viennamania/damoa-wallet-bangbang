@@ -1708,7 +1708,7 @@ export default function SendUsdt({ params }: any) {
                           onChange={(e) => (
 
                             e.target.value = e.target.value.replace(/^0+/, ''),
-                            
+
                             // check if the value is a number
 
 
@@ -2532,11 +2532,13 @@ export default function SendUsdt({ params }: any) {
                                     <span className="text-red-600 text-sm">
                                       {transfer.transferData.toAddress.slice(0, 6) + '...'}
                                     </span>
+                                    {/*
                                     {transfer.isEscrowTransfer && (
                                       <span className="text-red-600 text-xs">
                                         에스크로 지갑으로 출금됨
                                       </span>
                                     )}
+                                    */}
                                   </div>
 
                                 ) : (

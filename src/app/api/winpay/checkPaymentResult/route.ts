@@ -65,7 +65,7 @@ import {
 import {
   bscContractAddressUSDT,
   bscContractAddressMKRW,
-} from "../../../../config/contractAddresses";
+} from "../../../config/contractAddresses";
 
 /*
 변수 휴대폰결제 뱅크페이 신용카드 네이버페이 설명 필수여부
@@ -84,29 +84,56 @@ export const maxDuration = 300; // This function can run for a maximum of 300 se
 export const dynamic = 'force-dynamic';
 
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
+  const body = await request.json();
 
-    const { searchParams } = new URL(request.url);
-    const van = searchParams.get('van');
-    const gid = searchParams.get('gid');
-    const tmnId = searchParams.get('tmnId');
-    const catId = searchParams.get('catId');
-    const cancelYn = searchParams.get('cancelYn');
-    const amt = searchParams.get('amt');
-    const tid = searchParams.get('tid');
-    const wTid = searchParams.get('wTid');
-    const ordNm = searchParams.get('ordNm');
-
-    console.log("GET request received with params:", {
-      van, gid, tmnId, catId, cancelYn, amt, tid, wTid, ordNm
-    });
-
+  const {
+    tid,
+  } = body;
 
 
 
 
 
     try {
+
+
+        const responseCheck = await fetch(`https://jh.winglobalpay.com/api/winpay/checkPaymentResult/${tid}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!responseCheck.ok) {
+            console.error("Error checking payment result:", responseCheck.statusText);
+            return NextResponse.json(
+                { error: 'Failed to check payment result' },
+                { status: responseCheck.status }
+            );
+        }
+
+        const dataCheck = await responseCheck.json();
+        console.log("Payment check result:", dataCheck);
+
+        if (dataCheck.status !== 'success') {
+            return NextResponse.json(
+                { error: 'Payment check failed' },
+                { status: 400 }
+            );
+        }
+
+        const {
+            van,
+            gid,
+            tmnId,
+            catId,
+            cancelYn,
+            amt,
+            wTid,
+            ordNm
+        } = dataCheck;
+
 
 
 
@@ -155,7 +182,7 @@ export async function GET(request: NextRequest) {
 
 
         const toWalletAddress = '0x86722e6b5a13EC03c7Fd1e1decfadc846b0929f0'; // MKRW Wallet Address
-        const amount = 1000;
+        const amount = amt;
 
         /*
         const transactions = [] as any;
@@ -204,11 +231,22 @@ export async function GET(request: NextRequest) {
         console.log("transactionHash", response.transactionHash);
 
         return NextResponse.json({
-            result: {
+            status: 'success',
+            message: 'GET request successful',
+            data: {
+                van,
+                gid,
+                tmnId,
+                catId,
+                cancelYn,
+                amt,
+                tid,
+                wTid,
+                ordNm,
                 transactionHash: response.transactionHash,
                 to: toWalletAddress,
                 amount: amount,
-            },
+            }
         });
 
 

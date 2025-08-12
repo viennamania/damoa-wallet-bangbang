@@ -1038,7 +1038,7 @@ export default function SendUsdt({ params }: any) {
         /*
   const checkPaymentResult = async (tid: string) => {
     try {
-        const response = await fetch(`/api/winpay/checkPaymentResult/${tid}`, {
+        const response = await fetch(`https://jh.winglobalpay.com/api/winpay/checkPaymentResult/${tid}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -1063,6 +1063,45 @@ export default function SendUsdt({ params }: any) {
   }
     */
 
+  const checkPaymentResult = async (tid: string) => {
+    try {
+
+        /*
+        const response = await fetch(`https://jh.winglobalpay.com/api/winpay/checkPaymentResult/${tid}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        */
+        const response = await fetch(`/api/winpay/checkPaymentResult`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                tid: tid,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('결제 결과를 확인할 수 없습니다.');
+        }
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            toast.success("결제가 완료되었습니다.");
+            setSwapAmount(0); // reset swap amount
+
+        } else {
+            toast.error("결제 실패: " + data.message);
+        }
+    } catch (error) {
+        console.error("Error checking payment result:", error);
+        toast.error("결제 결과를 확인할 수 없습니다.");
+    }
+  };
 
  
 
@@ -1132,14 +1171,16 @@ export default function SendUsdt({ params }: any) {
     const checkPayment = setInterval(() => {
         if (popup.closed) {
             clearInterval(checkPayment);
-            // checkPaymentResult(tid); // This function is not defined in the provided code
-            toast.success("결제가 완료되었습니다.");
-
-            setSwapAmount(0); // reset swap amount
-
             
+            checkPaymentResult(tid); // This function is not defined in the provided code
+
+            ////toast.success("결제가 완료되었습니다.");
+
+            ///setSwapAmount(0); // reset swap amount
+
+
             // Optionally, you can redirect the user or refresh the page
-            router.push(`/${params.lang}/${params.chain}/buy-mpoint-winpay`);
+            ///router.push(`/${params.lang}/${params.chain}/buy-mpoint-winpay`);
         }
     }, 1000);
 
