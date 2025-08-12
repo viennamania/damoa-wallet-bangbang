@@ -81,8 +81,12 @@ export async function POST(request: NextRequest) {
 
     try {
 
+        const checkUrl = `https://jh.winglobalpay.com/api/payment/status/${tid}`;
 
-        const responseCheck = await fetch(`https://jh.winglobalpay.com/api/payment/status//${tid}`, {
+        console.log("checkUrl", checkUrl);
+
+
+        const responseCheck = await fetch(checkUrl, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

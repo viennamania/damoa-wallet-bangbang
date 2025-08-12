@@ -1174,12 +1174,13 @@ export default function SendUsdt({ params }: any) {
     const checkPayment = setInterval(() => {
         if (popup.closed) {
             clearInterval(checkPayment);
+
+
+              //const response = await checkPaymentResult(tid);
+
+            const response = checkPaymentResult(tid);
             
-            checkPaymentResult(tid); // This function is not defined in the provided code
-
-            ////toast.success("결제가 완료되었습니다.");
-
-            ///setSwapAmount(0); // reset swap amount
+            console.log("checkPaymentResult response", response);
 
 
             // Optionally, you can redirect the user or refresh the page
