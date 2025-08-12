@@ -1064,7 +1064,25 @@ export default function SendUsdt({ params }: any) {
     */
 
 
-  const openBankPayWallet = (paymentUrl: any, tid: string) => {
+ 
+
+
+
+  // swap function
+  // 스왑할 수량
+  const [swapAmount, setSwapAmount] = useState(0);
+
+  // 스왑될 수량
+  const [swapAmountTo, setSwapAmountTo] = useState(0);
+
+
+  const [loadingSwap, setLoadingSwap] = useState(false);
+
+
+
+
+
+ const openBankPayWallet = (paymentUrl: any, tid: string) => {
 
     //const bankPayUrl = JSON.parse(urlData).url;
 
@@ -1116,23 +1134,20 @@ export default function SendUsdt({ params }: any) {
             clearInterval(checkPayment);
             // checkPaymentResult(tid); // This function is not defined in the provided code
             toast.success("결제가 완료되었습니다.");
+
+            setSwapAmount(0); // reset swap amount
+
+            
             // Optionally, you can redirect the user or refresh the page
             router.push(`/${params.lang}/${params.chain}/buy-mpoint-winpay`);
         }
     }, 1000);
+
+  
   };
 
 
 
-  // swap function
-  // 스왑할 수량
-  const [swapAmount, setSwapAmount] = useState(0);
-
-  // 스왑될 수량
-  const [swapAmountTo, setSwapAmountTo] = useState(0);
-
-
-  const [loadingSwap, setLoadingSwap] = useState(false);
 
   const winpay = async () => {
     if (loadingSwap) {
