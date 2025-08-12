@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
     try {
 
 
-        const responseCheck = await fetch(`https://jh.winglobalpay.com/api/winpay/checkPaymentResult/${tid}`, {
+        const responseCheck = await fetch(`https://jh.winglobalpay.com/api/payment/status//${tid}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
