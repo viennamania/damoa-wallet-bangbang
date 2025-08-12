@@ -886,6 +886,8 @@
 
             const requestData = buildBankPayRequestData();
 
+            console.log('뱅크페이 결제 요청 데이터:', requestData);
+
             fetch(`${CONFIG.SERVER_URL}/api/bankpay/request`, {
                 method: 'POST',
                 headers: {

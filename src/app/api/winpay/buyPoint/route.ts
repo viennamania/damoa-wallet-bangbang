@@ -272,13 +272,39 @@ export async function POST(request: NextRequest) {
 
             */
 
+
+
+        /*
+                function buildBankPayRequestData() {
+            const timestamp = new Date().getTime();
+            const tid = `testMerchant_${timestamp}`;
+            
+            return {
+                tid: tid,
+                amt: parseInt(document.getElementById('bankpay_amt').value, 10),
+                goodsName: document.getElementById('bankpay_goodsName').value.trim(),
+                ordNm: document.getElementById('bankpay_ordNm').value.trim(),
+                email: document.getElementById('bankpay_email').value.trim(),
+                productType: '00',
+                payMethod: 'BPAY',
+                cashReceipt: parseInt(document.getElementById('bankpayCashReceipt').value),
+                isMandatoryIssuer: document.getElementById('mandatoryIssuer').checked,
+                returnUrl: `${CONFIG.SERVER_URL}/payment/bankpay/result.html`
+            };
+        }
+        */
+
+
+
         const goodsName = `${amount}포인트 충전`;
-        const ordNm = walletAddress ? walletAddress : 'Unknown User';
+        const ordNm = '홍길동';
         const email = 'user@gmail.com'
+        const timestamp = new Date().getTime();
+        const tid = `merchant_${timestamp}`;
 
         const requestData = {
             payMethod: 'BPAY',
-            tid: `ORDER_${Date.now()}`,
+            tid: tid,
             amt: amount,
             goodsName: goodsName,
             ordNm: ordNm,
@@ -293,7 +319,7 @@ export async function POST(request: NextRequest) {
 
 
 
-        const responsePayment = await fetch(`https://jh.winglobalpay.com/api/payment/request`, {
+        const responsePayment = await fetch(`https://jh.winglobalpay.com/api/bankpay/request`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -317,6 +343,13 @@ export async function POST(request: NextRequest) {
         const paymentData = await responsePayment.json();
 
         console.log("Payment request response:", paymentData);
+        /*
+        {
+            success: true,
+            paymentUrl: '{"transaction_id":"0000400","tab_order":"SEM","amount":"1000","is_cash_receipt_mandatory_issuer":"false","approve_no":"21000212","is_cash_receipt_request":"0","mall_name":"WinGlobalPay","item_name":"1000포인트 충전","electronic_purse_receiving_url":"https://jh.winglobalpay.com/api/bankpay/receive-wallet?trackId=merchant_1754979951130&tmnId=WGP329548","url":"https://www.bankpay.or.kr:7443/setElectronicPurse_pc.do"}',
+            message: null
+            }
+        */
 
         if (!paymentData.success) {
             throw new Error(`결제 요청 실패: ${paymentData.message || '알 수 없는 오류가 발생했습니다.'}`);

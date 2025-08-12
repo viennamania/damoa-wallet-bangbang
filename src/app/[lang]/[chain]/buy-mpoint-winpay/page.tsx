@@ -949,6 +949,168 @@ export default function SendUsdt({ params }: any) {
 
 
 
+  /*
+          function openBankPayWallet(urlData, tid) {
+            const width = 720;
+            const height = 600;
+            const left = (window.screen.width - width) / 2;
+            const top = (window.screen.height - height) / 2;
+
+            const popup = window.open('', 'BankPayPopup', 
+                `width=${width},height=${height},left=${left},top=${top}`);
+
+            if (!popup || popup.closed || typeof popup.closed == 'undefined') {
+                showErrorMessage('팝업이 차단되었습니다. 팝업 차단을 해제해주세요.');
+                return;
+            }
+
+            const form = document.createElement('form');
+            form.setAttribute('method', 'post');
+            form.setAttribute('action', urlData.url);
+            form.setAttribute('target', 'BankPayPopup');
+
+            for (const key in urlData) {
+                if (key !== 'url') {
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'hidden');
+                    input.setAttribute('name', key);
+                    input.setAttribute('value', urlData[key]);
+                    form.appendChild(input);
+                }
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+
+            // 결제창 닫힘 감지
+            const checkPayment = setInterval(() => {
+                if (popup.closed) {
+                    clearInterval(checkPayment);
+                    checkPaymentResult(tid);
+                }
+            }, 1000);
+        }
+
+
+
+
+        function checkPaymentResult(tid) {
+            showLoader(true);
+
+            fetch(`${CONFIG.SERVER_URL}/api/payment/status/${tid}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403 || response.status === 401) {
+                        jwtToken = '';
+                        sessionStorage.removeItem('jwtToken');
+                        updateAuthStatus();
+                        throw new Error('로그인이 끊겼습니다. 다시 로그인 해주시기 바랍니다.');
+                    }
+                    throw new Error(`HTTP 오류! 상태: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                showLoader(false);
+
+                if (data.success) {
+                    showSuccessMessage(`결제가 완료되었습니다. 상태: ${JSON.stringify(data, null, 2)}`);
+                } else {
+                    showErrorMessage(`결제 실패: ${data.message || '결제가 정상적으로 완료되지 않았습니다.'}`);
+                }
+            })
+            .catch(error => {
+                showLoader(false);
+                showErrorMessage('결제 결과를 확인할 수 없습니다.');
+            });
+        }
+
+
+
+            */
+
+        /*
+  const checkPaymentResult = async (tid: string) => {
+    try {
+        const response = await fetch(`/api/winpay/checkPaymentResult/${tid}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('결제 결과를 확인할 수 없습니다.');
+        }
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            toast.success("결제가 완료되었습니다.");
+        } else {
+            toast.error("결제 실패: " + data.message);
+        }
+    } catch (error) {
+        console.error("Error checking payment result:", error);
+        toast.error("결제 결과를 확인할 수 없습니다.");
+    }
+  }
+    */
+
+
+  const openBankPayWallet = (urlData: any, tid: string) => {
+
+    const bankPayUrl = JSON.parse(urlData).url;
+
+    console.log("bankPayUrl", bankPayUrl);
+
+
+    const width = 720;
+    const height = 600;
+    const left = (window.screen.width - width) / 2;
+    const top = (window.screen.height - height) / 2; 
+    const popup = window.open('', 'BankPayPopup', 
+        `width=${width},height=${height},left=${left},top=${top}`);
+    if (!popup || popup.closed || typeof popup.closed == 'undefined') {
+        toast.error('팝업이 차단되었습니다. 팝업 차단을 해제해주세요.');
+        return;
+    }
+
+    const form = document.createElement('form');
+    form.setAttribute('method', 'post');
+    form.setAttribute('action', urlData.url);
+    form.setAttribute('target', 'BankPayPopup');
+    for (const key in urlData) {
+        if (key !== 'url') {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'hidden');
+            input.setAttribute('name', key);
+            input.setAttribute('value', urlData[key]);
+            form.appendChild(input);
+        }
+    }
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+    // 결제창 닫힘 감지
+    const checkPayment = setInterval(() => {
+        if (popup.closed) {
+            clearInterval(checkPayment);
+            // checkPaymentResult(tid); // This function is not defined in the provided code
+            toast.success("결제가 완료되었습니다.");
+            // Optionally, you can redirect the user or refresh the page
+            router.push(`/${params.lang}/${params.chain}/buy-mpoint-winpay`);
+        }
+    }, 1000);
+  };
+
+
 
   // swap function
   // 스왑할 수량
@@ -998,25 +1160,25 @@ export default function SendUsdt({ params }: any) {
         }),
       });
       const data = await response.json();
-      console.log("winpay response", data);
+      //console.log("winpay response", data);
 
       if (data.status === 'success') {
 
-        const jwtToken = data.jwtToken;
+        const paymentUrl = data.paymentUrl;
 
-        console.log("jwtToken", jwtToken);
+        console.log("paymentUrl", paymentUrl);
 
+        const tid = data.tid;
 
-        toast.success("포인트 충전 성공");
-
-        setSwapAmount(0); // reset amount
-        setSwapAmountTo(0); // reset amount to
+        openBankPayWallet(paymentUrl, tid);
 
 
 
       } else {
-        toast.error("포인트 충전 실패");
+        toast.error("포인트 충전 요청 실패: " + data.message);
       }
+
+   
 
     } catch (error) {
       
