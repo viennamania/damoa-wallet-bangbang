@@ -1797,9 +1797,12 @@ function IndexPage(
                         </button>
                         <button
                             onClick={() => {
+                              /*
                                 router.push(
                                     "/" + params.lang + "/" + params.chain + "/buy-mpoint-winpay"
                                 );
+                              */
+                              alert("준비중입니다.");
                             }}
                             className="border border-blue-200 bg-blue-50
                               rounded-lg
@@ -1822,9 +1825,12 @@ function IndexPage(
                         </button>
                         <button
                             onClick={() => {
+                              /*
                                 router.push(
                                     "/" + params.lang + "/" + params.chain + "/buy-mpoint-giftcard"
                                 );
+                              */
+                              alert("준비중입니다.");
                             }}
                             className="border border-yellow-200 bg-yellow-50
                               rounded-lg
@@ -1847,9 +1853,12 @@ function IndexPage(
                         </button>
                         <button
                             onClick={() => {
+                              /*
                                 router.push(
                                     "/" + params.lang + "/" + params.chain + "/buy-mpoint-bank"
                                 );
+                              */
+                              alert("준비중입니다.");
                             }}
                             className="border border-gray-200 bg-gray-50
                               rounded-lg
