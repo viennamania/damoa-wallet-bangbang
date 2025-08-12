@@ -1730,10 +1730,15 @@ function IndexPage(
 
                       </div>
 
+                      {/* "뱅크페이 충전", 카드 충전", "상품권 충전", "계좌송금 충전" */}
+
                       <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-2 p-5
                         rounded-b-lg
                         bg-white
                       ">
+
+
+
                         {/*
                         <button
                             onClick={() => {   
@@ -1779,7 +1784,7 @@ function IndexPage(
                         ">
                           <div className="flex flex-row gap-2 items-center justify-center">
                             <span className="text-sm md:text-lg">
-                              뱅크페이로 충전
+                              뱅크페이 충전
                             </span>
                             <Image
                                 src="/icon-charge.png"
@@ -1804,7 +1809,7 @@ function IndexPage(
                         ">
                           <div className="flex flex-row gap-2 items-center justify-center">
                             <span className="text-sm md:text-lg">
-                              카카오페이로 충전
+                              카드 충전
                             </span>
                             <Image
                                 src="/icon-charge.png"
@@ -1815,6 +1820,59 @@ function IndexPage(
                             />
                           </div>
                         </button>
+                        <button
+                            onClick={() => {
+                                router.push(
+                                    "/" + params.lang + "/" + params.chain + "/buy-mpoint-giftcard"
+                                );
+                            }}
+                            className="border border-yellow-200 bg-yellow-50
+                              rounded-lg
+                              p-2
+                              text-sm md:text-lg font-semibold text-zinc-800
+                              hover:bg-yellow-100
+                        ">
+                          <div className="flex flex-row gap-2 items-center justify-center">
+                            <span className="text-sm md:text-lg">
+                              상품권 충전
+                            </span>
+                            <Image
+                                src="/icon-charge.png"
+                                alt="Charge"
+                                width={25}
+                                height={25}
+                                className="rounded-lg w-6 h-6 xl:w-8 xl:h-8"
+                            />
+                          </div>
+                        </button>
+                        <button
+                            onClick={() => {
+                                router.push(
+                                    "/" + params.lang + "/" + params.chain + "/buy-mpoint-bank"
+                                );
+                            }}
+                            className="border border-gray-200 bg-gray-50
+                              rounded-lg
+                              p-2
+                              text-sm md:text-lg font-semibold text-zinc-800
+                              hover:bg-gray-100
+                        ">
+                          <div className="flex flex-row gap-2 items-center justify-center">
+                            <span className="text-sm md:text-lg">
+                              계좌송금 충전
+                            </span>
+                            <Image
+                                src="/icon-charge.png"
+                                alt="Charge"
+                                width={25}
+                                height={25}
+                                className="rounded-lg w-6 h-6 xl:w-8 xl:h-8"
+                            />
+                          </div>
+                        </button>
+
+
+
 
                       </div>
 
