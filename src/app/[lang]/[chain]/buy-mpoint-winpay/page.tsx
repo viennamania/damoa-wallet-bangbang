@@ -1064,12 +1064,24 @@ export default function SendUsdt({ params }: any) {
     */
 
 
-  const openBankPayWallet = (urlData: any, tid: string) => {
+  const openBankPayWallet = (paymentUrl: any, tid: string) => {
 
-    const bankPayUrl = JSON.parse(urlData).url;
+    //const bankPayUrl = JSON.parse(urlData).url;
+
+    //console.log("bankPayUrl", bankPayUrl);
+
+    console.log("paymentUrl", paymentUrl);
+
+    const urlData = JSON.parse(paymentUrl);
+
+    console.log("urlData", urlData);
+
+    const bankPayUrl = urlData.url;
 
     console.log("bankPayUrl", bankPayUrl);
 
+
+    
 
     const width = 720;
     const height = 600;
