@@ -1364,8 +1364,8 @@ export default function SendUsdt({ params }: any) {
                     <button
                       disabled={
                         !address || !swapAmount || loadingSwap
-                        || swapAmountTo > balance
-                        || swapAmountTo < 1 // 최소 1 USDT 이상 스왑 가능
+                        //|| swapAmountTo > balance
+                        //|| swapAmountTo < 1 // 최소 1 USDT 이상 스왑 가능
                       }
 
                       onClick={winpay}
@@ -1373,8 +1373,8 @@ export default function SendUsdt({ params }: any) {
                       className={`w-full p-2 rounded-lg text-xl font-semibold
                           ${
                           !address || !swapAmount || loadingSwap
-                          || swapAmountTo > balance
-                          || swapAmountTo < 1 // 최소 1 USDT 이상 스왑 가능
+                          //|| swapAmountTo > balance
+                          //|| swapAmountTo < 1 // 최소 1 USDT 이상 스왑 가능
                           ?'bg-gray-300 text-gray-400'
                           : 'bg-green-500 text-white'
                           }
@@ -1409,7 +1409,7 @@ export default function SendUsdt({ params }: any) {
                     </button>
 
 
-
+                    {/*
                     { swapAmountTo > balance && (
                       <div className='text-red-500 text-sm'>
                         테더(USDT) 잔액이 부족합니다. <br />
@@ -1422,6 +1422,7 @@ export default function SendUsdt({ params }: any) {
                         최소 1 USDT 이상 구매 가능합니다.
                       </div>
                     ) }
+                    */}
 
                   </div>
 

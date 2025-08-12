@@ -46,7 +46,7 @@ import { NextResponse, type NextRequest } from "next/server";
 // POST
 
 export async function POST(request: NextRequest) {
-    const body = await request.json();
+    const body: { walletAddress: string; amount: number; toWalletAddress: string } = await request.json();
 
     const {
         walletAddress,
@@ -56,6 +56,14 @@ export async function POST(request: NextRequest) {
 
 
     console.log("Request body:", body);
+
+    if (!walletAddress || !amount || !toWalletAddress) {
+        console.error("Missing required parameters:", walletAddress, amount, toWalletAddress);
+        return NextResponse.json(
+            { error: 'Missing required parameters' },
+            { status: 400 }
+        );
+    }
 
 
 
@@ -80,19 +88,19 @@ export async function POST(request: NextRequest) {
             body: JSON.stringify({ tmnId: tmnId })
         });
 
-        const data = await response.json();
+        const loginData = await response.json();
 
-        console.log("Login response:", data);
+        console.log("Login response:", loginData);
 
         if (!response.ok) {
-            throw new Error(`Login failed: ${data.error || 'Unknown error'}`);
+            throw new Error(`Login failed: ${loginData.error || 'Unknown error'}`);
         }
-        if (!data.token) {
+        if (!loginData.token) {
             throw new Error('Token not received');
         }
 
 
-        const jwtToken = data.token;
+        const jwtToken = loginData.token;
         //sessionStorage.setItem('jwtToken', jwtToken);
 
 
@@ -264,28 +272,74 @@ export async function POST(request: NextRequest) {
 
             */
 
+        const goodsName = `${amount}포인트 충전`;
+        const ordNm = walletAddress ? walletAddress : 'Unknown User';
+        const email = 'user@gmail.com'
+
         const requestData = {
             payMethod: 'BPAY',
             tid: `ORDER_${Date.now()}`,
-            amt: parseInt(amount, 10),
-            goodsName: 'Payment for Damoa Wallet',
-            ordNm: 'Damoa Wallet User',
-            email: '<user_email@example.com>',
+            amt: amount,
+            goodsName: goodsName,
+            ordNm: ordNm,
+            email: email,
             productType: '00',
             cashReceipt: 0, // No cash receipt
             isMandatoryIssuer: false, // Not mandatory issuer
-            returnUrl: `https://discordapp.com/api/webhooks/1390514441380036638/YL10zmKNU9yOjmrjOMsEWiEDeoFmx58ht7UsnzGI7_z1MHnB_8Ux-lqnbsVHwzFfahfA`,
+            ///returnUrl: `https://discordapp.com/api/webhooks/1390514441380036638/YL10zmKNU9yOjmrjOMsEWiEDeoFmx58ht7UsnzGI7_z1MHnB_8Ux-lqnbsVHwzFfahfA`,
+
+            returnUrl: 'https://wallet.cryptopay.beauty/webhook/winpay/buyPoint',
         }
 
 
-        fetch(`https://jh.winglobalpay.com/api/payment/request`, {
+
+        const responsePayment = await fetch(`https://jh.winglobalpay.com/api/payment/request`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${jwtToken}`
             },
             body: JSON.stringify(requestData)
-        }).then(response => {
+        });
+
+
+        if (!responsePayment.ok) {
+            if (responsePayment.status === 403 || responsePayment.status === 401) {
+                //jwtToken = '';
+                //sessionStorage.removeItem('jwtToken');
+                //updateAuthStatus();
+                throw new Error('인증이 만료되었습니다. 다시 로그인해주세요.');
+            }
+            const errorText = await responsePayment.text();
+            throw new Error(`HTTP 오류! 상태: ${responsePayment.status}, 메시지: ${errorText}`);
+        }
+
+        const paymentData = await responsePayment.json();
+
+        console.log("Payment request response:", paymentData);
+
+        if (!paymentData.success) {
+            throw new Error(`결제 요청 실패: ${paymentData.message || '알 수 없는 오류가 발생했습니다.'}`);
+        }
+
+        const paymentUrl = paymentData.paymentUrl;
+        console.log("Payment URL:", paymentUrl);
+
+
+        return NextResponse.json({
+            status: 'success',
+            message: 'Payment request successful',
+            paymentUrl: paymentUrl,
+            tid: requestData.tid,
+        });
+
+        /*
+        ).then(response => {
+
+            console.log("Payment request response:", response);
+
+
+
             if (!response.ok) {
                 if (response.status === 403 || response.status === 401) {
                     throw new Error('Authentication expired. Please log in again.');
@@ -323,6 +377,9 @@ export async function POST(request: NextRequest) {
                 });
 
             }
+            */
+
+        /*
         }).catch(error => {
             //showLoader(false);
             if (error.message.includes('Failed to fetch')) {
@@ -339,25 +396,8 @@ export async function POST(request: NextRequest) {
                 }, { status: 500 });
             }
         });
+        */
 
-
-
-
-
-
-
-
-
-
-        return NextResponse.json({
-            status: 'success',
-            message: 'Login successful',
-            jwtToken: jwtToken,
-            tmnId: tmnId,
-            walletAddress: walletAddress,
-            amount: amount,
-            toWalletAddress: toWalletAddress,
-        });
 
 
 
