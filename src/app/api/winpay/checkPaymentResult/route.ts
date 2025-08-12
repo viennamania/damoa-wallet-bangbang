@@ -130,13 +130,10 @@ export async function POST(request: NextRequest) {
 
         console.log("Payment found:", payment);
 
-
-
         const toWalletAddress = ordNm; // Use ordNm as the wallet address
         console.log("toWalletAddress", toWalletAddress);
         const amount = amt;
         console.log("amount", amount);
-
 
 
         const client = createThirdwebClient({
