@@ -267,22 +267,4 @@ export async function POST(request: NextRequest) {
 
 
 
-
-
-    return NextResponse.json({
-        status: 'success',
-        message: 'GET request successful',
-        data: {
-            van,
-            gid,
-            tmnId,
-            catId,
-            cancelYn,
-            amt,
-            tid,
-            wTid,
-            ordNm
-        }
-    });
-
 }
