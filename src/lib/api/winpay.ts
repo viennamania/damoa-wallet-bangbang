@@ -28,7 +28,7 @@ export async function createBankPay({
     returnUrl?: string;
     }) {
     const client = await clientPromise;
-    const db = client.db('winpay');
+    const db = client.db('damoa');
     
     const result = await db.collection('bankpayPayments').insertOne({
         tid,
