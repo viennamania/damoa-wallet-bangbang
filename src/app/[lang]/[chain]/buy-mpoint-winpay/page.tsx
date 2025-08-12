@@ -1081,7 +1081,7 @@ export default function SendUsdt({ params }: any) {
     console.log("bankPayUrl", bankPayUrl);
 
 
-    
+
 
     const width = 720;
     const height = 600;
@@ -1466,6 +1466,8 @@ export default function SendUsdt({ params }: any) {
                           value={swapAmount}
 
                           onChange={(e) => (
+                            //  remove start from 0
+                            e.target.value = e.target.value.replace(/^0+/, ''),
 
                             // check if the value is a number
                             // check if start 0, if so remove it

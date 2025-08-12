@@ -1707,6 +1707,8 @@ export default function SendUsdt({ params }: any) {
 
                           onChange={(e) => (
 
+                            e.target.value = e.target.value.replace(/^0+/, ''),
+                            
                             // check if the value is a number
 
 
@@ -2287,6 +2289,8 @@ export default function SendUsdt({ params }: any) {
                           value={swapAmount}
 
                           onChange={(e) => (
+
+                            e.target.value = e.target.value.replace(/^0+/, ''),
 
                             // check if the value is a number
                             // check if start 0, if so remove it
