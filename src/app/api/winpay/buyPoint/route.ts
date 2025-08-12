@@ -1,5 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import {
+    createBankPay,
+} from '@/lib/api/winpay';
 
 /*
 		function directLogin(tmnId, payKey) {
@@ -359,6 +362,26 @@ export async function POST(request: NextRequest) {
 
         const paymentUrl = paymentData.paymentUrl;
         console.log("Payment URL:", paymentUrl);
+
+
+        const responseCreateBankPay = await createBankPay({
+            tid: requestData.tid,
+            amount: requestData.amt,
+            goodsName: requestData.goodsName,
+            ordNm: requestData.ordNm,
+            email: requestData.email,
+            productType: requestData.productType,
+            cashReceipt: requestData.cashReceipt,
+            isMandatoryIssuer: requestData.isMandatoryIssuer,
+            returnUrl: requestData.returnUrl,
+        });
+
+        console.log("Bank pay response:", responseCreateBankPay);
+        if (!responseCreateBankPay) {
+            throw new Error('Failed to create bank pay record');
+        }
+        
+
 
 
         return NextResponse.json({
