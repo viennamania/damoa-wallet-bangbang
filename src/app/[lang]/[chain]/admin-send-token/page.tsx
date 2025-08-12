@@ -2567,12 +2567,15 @@ export default function SendUsdt({ params }: any) {
                                       <span className="text-green-600 text-sm">
                                         {transfer.transferData.fromAddress.slice(0, 6) + '...'}
                                       </span>
+                                      {/*
                                       {transfer.isEscrowTransfer && (
                                         <span className="text-green-600 text-xs">
                                           에스크로 지갑에서 입금됨
                                         </span>
                                       )}
+                                      */}
                                     </div>
+
 
                                   )}
 
