@@ -14,6 +14,10 @@ export async function POST(request: NextRequest) {
 
     const result = await createNotice(data);
 
+    console.log("Notice created:", result);
+
+    
+
     if (result.success) {
         return NextResponse.json({ success: true, noticeId: result.noticeId });
     } else {
