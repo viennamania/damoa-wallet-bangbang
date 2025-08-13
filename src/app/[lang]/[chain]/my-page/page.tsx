@@ -1593,7 +1593,8 @@ function AgentPage(
 
 
 
-                    {!address && (
+                    {/*!address && (*/}
+                    {true && (
 
                         <div className="w-full flex flex-col justify-center items-center gap-2 p-2">
 
