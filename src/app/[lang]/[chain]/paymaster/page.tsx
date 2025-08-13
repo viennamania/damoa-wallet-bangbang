@@ -2510,7 +2510,7 @@ export default function Index({ params }: any) {
                               시세제공
                             </span>
                             <Image
-                              src="/logo-upbit.jpg"
+                              src="/icon-upbit.png"
                               alt="upbit"
                               width={100}
                               height={100}
