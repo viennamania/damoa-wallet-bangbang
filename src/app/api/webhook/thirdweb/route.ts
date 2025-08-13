@@ -329,7 +329,7 @@ export async function POST(request: NextRequest) {
     isEscrowTransfer,
   });
 
-  ///console.log("insertOne", result);
+  console.log("insertOne", result);
 
 
 
