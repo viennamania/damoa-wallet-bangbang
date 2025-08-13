@@ -81,6 +81,8 @@ export async function POST(request: NextRequest) {
 
     try {
 
+        /*
+
         const checkUrl = `https://jh.winglobalpay.com/api/payment/status/${tid}`;
 
         console.log("checkUrl", checkUrl);
@@ -183,32 +185,7 @@ export async function POST(request: NextRequest) {
 
         console.log("adminSmartWalletAddress: ", adminSmartWalletAddress);
 
-
-        /*
-        const transactions = [] as any;
-
-
-
-        const transactionMaster = transfer({
-            contract: contractUSDT,
-            to: toWalletAddress,
-            amount: amount,
-        });
-        transactions.push(transactionMaster);
-
-
-
-      
-      const batchOptions: SendBatchTransactionOptions = {
-        account: account,
-        transactions: transactions,
-      };
-      
-      const batchResponse = await sendBatchTransaction(
-        batchOptions
-      );
-      console.log("batchResponse", batchResponse);
-        */
+    
         const response = await sendTransaction({
             account: account,
             transaction: transfer({
@@ -248,6 +225,40 @@ export async function POST(request: NextRequest) {
                 amount: amount,
             }
         });
+        */
+
+
+
+        // get payment by tid
+        const payment = await getPaymentByTid(tid);
+        if (!payment) {
+            console.error("Payment not found for tid:", tid);
+            // Return an error response if payment is not found
+            return NextResponse.json({
+                status: 'error',
+                message: 'Payment not found',
+            });
+        }
+        console.log("Payment found:", payment);
+
+        const status = payment.status;
+
+        const toWalletAddress = payment.ordNm; // Use ordNm as the wallet address
+        console.log("toWalletAddress", toWalletAddress);
+        const amount = payment.amount;
+        console.log("amount", amount);
+
+        return NextResponse.json({
+            status: 'success',
+            message: 'Payment found and ready for processing',
+            data: {
+                tid,
+                toWalletAddress,
+                amount,
+            },
+            paymentStatus: status,
+        });
+
 
 
 

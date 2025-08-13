@@ -1180,8 +1180,9 @@ export default function SendUsdt({ params }: any) {
 
               //const response = await checkPaymentResult(tid);
 
-            //const response = checkPaymentResult(tid);
-            
+            checkPaymentResult(tid);
+
+
             //console.log("checkPaymentResult response", response);
 
 
