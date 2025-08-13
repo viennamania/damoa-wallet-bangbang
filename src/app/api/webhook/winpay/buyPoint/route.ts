@@ -115,6 +115,8 @@ export async function GET(request: NextRequest) {
 
     try {
 
+      
+
         if (!tid || !ordNm || !amt) {
             console.error("tid, ordNm, and amt are required");
             // Return an error response if tid, ordNm, or amt is missing
@@ -127,6 +129,8 @@ export async function GET(request: NextRequest) {
         // get payment by tid
         const payment = await getPaymentByTid(tid);
         if (!payment) {
+            console.error("Payment not found for tid:", tid);
+            // Return an error response if payment is not found
             return NextResponse.json({
                 status: 'error',
                 message: 'Payment not found',

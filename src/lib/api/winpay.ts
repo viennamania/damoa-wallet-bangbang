@@ -50,7 +50,7 @@ export async function createBankPay({
 // get payment by tid
 export async function getPaymentByTid(tid: string) {
     const client = await clientPromise;
-    const db = client.db('winpay');
+    const db = client.db('damoa');
 
     const payment = await db.collection('bankpayPayments').findOne({
         tid: tid,
