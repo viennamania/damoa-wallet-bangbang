@@ -1170,6 +1170,8 @@ export default function SendUsdt({ params }: any) {
     document.body.appendChild(form);
     form.submit();
     document.body.removeChild(form);
+
+    
     // 결제창 닫힘 감지
     const checkPayment = setInterval(() => {
         if (popup.closed) {
@@ -1178,9 +1180,9 @@ export default function SendUsdt({ params }: any) {
 
               //const response = await checkPaymentResult(tid);
 
-            const response = checkPaymentResult(tid);
+            //const response = checkPaymentResult(tid);
             
-            console.log("checkPaymentResult response", response);
+            //console.log("checkPaymentResult response", response);
 
 
             // Optionally, you can redirect the user or refresh the page

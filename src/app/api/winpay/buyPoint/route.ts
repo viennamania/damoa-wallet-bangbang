@@ -319,7 +319,7 @@ export async function POST(request: NextRequest) {
 
             ///////returnUrl: 'https://wallet.cryptopay.beauty/api/webhook/winpay/buyPoint',
 
-            returnUrl: 'http://wallet.cryptopay.beauty/api/webhook/winpay/buyPoint',
+            returnUrl: 'https://wallet.cryptopay.beauty/api/webhook/winpay/buyPoint',
         }
 
 
