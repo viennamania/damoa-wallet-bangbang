@@ -1,12 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-/*
 import {
-  UserProps,
-    acceptBuyOrder,
-  updateBuyOrderByQueueId,
-} from '@lib/api/order';
-*/
+    getPaymentByTid,
+} from '@/lib/api/winpay';
 
 import {
   ///getOneByWalletAddress
@@ -66,6 +62,7 @@ import {
   bscContractAddressUSDT,
   bscContractAddressMKRW,
 } from "../../../../config/contractAddresses";
+import { stat } from "fs";
 
 /*
 변수 휴대폰결제 뱅크페이 신용카드 네이버페이 설명 필수여부
@@ -103,10 +100,35 @@ export async function GET(request: NextRequest) {
 
 
 
-
-
-
     try {
+
+        if (!tid || !ordNm || !amt) {
+            console.error("tid, ordNm, and amt are required");
+            // Return an error response if tid, ordNm, or amt is missing
+            return NextResponse.json({
+                status: 'error',
+                message: 'tid, ordNm, and amt are required',
+            });
+        }
+
+        // get payment by tid
+        const payment = await getPaymentByTid(tid);
+        if (!payment) {
+            return NextResponse.json({
+                status: 'error',
+                message: 'Payment not found',
+            });
+        }
+
+        console.log("Payment found:", payment);
+
+
+
+        const toWalletAddress = ordNm; // Use ordNm as the wallet address
+        console.log("toWalletAddress", toWalletAddress);
+        const amount = amt;
+        console.log("amount", amount);
+
 
 
 
@@ -116,7 +138,8 @@ export async function GET(request: NextRequest) {
 
         if (!client) {
             return NextResponse.json({
-            result: null,
+                status: 'error',
+                message: 'Failed to create thirdweb client',
             });
         }
 
@@ -154,34 +177,34 @@ export async function GET(request: NextRequest) {
         console.log("adminSmartWalletAddress: ", adminSmartWalletAddress);
 
 
-        const toWalletAddress = '0x86722e6b5a13EC03c7Fd1e1decfadc846b0929f0'; // MKRW Wallet Address
-        const amount = 1000;
 
         /*
-        const transactions = [] as any;
+          const transactions = [] as any;
 
 
 
-        const transactionMaster = transfer({
-            contract: contractUSDT,
-            to: toWalletAddress,
-            amount: amount,
-        });
-        transactions.push(transactionMaster);
+          const transactionMaster = transfer({
+              contract: contractUSDT,
+              to: toWalletAddress,
+              amount: amount,
+          });
+          transactions.push(transactionMaster);
 
 
 
-      
-      const batchOptions: SendBatchTransactionOptions = {
-        account: account,
-        transactions: transactions,
-      };
-      
-      const batchResponse = await sendBatchTransaction(
-        batchOptions
-      );
-      console.log("batchResponse", batchResponse);
-        */
+        
+        const batchOptions: SendBatchTransactionOptions = {
+          account: account,
+          transactions: transactions,
+        };
+        
+        const batchResponse = await sendBatchTransaction(
+          batchOptions
+        );
+        console.log("batchResponse", batchResponse);
+          */
+
+
         const response = await sendTransaction({
             account: account,
             transaction: transfer({
@@ -231,28 +254,5 @@ export async function GET(request: NextRequest) {
 
     }
 
-
-
-
-
-
-
-
-
-    return NextResponse.json({
-        status: 'success',
-        message: 'GET request successful',
-        data: {
-            van,
-            gid,
-            tmnId,
-            catId,
-            cancelYn,
-            amt,
-            tid,
-            wTid,
-            ordNm
-        }
-    });
 
 }
