@@ -3,106 +3,29 @@
 //import { Session, Chatbox } from "@talkjs/react";
 
 
-import dynamic from "next/dynamic";
-
 import '@sendbird/uikit-react/dist/index.css';
 
-
-import { client } from "../../../client";
-
 import {
-    getContract,
-    sendTransaction,
-    sendAndConfirmTransaction,
-} from "thirdweb";
 
-import {
-    ConnectButton,
-    useActiveAccount,
-    useActiveWallet,
-
-    useConnectedWallets,
-    useSetActiveWallet,
+  useActiveWallet,
+  
 } from "thirdweb/react";
 
+import { balanceOf, transfer } from "thirdweb/extensions/erc20";
+ 
 
-
+import { useSearchParams } from 'next/navigation'
 
 import Image from 'next/image';
 
 import React, { useEffect, useState, Suspense } from 'react';
 
-import { Button } from "@headlessui/react";
-
 import Link from "next/link";
 
+import { toast } from 'react-toastify';
 
 
-
-//import Uploader from '@/components/uploader';
-
-import {
-    balanceOf,
-    totalSupply,
-} from "thirdweb/extensions/erc20";
-
-import {
-    polygon,
-    arbitrum,
-    ethereum,
-    bsc,
-} from "thirdweb/chains";
-
-import {
-  inAppWallet,
-  createWallet,
-} from "thirdweb/wallets";
-
-
-import {
-    useRouter,
-    useSearchParams,
-} from "next//navigation";
-
-
-
-
-import {
-    bscContractAddressUSDT,
-    bscContractAddressMKRW,
-} from "@/app/config/contractAddresses";
-
-
-const wallets = [
-  inAppWallet({
-    auth: {
-      options: [
-        "google",
-        "discord",
-        "email",
-        "x",
-        "passkey",
-        //"phone",
-        "facebook",
-        "line",
-        "apple",
-        "coinbase",
-      ],
-    },
-  }),
-  /*
-  createWallet("com.coinbase.wallet"),
-  createWallet("me.rainbow"),
-  createWallet("io.rabby"),
-  createWallet("io.zerion.wallet"),
-  createWallet("io.metamask"),
-  //createWallet("com.binance.wallet"),
-  createWallet("com.bitget.web3"),
-  createWallet("com.trustwallet.app"),
-  createWallet("com.okex.wallet"),
-  */
-];
-
+import dynamic from 'next/dynamic'
 
 
 function AgentPage(
@@ -144,64 +67,37 @@ function AgentPage(
   
 
 
-    const contractMKRW = getContract({
-        client,
-        chain: bsc,
-        address: bscContractAddressMKRW,
-    });
-    
-    const contractUSDT = getContract({
-        client,
-        chain: bsc,
-        address: bscContractAddressUSDT,
-    });
+  console.log('address', address);
 
+  const [balance, setBalance] = useState(0);
 
-    const [totalSupplyMKRW, setTotalSupplyMKRW] = useState(0);
-    const [balanceMKRW, setBalanceMKRW] = useState(0);
-    useEffect(() => {
+  /*
+  useEffect(() => {
 
-        // get the balance
-        const getBalanceMKRW = async () => {
+    if (!address) return;
+    // get the balance
+    const getBalance = async () => {
+      const result = await balanceOf({
+        contract,
+        address: address,
+      });
+  
+      //console.log(result);
+  
+      setBalance( Number(result) / 10 ** 18 );
 
-        if (!address) {
-            return;
-        }
+    };
 
-        ///console.log('getBalance address', address);
+    if (address) getBalance();
 
+    const interval = setInterval(() => {
+      if (address) getBalance();
+    } , 1000);
 
-        const resultTotalSupply = await totalSupply({
-            contract: contractMKRW,
-        });
-        //console.log("resultTotalSupply", resultTotalSupply);
-        setTotalSupplyMKRW(Number(resultTotalSupply) / 10 ** 18);
+    return () => clearInterval(interval);
 
-
-
-
-        
-        const result = await balanceOf({
-            contract: contractMKRW,
-            address: address,
-        });
-
-
-        //console.log(result);
-
-        if (!result) return;
-
-        setBalanceMKRW( Number(result) / 10 ** 18 );
-
-        };
-
-        if (address) getBalanceMKRW();
-        const interval = setInterval(() => {
-            if (address) getBalanceMKRW();
-        } , 5000)
-        return () => clearInterval(interval);
-    }, [address, contractMKRW]);
-
+  } , [address]);
+  */
 
 
       
@@ -253,6 +149,212 @@ function AgentPage(
 
 
 
+  // setFieldValue for formik
+  const [values, setValues] = useState({
+    title: "",
+    content: "",
+  });
+  const setFieldValue = (field: string, value: any) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [field]: value,
+    }));
+  };
+
+  
+
+
+
+
+  // function to update nitice content
+  const [updatingNotice, setUpdatingNotice] = useState(false);
+  const [noticeTitle, setNoticeTitle] = useState("");
+  const [noticeContent, setNoticeContent] = useState("");
+  const [noticeUpdated, setNoticeUpdated] = useState(false);
+  const updateNotice = async (objectId: string) => {
+    if (!noticeTitle || !noticeContent) {
+      toast.error("제목과 내용을 입력해주세요.");
+      return;
+    }
+    if (!objectId) {
+      toast.error("공지사항 ID가 필요합니다.");
+      return;
+    }
+    if (!noticeTitle.trim() || !noticeContent.trim()) {
+      toast.error("제목과 내용을 입력해주세요.");
+      return;
+    }
+    setUpdatingNotice(true);
+    try {
+      const response = await fetch("/api/notice/updateNotice", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          objectId: objectId,
+          title: noticeTitle,
+          content: noticeContent,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setNoticeUpdated(true);
+      } else {
+        console.error("Failed to update notice:", data.message);
+      }
+    } catch (error) {
+      console.error("Error updating notice:", error);
+    } finally {
+      setUpdatingNotice(false);
+    }
+  };
+
+
+  // function to create notice
+const [creatingNotice, setCreatingNotice] = useState(false);
+const [newNoticeTitle, setNewNoticeTitle] = useState("");
+
+const [newNoticeContent, setNewNoticeContent] = useState("");
+
+const [noticeCreated, setNoticeCreated] = useState(false);
+const createNotice = async () => {
+  setCreatingNotice(true);
+  try {
+    const response = await fetch("/api/notice/createNotice", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+        body: JSON.stringify({
+            title: newNoticeTitle,
+            content: newNoticeContent,
+        }),
+    });
+    const data = await response.json();
+    if (data.success) {
+      setNoticeCreated(true);
+      // Optionally, you can reset the form fields after successful creation
+      setNewNoticeTitle("");
+      setNewNoticeContent("");
+      toast.success("공지사항이 성공적으로 추가되었습니다!");
+
+
+      // getNotices();
+      const noticesResponse = await fetch("/api/notice/getNotices");
+      const noticesData = await noticesResponse.json();
+      if (noticesData.success) {
+        setNoticeList(noticesData.notices);
+      }
+      else {
+        console.error("Failed to fetch notices:", noticesData.message);
+      }
+
+
+
+    } else {
+      console.error("Failed to create notice:", data.message);
+      toast.error("공지사항 추가에 실패했습니다.");
+      setNoticeCreated(false);
+    }
+  } catch (error) {
+    console.error("Error creating notice:", error);
+    toast.error("공지사항 추가 중 오류가 발생했습니다.");
+  } finally {
+    setCreatingNotice(false);
+  }
+
+  setTimeout(() => {
+    setNoticeCreated(false);
+  }, 3000); // Reset after 3 seconds
+
+};
+
+
+
+  // get notice list
+  const [noticeList, setNoticeList] = useState<any[]>([]);
+  const [loadingNotices, setLoadingNotices] = useState(true);
+  useEffect(() => {
+    const fetchNotices = async () => {
+      try {
+        setLoadingNotices(true);
+        const response = await fetch("/api/notice/getNotices");
+        const data = await response.json();
+        if (data.success) {
+          setNoticeList(data.notices);
+        } else {
+          console.error("Failed to fetch notices:", data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching notices:", error);
+      } finally {
+          setLoadingNotices(false);
+      }
+    };
+    fetchNotices();
+  }, []);
+
+  // delete notice
+  //const [deletingNotice, setDeletingNotice] = useState(false);
+  // array deletingNotice
+  // array of boolean values for each notice
+  const [deletingNotice, setDeletingNotice] = useState(
+    [] as boolean[]
+  );
+
+  const [noticeDeleted, setNoticeDeleted] = useState(false);
+
+  const deleteNotice = async (objectId: string) => {
+
+
+    if (!objectId) {
+      toast.error("공지사항 ID가 필요합니다.");
+      return;
+    }
+    
+    confirm("정말로 이 공지사항을 삭제하시겠습니까?") || toast.error("공지사항 삭제가 취소되었습니다.");
+
+
+    setDeletingNotice((prev) => [...prev, true]);
+    try {
+      const response = await fetch("/api/notice/deleteNotice", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          objectId: objectId
+        }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setNoticeList((prevNotices) =>
+          prevNotices.filter((notice) => notice._id !== objectId) // Use _id for filtering
+        );
+        setNoticeDeleted(true);
+        toast.success("공지사항이 성공적으로 삭제되었습니다!");
+      } else {
+        console.error("Failed to delete notice:", data.message);
+        toast.error("공지사항 삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Error deleting notice:", error);
+      toast.error("공지사항 삭제 중 오류가 발생했습니다.");
+    } finally {
+      
+      setDeletingNotice((prev) => [...prev, false]);
+
+      setTimeout(() => {
+        setNoticeDeleted(false);
+      }, 3000); // Reset after 3 seconds
+    }
+  };
+
+
+
+
 
   return (
 
@@ -263,109 +365,6 @@ function AgentPage(
 
       <div className="w-full flex flex-col items-center justify-center gap-4">
 
-
-        {!address && (
-
-        <div className="
-            mt-16
-            w-full flex flex-col justify-center items-center gap-2 p-2">
-        
-            <ConnectButton
-            client={client}
-            wallets={wallets}
-            accountAbstraction={{
-                chain: bsc,
-                sponsorGas: true
-            }}
-            
-            theme={"light"}
-
-            // button color is dark skyblue convert (49, 103, 180) to hex
-            connectButton={{
-                style: {
-                backgroundColor: "#3167b4", // dark skyblue
-                // font color is gray-300
-                color: "#f3f4f6", // gray-300
-                padding: "10px 20px",
-                borderRadius: "10px",
-                fontSize: "16px",
-                // w-full
-                width: "100%",
-                },
-                label: "로그인 및 회원가입",
-            }}
-
-            connectModal={{
-                size: "wide", 
-                //size: "compact",
-                titleIcon: "https://wallet.cryptopay.beauty/logo.png",                           
-                showThirdwebBranding: false,
-            }}
-
-            locale={"ko_KR"}
-            //locale={"en_US"}
-            />
-
-
-
-
-            <div className="mt-20
-            flex flex-row gap-2 justify-center items-center">
-            <span className="text-sm md:text-lg text-zinc-500">
-                이용방법이 궁금하신가요?
-            </span>
-            <Link
-                href="#"
-                className="text-sm md:text-lg text-blue-500 font-semibold hover:underline"
-            >
-                이용가이드
-            </Link>
-            </div>
-
-
-
-        </div>
-
-        )}
-
-
-
-        {/* total supply of MKRW */}
-        
-        <div className="flex flex-col items-center justify-center w-full mb-5">
-
-            <div className="flex flex-row gap-2 items-center">                    
-                <Image
-                    src="/token-mkrw-icon.png"
-                    alt="MKRW Icon"
-                    width={40}
-                    height={40}
-                    className="inline-block mr-2"
-                />
-                <span className="text-lg md:text-xl font-semibold">
-                    MKRW 총 유통량:
-                </span>
-                <span className="text-2xl md:text-4xl font-semibold text-yellow-600"
-                    style={{ fontFamily: 'monospace' }}>
-                    {totalSupplyMKRW.toLocaleString()}
-                </span>
-            </div>
-            {/* bscscan link */}
-            <div className="mt-2">
-                <Button
-                    onClick={() => {
-                        window.open(
-                            `https://bscscan.com/token/${bscContractAddressMKRW}`,
-                            "_blank"
-                        );
-                    }}
-                    className="text-sm bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200"
-                >
-                    BscScan에서 확인하기
-                </Button>
-            </div>
-        </div>
-        
 
 
         {/* 메뉴: 공지사항, 회원목록 */}
@@ -401,49 +400,156 @@ function AgentPage(
                     회원 목록
                 </Link>
             </div>
+
+
         </div>
 
 
-          {/* [공지] 지갑서비스를 오픈하였습니다. */}
-          {/* 안녕하세요 지갑서스를 오픈하였습니다. */}
-          {/* 제목 */}
-          {/* 본문 */}
-          <div className="flex flex-col items-center justify-center
+        <div className="w-full items-start justify-start mt-10 flex gap-2 mb-4
+            border-b-2 border-gray-200 pb-2">
+            <Image
+                src="/icon-notice.png"
+                alt="Notice Icon"
+                width={24}
+                height={24}
+            />
+            <h2 className="text-xl font-bold">
+                공지사항 관리
+            </h2>
+        </div>
+
+
+
+
+        <div className="w-full flex flex-row gap-4 items-start justify-between mb-5">
+
+          <div className="w-full flex flex-col items-center justify-center">
+
+            {/* 공지사항 목록 */}
+            <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md
+                border border-gray-200 mb-6">
+              <h2 className="text-gray-800 font-bold text-lg mb-4">공지사항 목록</h2>
+              {loadingNotices ? (
+                <p className="text-gray-600">
+                  공지사항을 불러오는 중...
+                </p>
+              ) : noticeList.length === 0 ? (
+                <p className="text-gray-600">No notices available.</p>
+              ) : (
+                <ul className="space-y-4">
+                  {noticeList.map((notice) => (
+                    <li key={notice._id} className="border-b border-gray-200 pb-4">
+
+                
+                      <h3 className="text-gray-800 font-semibold">{notice.title}</h3>
+                      <p className="text-gray-600">
+                        { // process returnd characters to <br /> tags
+                          notice.content.split('\n').map((line: string, index: number) => (
+                            <span key={index}>
+                              {line}
+                              <br />
+                            </span>
+                          ))
+                        } 
+                      </p>
+                      <div className="flex justify-between items-center mt-2">
+                        <span className="text-sm text-gray-500">
+                          {new Date(notice.createdAt).toLocaleDateString()}
+                        </span>
+                        <button
+                          onClick={() => deleteNotice(notice._id)}
+                          disabled={
+                            deletingNotice[notice._id] || false
+                          }
+                          className={`text-red-500 hover:text-red-700
+                              ${deletingNotice[notice._id] ? "opacity-50 cursor-not-allowed" : ""}`}
+                        >
+                          {deletingNotice[notice._id] ? "삭제중..." : "삭제하기"}
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+          </div>
+
+
+
+          {/* 공지사항 추가하기 */}
+          <div className="w-full flex flex-col items-center justify-center
               bg-white p-6 rounded-lg shadow-md
               border border-gray-200
-              max-w-2xl w-full">
-              <div className="flex items-center justify-center mb-4">
-                  <Image
-                      src="/icon-notice.png"
-                      alt="Notice"
-                      width={40}
-                      height={40}
-                      className="rounded-full w-8 h-8 mr-2"
-                  />
-                  <span className="text-gray-800 font-bold">
-                    [공지] 지갑서비스를 오픈하였습니다.
-                  </span>
+              max-w-2xl">
+              <h2 className="text-gray-800 font-bold text-lg mb-4">공지사항 추가하기</h2>
+              {/* 제목 입력 */}
+              <input
+                  type="text"
+                  placeholder="공지사항 제목"
+                  value={newNoticeTitle}
+                  onChange={(e) => setNewNoticeTitle(e.target.value)}
+                  className="w-full p-2 mb-4 border border-gray-300 rounded"
+              />
+              {/* 본문 입력 */}
+              {/*
+              <QuillWrapper
+                  placeholder="공지사항 본문"
+                  className="w-full h-64 mb-4"
+                  modules={{
+                      toolbar: [
+                          [{ header: [1, 2, false] }],
+                          ['bold', 'italic', 'underline'],
+                          ['link', 'image'],
+                          [{ list: 'ordered' }, { list: 'bullet' }],
+                          ['clean'],
+                      ],
+                  }}
+                  formats={[
+                      'header', 'bold', 'italic', 'underline', 'link', 'image',
+                      'list', 'bullet', 'clean'
+                  ]}
+                  theme="snow"
+                  ///value={newNoticeContent}
+                  //onChange={setNewNoticeContent}
+
+                  value={values.content}
+                  onChange={(event) => setFieldValue('content', event)}
+
+
+              />
+              */}
+
+              
+              <textarea
+                  placeholder="공지사항 본문"
+                  value={newNoticeContent}
+                  onChange={(e) => setNewNoticeContent(e.target.value)}
+                  className="w-full p-2 mb-4 border border-gray-300 rounded h-32"
+              />
+              
+
+
+              {/* 버튼 */}
+              <div className="mt-4 w-full flex flex-col items-center justify-center">
+                <button
+                    onClick={
+                      createNotice
+                    }
+                    disabled={creatingNotice}
+                    className={`w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600
+                        ${creatingNotice ? "opacity-50 cursor-not-allowed" : ""}`}
+                >
+                    {creatingNotice ? "Creating..." : "공지사항 추가하기"}
+                </button>
+                {noticeCreated && (
+                    <p className="text-green-500 mt-2">공지사항이 성공적으로 추가되었습니다!</p>
+                )}
               </div>
-              <p className="text-gray-600 text-sm text-left">
-                  안녕하세요 지갑서비스를 오픈하였습니다. 이제부터 지갑서비스를 이용하실 수 있습니다.
-                  <br />
-                  지갑서비스를 이용하시려면 아래의 절차를 따라주세요.
-              </p>
-              <p className="text-gray-600 mt-4 text-sm text-left">
-                  
-                  1. 지갑 생성
-                  <br />
-                  2. 지갑 주소 확인
-                  <br />
-                  3. 지갑 주소로 토큰 전송
-                  <br />
-                  4. 지갑 주소로 토큰 수신
-                  <br />
-                  5. 지갑 주소로 토큰 잔액 확인
-                  <br />
-                  6. 지갑 주소로 토큰 전송 기록 확인
-              </p>
           </div>
+
+
+        </div>
 
 
       </div>
@@ -457,12 +563,18 @@ function AgentPage(
 
   export default function Agent({ params }: any) {
     return (
-        <Suspense fallback={
+        <Suspense
+          
+        
+          fallback={
             <div
                 className="w-full h-screen flex flex-col items-center justify-center
                 bg-zinc-100 text-gray-600 font-semibold text-lg"
             >Loading...</div>
-        }>
+        }
+        
+        
+        >
             <AgentPage
                 params={params}
             />
