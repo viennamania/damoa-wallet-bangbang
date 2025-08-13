@@ -42,7 +42,11 @@ import {
     sendAndConfirmTransaction,
 } from "thirdweb";
 
-import { balanceOf, transfer } from "thirdweb/extensions/erc20";
+import {
+  balanceOf,
+  transfer,
+  burn,
+} from "thirdweb/extensions/erc20";
  
 
 
@@ -1356,10 +1360,39 @@ export default function SendUsdt({ params }: any) {
   */
 
 
+  // burn token
+  const [burnAmount, setBurnAmount] = useState(0);
+  const [burning, setBurning] = useState(false);
+  const burnToken = async () => {
+    if (!address) return;
 
+    try {
 
+      setBurning(true);
+      // erc20 burn
+      const transaction = burn({
+        contract: contractMKRW as any,
+        amount: BigInt(burnAmount) * 10n ** 18n
+      });
 
+      const result = await sendTransaction({
+        account: activeAccount as any,
+        transaction,
+      });
 
+      if (result) {
+        toast.success(`Successfully burned ${burnAmount} MKRW`);
+      } else {
+        toast.error("Failed to burn MKRW");
+      }
+    } catch (error) {
+      console.error("error", error);
+      toast.error("Failed to burn MKRW");
+    } finally {
+      setBurning(false);
+    }
+
+  };
 
   return (
 
@@ -1513,6 +1546,37 @@ export default function SendUsdt({ params }: any) {
 
               </div>
 
+              {token?.toLowerCase() === "mkrw" && (
+
+                <div className="flex flex-row items-center justify-end  gap-2">
+                  {/* input for burn amount */}
+                  <input
+                    type="number"
+                    value={burnAmount}
+                    onChange={(e) => {
+                      e.target.value = e.target.value.replace(/^0+/, '');
+                      setBurnAmount(Number(e.target.value));
+                    }}
+                    className={`border border-gray-300 rounded-lg px-4 py-2 ${burning ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  />
+                  {/* button for burn */}
+                  <button
+                    disabled={burnAmount <= 0 || burning}
+                    onClick={async () => {
+                      try {
+                        await burnToken();
+                      } catch (error) {
+                        console.error("error", error);
+                        toast.error("Failed to burn MKRW");
+                      }
+                    }}
+                    className={`bg-red-500 text-white rounded-lg px-4 py-2 ${burning ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    {burning ? '소각 중...' : '소각'}
+                  </button>
+                </div>
+
+              )}
 
 
               <div className="w-full flex flex-col xl:flex-row items-start justify-between gap-3">
