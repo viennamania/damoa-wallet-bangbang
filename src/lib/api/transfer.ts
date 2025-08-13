@@ -175,6 +175,7 @@ export async function getTransferByWalletAddress(data: any) {
 
 // getTransferByMint
 // transferData.fromAddress is '0x0000000000000000000000000000000000000000'
+// or transferData.toAddress is '0x0000000000000000000000000000000000000000'
 export async function getTransferByMintAddress({
     walletAddress,
     page = 1,
@@ -192,16 +193,35 @@ export async function getTransferByMintAddress({
     const collectionUserTransfers = client.db('damoa').collection('userTransfers');
 
     const userTransfers = await collectionUserTransfers
-    .find({ "transferData.fromAddress": '0x0000000000000000000000000000000000000000', })
+
+    /*
+    .find({
+        "transferData.fromAddress": '0x0000000000000000000000000000000000000000',
+        "transferData.toAddress": '0x0000000000000000000000000000000000000000'
+    })
+    */
+    // find fromAddress is '0x0000000000000000000000000000000000000000'
+    // or toAddress is '0x0000000000000000000000000000000000000000'
+    .find({
+        $or: [
+            { "transferData.fromAddress": '0x0000000000000000000000000000000000000000' },
+            { "transferData.toAddress": '0x0000000000000000000000000000000000000000' }
+        ]
+    })
+
     .sort({ "transferData.timestamp": -1 })
     .skip((page - 1) * limit)
     .limit(limit)
     .toArray();
 
     // totalTransfers
-    const totalCount = await collectionUserTransfers.countDocuments({ "transferData.fromAddress": '0x0000000000000000000000000000000000000000', });
+    const totalCount = await collectionUserTransfers.countDocuments({
+        $or: [
+            { "transferData.fromAddress": '0x0000000000000000000000000000000000000000' },
+            { "transferData.toAddress": '0x0000000000000000000000000000000000000000' }
+        ]
+    });
 
-    
     return {
         transfers: userTransfers,
         totalCount: totalCount,

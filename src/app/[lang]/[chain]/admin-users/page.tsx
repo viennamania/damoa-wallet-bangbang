@@ -77,6 +77,7 @@ import {
     bscContractAddressUSDT,
     bscContractAddressMKRW,
 } from "@/app/config/contractAddresses";
+import { min } from "moment";
 
 
 
@@ -861,7 +862,7 @@ function AgentPage(
                 body: JSON.stringify({
                     walletAddress: address,
                     page: 1, // page number for pagination
-                    limit: 2, // limit the number of mints to fetch
+                    limit: 5, // limit the number of mints to fetch
                 }),
             });
 
@@ -996,27 +997,55 @@ function AgentPage(
                     {/* background is transparent */}
 
                     <div className="flex flex-col items-start gap-2 mb-4
-                        bg-black/50
-                        text-white
+                        bg-transparent
+                        text-gray-800
                         backdrop-filter backdrop-blur-md
                         rounded-lg shadow-md
                         p-4 mt-4">
                         {mintHistory.map((mint, index) => (
                             <div key={index} className="flex flex-row items-center justify-between
                                 gap-4">
-                                <div className="flex flex-row items-center gap-2">
-                                    <span className="text-sm">
-                                        {mint.toUser.nickname || "익명"}
-                                    </span>
-                                    <span className="text-xs">
-                                        {new Date(mint.transferData.timestamp).toLocaleString()}
-                                    </span>
+                                {/* timestamp */}
+                                <div className="text-xs text-gray-500">
+                                    {new Date(mint.transferData.timestamp).toLocaleString()}
                                 </div>
-                                <span className="text-lg font-semibold text-yellow-400">
-                                    {Number(
-                                        mint.transferData.value / 10 ** 18
-                                    ).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                </span>
+                                <div className="flex flex-row items-center gap-2">
+                                    {mint.transferData.fromAddress === '0x0000000000000000000000000000000000000000' && (
+                                        <span className="text-sm text-yellow-500">
+                                            {mint?.toUser?.nickname || mint?.transferData?.toAddress || "Unknown User"}
+                                        </span>
+                                    )}
+                                    {mint.transferData.toAddress === '0x0000000000000000000000000000000000000000' && (
+                                        <span className="text-sm text-red-500">
+                                            {mint?.fromUser?.nickname || mint?.transferData?.fromAddress || "Unknown User"}
+                                        </span>
+                                    )}
+                                </div>
+                                {mint.transferData.fromAddress === '0x0000000000000000000000000000000000000000' && (
+                                    <div className="flex flex-row items-center gap-2">
+                                        <span className="text-sm text-yellow-500">
+                                            발행
+                                        </span>
+                                        <span className="text-lg font-semibold text-yellow-400">
+                                            {Number(
+                                                mint?.transferData.value / 10 ** 18
+                                            ).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </span>
+                                    </div>
+                                )}
+                                {mint.transferData.toAddress === '0x0000000000000000000000000000000000000000' && (
+                                    <div className="flex flex-row items-center gap-2">
+                                        <span className="text-sm text-red-500">
+                                            소각
+                                        </span>
+                                        <span className="text-lg font-semibold text-red-400">
+                                            {Number(
+                                                mint?.transferData.value / 10 ** 18
+                                            ).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </span>
+                                    </div>
+                                )}
+
                             </div>
                         ))}
                     </div>
@@ -1361,7 +1390,7 @@ function AgentPage(
                             placeholder="회원 검색 (닉네임)"
                             value={searchNickname}
                             onChange={(e) => setSearchNickname(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded-lg"
+                            className="w-20 p-2 border border-gray-300 rounded-lg"
                         />
                         <Button
                             onClick={() => {
