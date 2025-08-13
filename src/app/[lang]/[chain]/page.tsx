@@ -1976,9 +1976,9 @@ function IndexPage(
                         <Image
                           src="/icon-trading-live.gif"
                           alt="Trading Live"
-                          width={80}
+                          width={100}
                           height={80}
-                          className="rounded-lg w-20 h-20 xl:w-24 xl:h-24"
+                          className="rounded-l-lg"
                         />
                         <div className="flex flex-row gap-2 items-center justify-start">
                           <Image
