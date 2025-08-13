@@ -195,7 +195,11 @@ export async function GET(request: NextRequest) {
         if (!response) {
             return NextResponse.json({
             result: {
-                error: "response is null",
+              status: "error",
+              message: "Transaction failed",
+              transactionHash: null,
+              to: toWalletAddress,
+              amount: amount,
             },
             });
         }
@@ -205,6 +209,8 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json({
             result: {
+                status: "success",
+                message: "Transaction successful",
                 transactionHash: response.transactionHash,
                 to: toWalletAddress,
                 amount: amount,
@@ -217,7 +223,9 @@ export async function GET(request: NextRequest) {
         console.error("error", error);
         return NextResponse.json({
             result: {
-                error,
+                status: "error",
+                message: "Transaction failed",
+                transactionHash: null,
             },
         });
 
