@@ -99,6 +99,19 @@ export async function GET(request: NextRequest) {
     });
 
 
+    /*
+        {
+        van: 'BANKPAY',
+        gid: '21000212',
+        tmnId: 'WGP329548',
+        catId: 'WGP329548',
+        cancelYn: 'N',
+        amt: '2000',
+        tid: 'merchant_1755047152211',
+        wTid: 'BP2025081310055201AP79787',
+        ordNm: '0x86722e6b5a13EC03c7Fd1e1decfadc846b0929f0'
+      }
+    */
 
     try {
 
@@ -216,7 +229,9 @@ export async function GET(request: NextRequest) {
 
 
         if (!response) {
-            return NextResponse.json({
+          console.error("Transaction failed, no response received");
+          // Return an error response if the transaction failed
+          return NextResponse.json({
             result: {
               status: "error",
               message: "Transaction failed",
@@ -224,7 +239,7 @@ export async function GET(request: NextRequest) {
               to: toWalletAddress,
               amount: amount,
             },
-            });
+          });
         }
 
 
