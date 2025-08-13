@@ -1012,12 +1012,16 @@ function AgentPage(
                                 <div className="flex flex-row items-center gap-2">
                                     {mint.transferData.fromAddress === '0x0000000000000000000000000000000000000000' && (
                                         <span className="text-sm text-yellow-500">
-                                            {mint?.toUser?.nickname || mint?.transferData?.toAddress || "Unknown User"}
+                                            {mint?.toUser?.nickname
+                                            || mint?.transferData?.toAddress.slice(0, 6) + "..." + mint?.transferData?.toAddress.slice(-4)
+                                            || "Unknown User"}
                                         </span>
                                     )}
                                     {mint.transferData.toAddress === '0x0000000000000000000000000000000000000000' && (
                                         <span className="text-sm text-red-500">
-                                            {mint?.fromUser?.nickname || mint?.transferData?.fromAddress || "Unknown User"}
+                                            {mint?.fromUser?.nickname
+                                            || mint?.transferData?.fromAddress.slice(0, 6) + "..." + mint?.transferData?.fromAddress.slice(-4)
+                                            || "Unknown User"}
                                         </span>
                                     )}
                                 </div>

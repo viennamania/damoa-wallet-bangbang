@@ -1268,8 +1268,6 @@ export default function SendUsdt({ params }: any) {
 
 
   // transfer list MKRW
-
-
   const [transferListMKRW, setTransferListMKRW] = useState([]);
   const [loadingTransferListMKRW, setLoadingTransferListMKRW] = useState(false);
   useEffect(() => {
@@ -1393,6 +1391,10 @@ export default function SendUsdt({ params }: any) {
     }
 
   };
+
+
+
+  
 
   return (
 
