@@ -52,6 +52,9 @@ export async function insertOne(data: any) {
             timestamp: data.timestamp,
         },
         isEscrowTransfer: data.isEscrowTransfer || false, // Optional, can be true or false
+        checkFromAddressIsAdminSmartWallet: data.checkFromAddressIsAdminSmartWallet || false, // Optional, can be true or false
+        checkToAddressIsAdminSmartWallet: data.checkToAddressIsAdminSmartWallet || false, // Optional, can be true or false
+        createdAt: new Date(),
     });
 
 
@@ -72,6 +75,10 @@ export async function insertOne(data: any) {
             timestamp: data.timestamp,
         },
         isEscrowTransfer: data.isEscrowTransfer || false, // Optional, can be true or false
+
+        checkFromAddressIsAdminSmartWallet: data.checkFromAddressIsAdminSmartWallet || false, // Optional, can be true or false
+        checkToAddressIsAdminSmartWallet: data.checkToAddressIsAdminSmartWallet || false, // Optional, can be true or false
+        createdAt: new Date(),
     });
 
 

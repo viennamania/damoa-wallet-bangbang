@@ -316,6 +316,8 @@ export async function POST(request: NextRequest) {
 
 
 
+  const checkFromAddressIsAdminSmartWallet = fromAddress === process.env.ADMIN_SMART_WALLET_ADDRESS;
+  const checkToAddressIsAdminSmartWallet = toAddress === process.env.ADMIN_SMART_WALLET_ADDRESS;
 
   const result = insertOne({
     transactionHash,
@@ -327,6 +329,8 @@ export async function POST(request: NextRequest) {
     fromUser,
     toUser,
     isEscrowTransfer,
+    checkFromAddressIsAdminSmartWallet,
+    checkToAddressIsAdminSmartWallet,
   });
 
   console.log("insertOne", result);
