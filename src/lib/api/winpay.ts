@@ -41,6 +41,7 @@ export async function createBankPay({
         isMandatoryIssuer,
         returnUrl,
         createdAt: new Date(),
+        status: 'pending', // Initial status
     });
 
     return result.insertedId.toString();
@@ -57,4 +58,24 @@ export async function getPaymentByTid(tid: string) {
     });
 
     return payment;
+}
+
+// change status of payment to success
+export async function updatePaymentStatusSuccess(tid: string) {
+    const client = await clientPromise;
+    const db = client.db('damoa');
+
+    const result = await db.collection('bankpayPayments').updateOne(
+        {
+            tid: tid,
+        },
+        {
+            $set: {
+                status: 'success',
+                updatedAt: new Date(),
+            },
+        }
+    );
+
+    return result.modifiedCount > 0;
 }

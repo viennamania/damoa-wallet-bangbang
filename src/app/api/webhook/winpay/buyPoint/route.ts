@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import {
     getPaymentByTid,
+    updatePaymentStatusSuccess,
 } from '@/lib/api/winpay';
 
 import {
@@ -139,6 +140,16 @@ export async function GET(request: NextRequest) {
 
         console.log("Payment found:", payment);
 
+        const status = payment.status;
+        if (status !== 'pending') {
+            console.error("Payment status is not pending:", status);
+            // Return an error response if payment status is not pending
+            return NextResponse.json({
+                status: 'error',
+                message: `Payment status is not pending: ${status}`,
+            });
+        }
+
 
 
         const toWalletAddress = ordNm; // Use ordNm as the wallet address
@@ -244,6 +255,13 @@ export async function GET(request: NextRequest) {
               amount: amount,
             },
           });
+        }
+
+
+        const updateResult = await updatePaymentStatusSuccess(tid);
+        if (!updateResult) {
+            console.error("Failed to update payment status for tid:", tid);
+
         }
 
 
