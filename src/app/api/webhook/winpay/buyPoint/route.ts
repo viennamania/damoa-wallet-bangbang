@@ -260,6 +260,9 @@ export async function GET(request: NextRequest) {
           });
         }
 
+        const transactionHash = response.transactionHash;
+        console.log("Transaction successful, hash:", transactionHash);
+
 
         const updateResult = await updatePaymentStatusSuccess(tid);
         if (!updateResult) {
