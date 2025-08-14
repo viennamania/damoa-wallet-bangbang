@@ -165,6 +165,9 @@ export async function GET(request: NextRequest) {
         });
 
         if (!client) {
+          
+          console.log("Failed to create thirdweb client");
+
             return NextResponse.json({
                 status: 'error',
                 message: 'Failed to create thirdweb client',
